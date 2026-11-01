@@ -53,10 +53,10 @@ void refreshInfo() {
   if (radio == WIFI_OFF) {
     copyText(gMode, sizeof(gMode), "off");
     copyText(gIp, sizeof(gIp), "0.0.0.0");
-  } else if (radio == WIFI_AP) {
+  } else if (gWantAp && !gWantSta) {
     copyText(gMode, sizeof(gMode), "AP");
     copyText(gIp, sizeof(gIp), WiFi.softAPIP().toString().c_str());
-  } else if (radio == WIFI_STA) {
+  } else if (!gWantAp && (radio & WIFI_STA) != 0) {
     copyText(gMode, sizeof(gMode), "STA");
     if (WiFi.status() == WL_CONNECTED) {
       copyText(gIp, sizeof(gIp), WiFi.localIP().toString().c_str());
@@ -93,6 +93,7 @@ RadioPlan planFor(const GatewayConfig &c) {
 const char *staLink() {
   const wifi_mode_t radio = WiFi.getMode();
   if ((radio & WIFI_STA) == 0) return "not started";
+  if (!gWantSta) return "idle";
   if (!Settings::get().staSsid[0]) return "no SSID configured";
   switch (WiFi.status()) {
     case WL_CONNECTED:
@@ -169,23 +170,20 @@ void applyRadioDefaults() {
   }
 #endif
   wifi_country_t country = {};
-  country.cc[0] = 'G';
-  country.cc[1] = 'H';
+  country.cc[0] = '0';
+  country.cc[1] = '1';
   country.cc[2] = '\0';
   country.schan = 1;
   country.nchan = 13;
-  // Zero here is 0 dBm: SoftAP becomes invisible and STA 4-way fails at close range.
-  country.max_tx_power = 78;
+  country.max_tx_power = 20;
   country.policy = WIFI_COUNTRY_POLICY_MANUAL;
   esp_wifi_set_country(&country);
-  esp_wifi_set_max_tx_power(78);
   esp_wifi_set_ps(WIFI_PS_NONE);
-  WiFi.setTxPower(WIFI_POWER_19_5dBm);
 }
 
 void applyApPhy() {
-  const uint8_t proto =
-      WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N;
+  // 11n HT IEs after AP start are a common reason phones/laptops skip the BSS.
+  const uint8_t proto = WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G;
   if ((WiFi.getMode() & WIFI_AP) != 0) {
     esp_wifi_set_protocol(WIFI_IF_AP, proto);
     esp_wifi_set_bandwidth(WIFI_IF_AP, WIFI_BW_HT20);
@@ -194,35 +192,112 @@ void applyApPhy() {
     esp_wifi_set_protocol(WIFI_IF_STA, proto);
     esp_wifi_set_bandwidth(WIFI_IF_STA, WIFI_BW_HT20);
   }
-  WiFi.setTxPower(WIFI_POWER_19_5dBm);
+}
+
+int8_t setTxPowerDbm() {
+  for (int8_t q = 68; q >= 40; q = static_cast<int8_t>(q - 4)) {
+    if (esp_wifi_set_max_tx_power(q) == ESP_OK) {
+      int8_t got = 0;
+      esp_wifi_get_max_tx_power(&got);
+      return static_cast<int8_t>(got / 4);
+    }
+  }
+  return 0;
+}
+
+bool programSoftAp(int ch) {
+  const GatewayConfig &c = Settings::get();
+  wifi_config_t conf;
+  memset(&conf, 0, sizeof(conf));
+  const size_t ssidLen = strlen(gApSsid);
+  if (ssidLen == 0 || ssidLen > 32) {
+    return false;
+  }
+  memcpy(conf.ap.ssid, gApSsid, ssidLen);
+  conf.ap.ssid_len = static_cast<uint8_t>(ssidLen);
+  conf.ap.channel = static_cast<uint8_t>(ch);
+  conf.ap.ssid_hidden = 0;
+  conf.ap.max_connection = 4;
+  conf.ap.beacon_interval = 100;
+  conf.ap.ftm_responder = false;
+  const bool openAp = strlen(c.apPass) < 8;
+  if (openAp) {
+    conf.ap.authmode = WIFI_AUTH_OPEN;
+  } else {
+    strncpy(reinterpret_cast<char *>(conf.ap.password), c.apPass,
+            sizeof(conf.ap.password) - 1);
+    conf.ap.authmode = WIFI_AUTH_WPA2_PSK;
+    conf.ap.pairwise_cipher = WIFI_CIPHER_TYPE_CCMP;
+  }
+  if (!WiFi.enableAP(true)) {
+    return false;
+  }
+  if (esp_wifi_set_config(WIFI_IF_AP, &conf) == ESP_OK) {
+    return true;
+  }
+  if (openAp) {
+    return false;
+  }
+  conf.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
+  conf.ap.pairwise_cipher = WIFI_CIPHER_TYPE_TKIP_CCMP;
+  return esp_wifi_set_config(WIFI_IF_AP, &conf) == ESP_OK;
+}
+
+void dumpAp() {
+  wifi_config_t conf;
+  memset(&conf, 0, sizeof(conf));
+  if (esp_wifi_get_config(WIFI_IF_AP, &conf) != ESP_OK) {
+    Serial.println(F("[WiFi] AP config read failed"));
+    return;
+  }
+  int8_t txq = 0;
+  esp_wifi_get_max_tx_power(&txq);
+  Serial.print(F("[WiFi] AP cfg hidden="));
+  Serial.print(conf.ap.ssid_hidden);
+  Serial.print(F(" ch="));
+  Serial.print(conf.ap.channel);
+  Serial.print(F(" auth="));
+  Serial.print(static_cast<int>(conf.ap.authmode));
+  Serial.print(F(" beacon="));
+  Serial.print(conf.ap.beacon_interval);
+  Serial.print(F(" tx="));
+  Serial.print(txq / 4);
+  Serial.println(F(" dBm"));
 }
 
 bool startSoftAp(int channel, bool waitBeacons) {
-  const GatewayConfig &c = Settings::get();
   int ch = channel > 0 ? channel : 6;
   if (ch < 1 || ch > 11) {
     ch = 6;
   }
-  WiFi.softAPConfig(IPAddress(192, 168, 4, 1), IPAddress(192, 168, 4, 1),
-                    IPAddress(255, 255, 255, 0));
-  const bool openAp = strlen(c.apPass) < 8;
-  bool ok = openAp ? WiFi.softAP(gApSsid, nullptr, ch, 0, 4)
-                   : WiFi.softAP(gApSsid, c.apPass, ch, 0, 4);
-  if (ok && waitBeacons) {
-    delay(80);
-    ok = openAp ? WiFi.softAP(gApSsid, nullptr, ch, 0, 4)
-                : WiFi.softAP(gApSsid, c.apPass, ch, 0, 4);
-  }
+  applyApPhy();
+  const GatewayConfig &c = Settings::get();
+  const char *pass = strlen(c.apPass) < 8 ? nullptr : c.apPass;
+  WiFi.softAP(gApSsid, pass, ch, 0, 4);
+  const bool ok = programSoftAp(ch);
+  // DHCP must start after set_config. Doing it first leaves phones on
+  // "Obtaining IP address" after the password is accepted.
+  const bool dhcp = WiFi.softAPConfig(
+      IPAddress(192, 168, 4, 1), IPAddress(192, 168, 4, 1),
+      IPAddress(255, 255, 255, 0), IPAddress(192, 168, 4, 2));
   gApUp = ok;
   gApChannel = ch;
   if (!ok) {
     Serial.println(F("[WiFi] SoftAP failed to start"));
     return false;
   }
-  applyApPhy();
-  // Never delay here from a Wi-Fi event. Beacons need a pause only at boot.
+  const int8_t dbm = setTxPowerDbm();
+  Serial.print(F("[WiFi] TX "));
+  Serial.print(static_cast<int>(dbm));
+  Serial.println(F(" dBm"));
+  if (dhcp) {
+    Serial.println(F("[WiFi] AP DHCP 192.168.4.2+  then open http://192.168.4.1"));
+  } else {
+    Serial.println(F("[WiFi] AP DHCP failed — clients will sit on Obtaining IP"));
+  }
   if (waitBeacons) {
     delay(400);
+    dumpAp();
   }
   return true;
 }
@@ -344,6 +419,16 @@ void manageSta() {
 }
 
 void onWifiEvent(WiFiEvent_t event, WiFiEventInfo_t info) {
+  if (event == ARDUINO_EVENT_WIFI_AP_STACONNECTED) {
+    Serial.print(F("[WiFi] phone/laptop joined AP ("));
+    Serial.print(WiFi.softAPgetStationNum());
+    Serial.println(F(" client)"));
+    return;
+  }
+  if (event == ARDUINO_EVENT_WIFI_AP_STADISCONNECTED) {
+    Serial.println(F("[WiFi] AP client left"));
+    return;
+  }
   if (event == ARDUINO_EVENT_WIFI_STA_CONNECTED) {
     gLastChannel = info.wifi_sta_connected.channel;
     memcpy(gLastBssid, info.wifi_sta_connected.bssid, 6);
@@ -465,31 +550,33 @@ void startRadio() {
   WiFi.setAutoReconnect(false);
   WiFi.setHostname(Settings::hostname());
 
-  // C3 SoftAP often keeps the previous STA scan running unless the radio is
-  // taken fully down first. Firmware then says "AP up" with no beacons.
-  if (WiFi.getMode() != WIFI_OFF) {
-    WiFi.setAutoReconnect(false);
-    if ((WiFi.getMode() & WIFI_STA) != 0) {
-      WiFi.disconnect(true, true);
-    }
-    if (!plan.ap) {
-      WiFi.softAPdisconnect(true);
-    }
-    WiFi.mode(WIFI_OFF);
-    delay(150);
-  }
-
+  // ESP32-C3 SoftAP does not beacon in WIFI_AP. Keep the STA interface up
+  // and idle. WIFI_OFF / disconnect(true) is what made "AP up" invisible.
   wifi_mode_t mode = WIFI_OFF;
-  if (plan.ap && plan.sta) {
+  if (plan.ap) {
     mode = WIFI_AP_STA;
-  } else if (plan.ap) {
-    mode = WIFI_AP;
   } else if (plan.sta) {
     mode = WIFI_STA;
   }
-  WiFi.mode(mode);
-  delay(150);
-  if (mode != WIFI_OFF) {
+
+  const wifi_mode_t prev = WiFi.getMode();
+  if (mode == WIFI_OFF) {
+    WiFi.disconnect(false, false);
+    WiFi.softAPdisconnect(true);
+    WiFi.mode(WIFI_OFF);
+    delay(100);
+  } else {
+    if (!plan.sta && (prev & WIFI_STA) != 0) {
+      WiFi.setAutoReconnect(false);
+      WiFi.disconnect(false, false);
+    }
+    if (!plan.ap && (prev & WIFI_AP) != 0) {
+      WiFi.softAPdisconnect(true);
+    }
+    if (prev != mode) {
+      WiFi.mode(mode);
+      delay(120);
+    }
     applyRadioDefaults();
   }
 
@@ -507,7 +594,7 @@ void startRadio() {
       Serial.print(WiFi.softAPIP());
       Serial.print(F(" ch "));
       Serial.println(ch);
-      Serial.println(F("[WiFi] Phone must use 2.4 GHz. SSID is printed above."));
+      Serial.println(F("[WiFi] Look for this SSID on 2.4 GHz. Do not switch mode yet."));
       if (strlen(c.apPass) < 8) {
         Serial.println(F("[WiFi] AP is open (no password)."));
       }
