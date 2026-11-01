@@ -21,7 +21,7 @@ void printBoard();
 void scan();
 void disconnectSta();
 // Wait briefly for a station result after wifi join / radio restart.
-void waitForSta(uint32_t timeoutMs = 12000);
+void waitForSta(uint32_t timeoutMs = 18000);
 
 }  // namespace WifiPortal
 

@@ -3,6 +3,7 @@
 #include "net/wifi_portal.h"
 
 #include <WiFi.h>
+#include <esp_wifi.h>
 #include <lwip/dns.h>
 #include <stdio.h>
 #include <string.h>
@@ -18,7 +19,20 @@ namespace {
 
 char gMode[12] = "off";
 char gIp[16] = "0.0.0.0";
-char gApSsid[32] = {};
+char gApSsid[33] = {};
+char gLastStaSsid[33] = {};
+uint8_t gLastBssid[6] = {};
+int32_t gLastChannel = 0;
+bool gHaveBssid = false;
+bool gWantAp = false;
+bool gWantSta = false;
+bool gApUp = false;
+bool gEventHooked = false;
+int gApChannel = 0;
+uint32_t gStaAttemptStart = 0;
+uint32_t gStaRestUntil = 0;
+uint8_t gStaFails = 0;
+uint8_t gLastFailReason = 0;
 
 void buildApSsid() {
   uint64_t mac = ESP.getEfuseMac();
@@ -98,6 +112,281 @@ const char *staLink() {
   }
 }
 
+const char *failReasonName(uint8_t reason) {
+  switch (reason) {
+    case WIFI_REASON_AUTH_EXPIRE:
+      return "auth expired";
+    case WIFI_REASON_AUTH_LEAVE:
+      return "auth leave";
+    case WIFI_REASON_ASSOC_EXPIRE:
+      return "assoc expired";
+    case WIFI_REASON_ASSOC_TOOMANY:
+      return "too many stations";
+    case WIFI_REASON_4WAY_HANDSHAKE_TIMEOUT:
+      return "4-way handshake timeout";
+    case WIFI_REASON_MIC_FAILURE:
+      return "MIC failure";
+    case WIFI_REASON_IE_IN_4WAY_DIFFERS:
+      return "4-way IE mismatch";
+    case WIFI_REASON_802_1X_AUTH_FAILED:
+      return "802.1X auth failed";
+    case WIFI_REASON_BEACON_TIMEOUT:
+      return "beacon timeout";
+    case WIFI_REASON_NO_AP_FOUND:
+      return "SSID not found";
+    case WIFI_REASON_AUTH_FAIL:
+      return "authentication failed";
+    case WIFI_REASON_ASSOC_FAIL:
+      return "association failed";
+    case WIFI_REASON_HANDSHAKE_TIMEOUT:
+      return "handshake timeout";
+    case WIFI_REASON_CONNECTION_FAIL:
+      return "connection failed";
+    default:
+      return "disconnected";
+  }
+}
+
+bool handshakeLikeFail(uint8_t reason) {
+  return reason == WIFI_REASON_AUTH_FAIL ||
+         reason == WIFI_REASON_AUTH_EXPIRE ||
+         reason == WIFI_REASON_4WAY_HANDSHAKE_TIMEOUT ||
+         reason == WIFI_REASON_HANDSHAKE_TIMEOUT ||
+         reason == WIFI_REASON_802_1X_AUTH_FAILED ||
+         reason == WIFI_REASON_CONNECTION_FAIL ||
+         reason == WIFI_REASON_ASSOC_FAIL;
+}
+
+void applyRadioDefaults() {
+  WiFi.setSleep(false);
+#if defined(WIFI_AUTH_WPA_PSK)
+  WiFi.setMinSecurity(WIFI_AUTH_WPA_PSK);
+#endif
+#ifdef WIFI_FAST_SCAN
+  if ((WiFi.getMode() & WIFI_STA) != 0) {
+    WiFi.setScanMethod(WIFI_FAST_SCAN);
+    WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
+  }
+#endif
+  wifi_country_t country = {};
+  country.cc[0] = 'G';
+  country.cc[1] = 'H';
+  country.cc[2] = '\0';
+  country.schan = 1;
+  country.nchan = 13;
+  // Zero here is 0 dBm: SoftAP becomes invisible and STA 4-way fails at close range.
+  country.max_tx_power = 78;
+  country.policy = WIFI_COUNTRY_POLICY_MANUAL;
+  esp_wifi_set_country(&country);
+  esp_wifi_set_max_tx_power(78);
+  esp_wifi_set_ps(WIFI_PS_NONE);
+  WiFi.setTxPower(WIFI_POWER_19_5dBm);
+}
+
+void applyApPhy() {
+  const uint8_t proto =
+      WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N;
+  if ((WiFi.getMode() & WIFI_AP) != 0) {
+    esp_wifi_set_protocol(WIFI_IF_AP, proto);
+    esp_wifi_set_bandwidth(WIFI_IF_AP, WIFI_BW_HT20);
+  }
+  if ((WiFi.getMode() & WIFI_STA) != 0) {
+    esp_wifi_set_protocol(WIFI_IF_STA, proto);
+    esp_wifi_set_bandwidth(WIFI_IF_STA, WIFI_BW_HT20);
+  }
+  WiFi.setTxPower(WIFI_POWER_19_5dBm);
+}
+
+bool startSoftAp(int channel, bool waitBeacons) {
+  const GatewayConfig &c = Settings::get();
+  int ch = channel > 0 ? channel : 6;
+  if (ch < 1 || ch > 11) {
+    ch = 6;
+  }
+  WiFi.softAPConfig(IPAddress(192, 168, 4, 1), IPAddress(192, 168, 4, 1),
+                    IPAddress(255, 255, 255, 0));
+  const bool openAp = strlen(c.apPass) < 8;
+  bool ok = openAp ? WiFi.softAP(gApSsid, nullptr, ch, 0, 4)
+                   : WiFi.softAP(gApSsid, c.apPass, ch, 0, 4);
+  if (ok && waitBeacons) {
+    delay(80);
+    ok = openAp ? WiFi.softAP(gApSsid, nullptr, ch, 0, 4)
+                : WiFi.softAP(gApSsid, c.apPass, ch, 0, 4);
+  }
+  gApUp = ok;
+  gApChannel = ch;
+  if (!ok) {
+    Serial.println(F("[WiFi] SoftAP failed to start"));
+    return false;
+  }
+  applyApPhy();
+  // Never delay here from a Wi-Fi event. Beacons need a pause only at boot.
+  if (waitBeacons) {
+    delay(400);
+  }
+  return true;
+}
+
+void reassertSoftAp() {
+  if (!gWantAp) {
+    return;
+  }
+  const int ch = WiFi.channel() > 0 ? WiFi.channel() : (gApChannel > 0 ? gApChannel : 1);
+  if (gApUp && gApChannel == ch && WiFi.softAPSSID().length() > 0) {
+    return;
+  }
+  startSoftAp(ch, false);
+  Serial.print(F("[WiFi] AP reassert "));
+  Serial.print(gApSsid);
+  Serial.print(F(" ch "));
+  Serial.println(ch);
+}
+
+void startStaJoin() {
+  const GatewayConfig &c = Settings::get();
+  if (!c.staSsid[0]) {
+    return;
+  }
+  WiFi.setAutoReconnect(false);
+  WiFi.disconnect(false, false);
+  delay(80);
+  if (strcmp(gLastStaSsid, c.staSsid) != 0) {
+    gHaveBssid = false;
+    gLastChannel = 0;
+    copyText(gLastStaSsid, sizeof(gLastStaSsid), c.staSsid);
+  }
+  if (gHaveBssid && gLastChannel > 0) {
+    Serial.print(F("[WiFi] STA "));
+    Serial.print(c.staSsid);
+    Serial.print(F(" ch "));
+    Serial.println(static_cast<int>(gLastChannel));
+    WiFi.begin(c.staSsid, c.staPass, gLastChannel, gLastBssid, true);
+  } else {
+    Serial.print(F("[WiFi] STA "));
+    Serial.println(c.staSsid);
+    WiFi.begin(c.staSsid, c.staPass);
+  }
+  gStaAttemptStart = millis();
+  gStaRestUntil = 0;
+}
+
+void scheduleStaRetry(uint32_t delayMs) {
+  WiFi.setAutoReconnect(false);
+  gStaAttemptStart = 0;
+  gStaRestUntil = millis() + delayMs;
+}
+
+void giveUpSta(const char *why) {
+  gWantSta = false;
+  gStaAttemptStart = 0;
+  gStaRestUntil = 0;
+  WiFi.setAutoReconnect(false);
+  WiFi.disconnect(false, false);
+  Serial.print(F("[WiFi] STA stopped ("));
+  Serial.print(why);
+  Serial.println(F(")."));
+  Serial.println(F("Keep the setup AP: wifi mode ap"));
+  Serial.println(F("Join without the AP: wifi mode sta"));
+  Serial.println(F("Retry this network: wifi join <ssid> [password]"));
+  if (gWantAp) {
+    reassertSoftAp();
+  }
+}
+
+void manageSta() {
+  if (!gWantSta || !Settings::get().staSsid[0]) {
+    return;
+  }
+  if (WiFi.status() == WL_CONNECTED) {
+    gStaFails = 0;
+    gStaAttemptStart = 0;
+    return;
+  }
+  const uint32_t now = millis();
+  if (now < gStaRestUntil) {
+    return;
+  }
+  // A phone on the setup AP needs beacon time. Pause extra retries while
+  // someone is associated, otherwise the next scan drops them.
+  if (gWantAp && WiFi.softAPgetStationNum() > 0 && gStaFails > 0) {
+    gStaRestUntil = now + 4000;
+    return;
+  }
+  if (gStaFails >= 6) {
+    giveUpSta("handshake kept failing");
+    return;
+  }
+  const wl_status_t st = WiFi.status();
+  const bool attemptExpired =
+      gStaAttemptStart != 0 && (now - gStaAttemptStart) > 12000;
+  if (st == WL_CONNECT_FAILED || st == WL_NO_SSID_AVAIL || attemptExpired) {
+    gStaFails = static_cast<uint8_t>(gStaFails < 12 ? gStaFails + 1 : 12);
+    if (st == WL_NO_SSID_AVAIL) {
+      gHaveBssid = false;
+    }
+    const uint32_t rest = gStaFails >= 3 ? 8000 : 4000;
+    Serial.print(F("[WiFi] STA "));
+    Serial.print(staLink());
+    if (gLastFailReason) {
+      Serial.print(F(" ("));
+      Serial.print(failReasonName(gLastFailReason));
+      Serial.print(')');
+    }
+    Serial.print(F("; retry in "));
+    Serial.print(rest / 1000);
+    Serial.println(F("s"));
+    scheduleStaRetry(rest);
+    return;
+  }
+  if (gStaAttemptStart == 0) {
+    startStaJoin();
+  }
+}
+
+void onWifiEvent(WiFiEvent_t event, WiFiEventInfo_t info) {
+  if (event == ARDUINO_EVENT_WIFI_STA_CONNECTED) {
+    gLastChannel = info.wifi_sta_connected.channel;
+    memcpy(gLastBssid, info.wifi_sta_connected.bssid, 6);
+    gHaveBssid = gLastChannel > 0;
+    gStaFails = 0;
+    gLastFailReason = 0;
+    if (gWantAp) {
+      reassertSoftAp();
+    }
+    return;
+  }
+  if (event == ARDUINO_EVENT_WIFI_STA_GOT_IP) {
+    return;
+  }
+  if (event != ARDUINO_EVENT_WIFI_STA_DISCONNECTED) {
+    return;
+  }
+  const uint8_t reason = static_cast<uint8_t>(info.wifi_sta_disconnected.reason);
+  // Reason 8 is our own WiFi.disconnect(). Treating it as a failure immediately
+  // starts another join and the serial loop never yields to the CLI.
+  if (reason == WIFI_REASON_ASSOC_LEAVE || !gWantSta) {
+    return;
+  }
+  gLastFailReason = reason;
+  gStaFails = static_cast<uint8_t>(gStaFails < 12 ? gStaFails + 1 : 12);
+  Serial.print(F("[WiFi] STA drop: "));
+  Serial.print(failReasonName(reason));
+  Serial.print(F(" ("));
+  Serial.print(static_cast<unsigned>(reason));
+  Serial.println(')');
+  if (handshakeLikeFail(reason)) {
+    gHaveBssid = false;
+    scheduleStaRetry(gWantAp ? 6000 : 3000);
+    return;
+  }
+  if (reason == WIFI_REASON_NO_AP_FOUND) {
+    gHaveBssid = false;
+    scheduleStaRetry(gWantAp ? 8000 : 4000);
+    return;
+  }
+  scheduleStaRetry(4000);
+}
+
 void printMac(const uint8_t mac[6]) {
   Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3],
                 mac[4], mac[5]);
@@ -162,9 +451,33 @@ void startRadio() {
   }
 
   const RadioPlan plan = planFor(c);
+  gWantAp = plan.ap;
+  gWantSta = plan.sta && c.staSsid[0];
+  gStaFails = 0;
+  gStaAttemptStart = 0;
+  gStaRestUntil = 0;
+  if (!gEventHooked) {
+    WiFi.onEvent(onWifiEvent);
+    gEventHooked = true;
+  }
+
   WiFi.persistent(false);
-  WiFi.setSleep(false);
+  WiFi.setAutoReconnect(false);
   WiFi.setHostname(Settings::hostname());
+
+  // C3 SoftAP often keeps the previous STA scan running unless the radio is
+  // taken fully down first. Firmware then says "AP up" with no beacons.
+  if (WiFi.getMode() != WIFI_OFF) {
+    WiFi.setAutoReconnect(false);
+    if ((WiFi.getMode() & WIFI_STA) != 0) {
+      WiFi.disconnect(true, true);
+    }
+    if (!plan.ap) {
+      WiFi.softAPdisconnect(true);
+    }
+    WiFi.mode(WIFI_OFF);
+    delay(150);
+  }
 
   wifi_mode_t mode = WIFI_OFF;
   if (plan.ap && plan.sta) {
@@ -175,41 +488,42 @@ void startRadio() {
     mode = WIFI_STA;
   }
   WiFi.mode(mode);
-  WiFi.setAutoReconnect(plan.sta);
+  delay(150);
+  if (mode != WIFI_OFF) {
+    applyRadioDefaults();
+  }
 
-  // Soft-AP must start before WiFi.begin. Starting it afterward tears down an
-  // in-progress station join on ESP32 (common after AP+STA restarts).
+  // Soft-AP first, then a short beacon window, then STA. On ESP32-C3 the
+  // single radio stops AP beacons for the whole station scan; starting AP
+  // after WiFi.begin also aborts the join.
   if (plan.ap) {
-    const bool openAp = strlen(c.apPass) < 8;
-    if (openAp) {
-      WiFi.softAP(gApSsid);
-    } else {
-      WiFi.softAP(gApSsid, c.apPass);
-    }
-    Serial.print(F("[WiFi] AP "));
-    Serial.print(gApSsid);
-    Serial.print(F("  "));
-    Serial.println(WiFi.softAPIP());
-    if (openAp) {
-      Serial.println(F("[WiFi] AP is open (no password)."));
+    const int ch = plan.sta && gHaveBssid && gLastChannel >= 1 && gLastChannel <= 11
+                       ? static_cast<int>(gLastChannel)
+                       : 6;
+    if (startSoftAp(ch, true)) {
+      Serial.print(F("[WiFi] AP "));
+      Serial.print(gApSsid);
+      Serial.print(F("  "));
+      Serial.print(WiFi.softAPIP());
+      Serial.print(F(" ch "));
+      Serial.println(ch);
+      Serial.println(F("[WiFi] Phone must use 2.4 GHz. SSID is printed above."));
+      if (strlen(c.apPass) < 8) {
+        Serial.println(F("[WiFi] AP is open (no password)."));
+      }
     }
   } else {
-    WiFi.softAPdisconnect(true);
+    gApUp = false;
+    gApChannel = 0;
   }
 
-  if (!plan.sta) {
-    WiFi.disconnect(false, false);
-  } else if (c.staSsid[0]) {
-    WiFi.begin(c.staSsid, c.staPass);
-  }
-
-  if (plan.sta) {
-    Serial.print(F("[WiFi] STA "));
-    if (c.staSsid[0]) {
-      Serial.println(c.staSsid);
-    } else {
-      Serial.println(F("(no SSID configured)"));
+  if (plan.sta && c.staSsid[0]) {
+    if (plan.ap) {
+      delay(250);
     }
+    startStaJoin();
+  } else if (plan.sta) {
+    Serial.println(F("[WiFi] STA (no SSID configured)"));
   }
   if (!plan.ap && !plan.sta) {
     Serial.println(F("[WiFi] radio off"));
@@ -227,7 +541,7 @@ void holdStaDns() {
   if (WiFi.status() != WL_CONNECTED) {
     return;
   }
-  // The soft AP is started after the station join and clears STA DNS.
+  // Soft-AP start/channel hop can clear STA DNS on ESP32.
   ip_addr_t primary;
   ip_addr_t secondary;
   IP_ADDR4(&primary, 1, 1, 1, 1);
@@ -244,6 +558,7 @@ void holdStaDns() {
 void poll() {
   refreshInfo();
   holdStaDns();
+  manageSta();
 }
 
 const char *mode() { return gMode; }
@@ -263,7 +578,10 @@ void printBrief() {
   if ((radio & WIFI_AP) == 0) {
     Serial.print(F("off"));
   } else {
-    Serial.print(F("up "));
+    Serial.print(gApSsid[0] ? gApSsid : WiFi.softAPSSID().c_str());
+    Serial.print(F(" ch"));
+    Serial.print(WiFi.channel());
+    Serial.print(' ');
     Serial.print(WiFi.softAPIP());
   }
   Serial.print(F(" | STA "));
@@ -288,7 +606,9 @@ void printLine() {
   if ((radio & WIFI_AP) == 0) {
     Serial.print(F("off"));
   } else {
-    Serial.print(WiFi.softAPIP());
+    Serial.print(gApSsid[0] ? gApSsid : WiFi.softAPSSID().c_str());
+    Serial.print(F(" ch"));
+    Serial.print(WiFi.channel());
   }
   Serial.print(F(" | STA "));
   Serial.print(staLink());
@@ -382,6 +702,9 @@ void printStatus() {
     Serial.println(WiFi.softAPgetStationNum());
     Serial.print(F("  Channel: "));
     Serial.println(WiFi.channel());
+    if (gWantSta && WiFi.status() != WL_CONNECTED) {
+      Serial.println(F("  note: AP beacon pauses during station scan"));
+    }
   }
 
   Serial.println(F("Station:"));
@@ -414,6 +737,13 @@ void printStatus() {
   } else {
     Serial.println(F("  IP: 0.0.0.0"));
     Serial.println(F("  RSSI: n/a"));
+    if (gLastFailReason) {
+      Serial.print(F("  last fail: "));
+      Serial.print(failReasonName(gLastFailReason));
+      Serial.print(F(" ("));
+      Serial.print(static_cast<unsigned>(gLastFailReason));
+      Serial.println(')');
+    }
   }
   Serial.println(F("Commands: wifi mode ap|sta|apsta|auto|off"));
   Serial.println(F("          wifi join <ssid> [password]"));
@@ -425,29 +755,40 @@ void scan() {
     Serial.println(F("Radio is off. Use: wifi mode apsta"));
     return;
   }
-  Serial.println(F("Scanning..."));
+  const wifi_mode_t prev = WiFi.getMode();
+  if ((prev & WIFI_STA) == 0) {
+    WiFi.mode(static_cast<wifi_mode_t>(prev | WIFI_STA));
+    delay(100);
+  }
+  if ((prev & WIFI_AP) != 0) {
+    Serial.println(F("Scanning (setup AP hides until this finishes)..."));
+  } else {
+    Serial.println(F("Scanning..."));
+  }
   const int n = WiFi.scanNetworks();
   if (n < 0) {
     Serial.println(F("Scan failed."));
-    return;
-  }
-  if (n == 0) {
+  } else if (n == 0) {
     Serial.println(F("No networks found."));
-    WiFi.scanDelete();
-    return;
-  }
-  const int shown = n > 20 ? 20 : n;
-  for (int i = 0; i < shown; i++) {
-    Serial.printf("%2d  %4d dBm  ch %-2d  %-10s  %s\n", i + 1, WiFi.RSSI(i),
-                  WiFi.channel(i), authName(WiFi.encryptionType(i)),
-                  WiFi.SSID(i).c_str());
-  }
-  if (n > shown) {
-    Serial.print(F("("));
-    Serial.print(n - shown);
-    Serial.println(F(" more not shown)"));
+  } else {
+    const int shown = n > 20 ? 20 : n;
+    for (int i = 0; i < shown; i++) {
+      Serial.printf("%2d  %4d dBm  ch %-2d  %-10s  %s\n", i + 1, WiFi.RSSI(i),
+                    WiFi.channel(i), authName(WiFi.encryptionType(i)),
+                    WiFi.SSID(i).c_str());
+    }
+    if (n > shown) {
+      Serial.print(F("("));
+      Serial.print(n - shown);
+      Serial.println(F(" more not shown)"));
+    }
   }
   WiFi.scanDelete();
+  if (gWantAp) {
+    reassertSoftAp();
+  } else if ((prev & WIFI_STA) == 0) {
+    WiFi.mode(prev);
+  }
 }
 
 void waitForSta(uint32_t timeoutMs) {
@@ -461,15 +802,12 @@ void waitForSta(uint32_t timeoutMs) {
   }
   const uint32_t start = millis();
   while ((millis() - start) < timeoutMs) {
-    const wl_status_t st = WiFi.status();
-    if (st == WL_CONNECTED) {
+    manageSta();
+    if (WiFi.status() == WL_CONNECTED) {
       holdStaDns();
       refreshInfo();
       printLine();
       return;
-    }
-    if (st == WL_NO_SSID_AVAIL || st == WL_CONNECT_FAILED) {
-      break;
     }
     delay(200);
   }
@@ -482,11 +820,14 @@ void disconnectSta() {
     Serial.println(F("Station radio is not started."));
     return;
   }
+  gWantSta = false;
+  gStaAttemptStart = 0;
+  gStaRestUntil = 0;
   WiFi.setAutoReconnect(false);
   WiFi.disconnect(false, false);
   refreshInfo();
   Serial.println(F("Station disconnected. Saved SSID is unchanged."));
-  Serial.println(F("It joins again on reboot, or: wifi join <ssid> [password]"));
+  Serial.println(F("It joins again on reboot, wifi mode apsta, or: wifi join <ssid> [password]"));
   printLine();
 }
 

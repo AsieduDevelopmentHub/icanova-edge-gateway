@@ -286,7 +286,7 @@ void Cli::cmdWifi(char *rest) {
     Settings::holdApply(false);
     if (ok) {
       Serial.println(F("Joining..."));
-      WifiPortal::waitForSta(12000);
+      WifiPortal::waitForSta(18000);
       if (WiFi.status() != WL_CONNECTED) {
         Serial.println(F("Still not connected. Try: wifi mode sta"));
         Serial.println(F("Then: wifi join <ssid> [password]"));
