@@ -1,4 +1,4 @@
-# iCanOva typography
+# iCaNova typography
 
 | Usage | Typeface |
 | ----- | -------- |

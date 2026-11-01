@@ -1,4 +1,4 @@
-# iCanOva colour system
+# iCaNova colour system
 
 ## Primary
 

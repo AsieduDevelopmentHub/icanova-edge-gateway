@@ -55,8 +55,8 @@ bool begin() {
   if (!LittleFS.exists("/etc/motd")) {
     File f = LittleFS.open("/etc/motd", "w");
     if (f) {
-      f.println("iCanOva Edge Gateway");
-      f.println("Family: iCanOva Edge");
+      f.println("iCaNova Edge Gateway");
+      f.println("Family: iCaNova Edge");
       f.println("Imagine. Connect. Innovate.");
       f.println("Imagine. Connect. Innovate.");
       f.println();

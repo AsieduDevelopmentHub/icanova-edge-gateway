@@ -1,10 +1,10 @@
-# Getting started — iCanOva Edge Gateway
+# Getting started — iCaNova Edge Gateway
 
-**Product:** iCanOva Edge Gateway (family **iCanOva Edge**). Multi-device Modbus RTU master (USB Serial CLI).
+**Product:** iCaNova Edge Gateway (family **iCaNova Edge**). Multi-device Modbus RTU master (USB Serial CLI).
 
 Primary equipment target: **Deep Sea Electronics (DSE) 7320 / 7320 MKII**. Bench slaves: Invendis ET1641 (slave 50).
 
-Wi-Fi soft-AP + local overview UI on ESP32-C3 — see [web_ui.md](web_ui.md). Optional uplink: [uplink.md](uplink.md). Companion platform: **iCanOva Monitoring**.
+Wi-Fi soft-AP + local overview UI on ESP32-C3 — see [web_ui.md](web_ui.md). Optional uplink: [uplink.md](uplink.md). Companion platform: **iCaNova Monitoring**.
 
 ---
 

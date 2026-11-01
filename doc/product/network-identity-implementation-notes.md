@@ -1,7 +1,7 @@
 # Network identity — implementation notes
 
 **Date:** 2026-10-31  
-**Scope:** Default device hostname and Soft-AP branding for **iCanOva Edge Gateway**.
+**Scope:** Default device hostname and Soft-AP branding for **iCaNova Edge Gateway**.
 
 ## Decision
 
@@ -18,7 +18,7 @@ Firmware display macros: `src/brand/product_identity.h` (`ICANOVA_DEFAULT_HOSTNA
 
 ## Why change Soft-AP now
 
-Phase 1/2 left `DSE-GW` frozen for field compatibility. That hold is lifted: Soft-AP is operator-facing product identity and must match **iCanOva Edge**, not DSE equipment branding. DSE remains the supported **controller** manufacturer in Modbus/register docs only.
+Phase 1/2 left `DSE-GW` frozen for field compatibility. That hold is lifted: Soft-AP is operator-facing product identity and must match **iCaNova Edge**, not DSE equipment branding. DSE remains the supported **controller** manufacturer in Modbus/register docs only.
 
 ## Deployed-device behavior
 

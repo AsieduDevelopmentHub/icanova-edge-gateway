@@ -1,7 +1,7 @@
-# iCanOva Rebranding Report
+# iCaNova Rebranding Report
 
 **Date:** 2026-10-31  
-**Classification:** Product branding + network identity defaults on iCanOva; local folder rename and Auth0 operator items remain.
+**Classification:** Product branding + network identity defaults on iCaNova; local folder rename and Auth0 operator items remain.
 
 ## 1. Repository migration
 
@@ -26,7 +26,7 @@
 | Gateway documentation / README | Done |
 | Web documentation / README | Done |
 | Hardware identity references | Documented; PCB/electrical unchanged |
-| Temporary wordmark | Done (text `iCanOva`) |
+| Temporary wordmark | Done (text `iCaNova`) |
 | Default hostname | **`icanova-edge`** (was `icanova-gw`) |
 | Soft-AP SSID prefix | **`ICANOVA-EDGE`** (was `DSE-GW`) |
 | Soft-AP password default | **`icanovaedge`** (was `dsegateway`) |
@@ -55,4 +55,4 @@ Network migration detail: [`doc/product/network-identity-implementation-notes.md
 
 ## 5. Final assessment
 
-**PARTIALLY COMPLETED** — GitHub names, remotes, product identity, Soft-AP/hostname defaults, tokens, and safe firmware/web strings are on iCanOva. Local folder rename and Auth0 operator migrations remain.
+**PARTIALLY COMPLETED** — GitHub names, remotes, product identity, Soft-AP/hostname defaults, tokens, and safe firmware/web strings are on iCaNova. Local folder rename and Auth0 operator migrations remain.

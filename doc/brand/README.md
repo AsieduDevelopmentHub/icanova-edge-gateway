@@ -1,8 +1,8 @@
-# iCanOva Brand Integration & Repository Rebranding
+# iCaNova Brand Integration & Repository Rebranding
 
 ## Cursor Implementation Specification
 
-**Project:** iCanOva
+**Project:** iCaNova
 **Parent company:** ASIEDU DEVELOPMENT HUB (ADH)
 **Document:** Brand Integration and Repository Migration
 **Version:** 1.0
@@ -13,7 +13,7 @@
 
 # 1. OBJECTIVE
 
-We are transitioning the existing DSE monitoring project into a broader industrial technology platform under the brand **iCanOva**.
+We are transitioning the existing DSE monitoring project into a broader industrial technology platform under the brand **iCaNova**.
 
 The existing project currently has two repositories:
 
@@ -22,7 +22,7 @@ The existing project currently has two repositories:
 
 Both repositories exist within the same Codespace/workspace.
 
-We want to rebrand the existing system to iCanOva, including:
+We want to rebrand the existing system to iCaNova, including:
 
 - Repository names.
 - Project names and descriptions.
@@ -50,11 +50,11 @@ The following brand specifications should be treated as the current approved pro
 
 ## 2.1 Brand name
 
-**iCanOva**
+**iCaNova**
 
 Official capitalization:
 
-`iCanOva`
+`iCaNova`
 
 Pronunciation:
 
@@ -67,7 +67,7 @@ Do not write the brand as:
 - ICanova
 - iCANOVA
 
-Use `iCanOva` in user-facing brand references.
+Use `iCaNova` in user-facing brand references.
 
 Technical identifiers such as package names, repository names, environment variables and URLs should follow their applicable naming conventions, normally lowercase.
 
@@ -85,7 +85,7 @@ This explains the company's positioning and should not replace the primary tagli
 
 ## 2.4 Brand positioning
 
-iCanOva is an industrial technology brand developing intelligent hardware and software solutions that connect physical equipment, industrial systems, infrastructure and operational data.
+iCaNova is an industrial technology brand developing intelligent hardware and software solutions that connect physical equipment, industrial systems, infrastructure and operational data.
 
 The platform should support a growing ecosystem of:
 
@@ -105,7 +105,7 @@ The platform should support a growing ecosystem of:
 - Device connectivity.
 - Operational intelligence.
 
-Do not position iCanOva as exclusively a Modbus company, DSE monitoring product, ESP32 project or electricity-monitoring application.
+Do not position iCaNova as exclusively a Modbus company, DSE monitoring product, ESP32 project or electricity-monitoring application.
 
 The current DSE monitoring functionality is one product capability within a broader industrial technology platform.
 
@@ -155,9 +155,9 @@ Use these colours as the initial brand design tokens.
 
 | Colour             | HEX       | Purpose                    |
 | ------------------ | --------- | -------------------------- |
-| iCanOva Graphite   | `#111820` | Primary dark colour        |
-| iCanOva Warm White | `#F2F1ED` | Primary light colour       |
-| iCanOva Deep Navy  | `#263746` | Secondary corporate colour |
+| iCaNova Graphite   | `#111820` | Primary dark colour        |
+| iCaNova Warm White | `#F2F1ED` | Primary light colour       |
+| iCaNova Deep Navy  | `#263746` | Secondary corporate colour |
 
 ## 3.2 Supporting colours
 
@@ -340,7 +340,7 @@ The architecture should conceptually be represented as:
 ```text
                   ASIEDU DEVELOPMENT HUB
                             |
-                          iCanOva
+                          iCaNova
                             |
                 INDUSTRIAL TECHNOLOGY PLATFORM
                             |
@@ -378,11 +378,11 @@ The gateway repository is responsible for the physical industrial device and emb
 
 ## 7.1 Product identity
 
-The device should be identified as an iCanOva industrial edge gateway.
+The device should be identified as an iCaNova industrial edge gateway.
 
 Suggested generic product terminology:
 
-**iCanOva Edge Gateway**
+**iCaNova Edge Gateway**
 
 Do not permanently assign a commercial model number unless an existing model specification or approved product specification exists.
 
@@ -405,11 +405,11 @@ Example startu message:
 
 ```text
 =====================================
-             iCanOva
-       iCanOva Edge Gateway
+             iCaNova
+       iCaNova Edge Gateway
 =====================================
 Imagine. Connect. Innovate.
-Family: iCanOva Edge
+Family: iCaNova Edge
 
 Board: ESP32-C3 SuperMini
 Device ID: <DEVICE_ID>
@@ -467,7 +467,7 @@ Where an existing identifier must remain unchanged for compatibility, document w
 
 Create or update the README with:
 
-1. iCanOva product introduction.
+1. iCaNova product introduction.
 2. Gateway purpose.
 3. Hardware architecture.
 4. Supported communication interfaces.
@@ -500,7 +500,7 @@ This repository contains the existing web monitoring platform.
 
 The application should identify itself as:
 
-**iCanOva**
+**iCaNova**
 
 Suggested application description:
 
@@ -545,7 +545,7 @@ For this implementation, perform a controlled brand migration only.
 
 Permitted changes:
 
-- Replace old DSE project branding with iCanOva.
+- Replace old DSE project branding with iCaNova.
 - Replace appropriate product names.
 - Introduce the approved colour tokens.
 - Update typography.
@@ -604,7 +604,7 @@ Example web design tokens:
 ```css
 :root {
   /* Brand */
-  --brand-name: "iCanOva";
+  --brand-name: "iCaNova";
 
   /* Primary */
   --color-graphite: #111820;
@@ -676,7 +676,7 @@ The logo is intentionally on hold.
 
 Until the final logo is approved:
 
-- Use a clean text-based iCanOva wordmark.
+- Use a clean text-based iCaNova wordmark.
 - Avoid invented logo symbols.
 - Do not use generic AI icons.
 - Keep brand assets easy to replace later.
@@ -696,7 +696,7 @@ Update both repositories.
 
 README title:
 
-`# iCanOva Edge Gateway`
+`# iCaNova Edge Gateway`
 
 Description:
 
@@ -706,7 +706,7 @@ Description:
 
 README title:
 
-`# iCanOva Monitoring Platform`
+`# iCaNova Monitoring Platform`
 
 Description:
 
@@ -1061,7 +1061,7 @@ At the end of the implementation, provide:
 
 At completion, produce a report using this format:
 
-## iCanOva Rebranding Report
+## iCaNova Rebranding Report
 
 ### 1. Repository migration
 
@@ -1121,7 +1121,7 @@ Never report ACCEPTED if critical functionality or security verification is outs
 
 You are working on an existing industrial monitoring platform with two independent repositories sharing one Codespace.
 
-Your responsibility is to transition the existing project identity to iCanOva while preserving its existing engineering work.
+Your responsibility is to transition the existing project identity to iCaNova while preserving its existing engineering work.
 
 Think like a senior embedded systems engineer, software architect and product branding engineer.
 
@@ -1147,13 +1147,13 @@ Do not modify production secrets or credentials.
 
 If an operation is destructive, irreversible or requires external authorization, stop and report what is required rather than guessing.
 
-**The final result should be the same working industrial monitoring system, now presented as an iCanOva technology product, with a clean foundation for the future UI/UX redesign and broader product ecosystem.**
+**The final result should be the same working industrial monitoring system, now presented as an iCaNova technology product, with a clean foundation for the future UI/UX redesign and broader product ecosystem.**
 
 ---
 
 **END OF IMPLEMENTATION SPECIFICATION**
 
-**Brand:** iCanOva
+**Brand:** iCaNova
 **Tagline:** Imagine. Connect. Innovate.
 **Descriptor:** Intelligent technology for connected industries.
 **Parent:** ASIEDU DEVELOPMENT HUB (ADH)

@@ -2,7 +2,7 @@
 
 Final logo is on hold.
 
-Until approval, applications use the text wordmark **iCanOva**.
+Until approval, applications use the text wordmark **iCaNova**.
 
 Place approved SVG/PNG files here later:
 

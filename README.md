@@ -1,12 +1,12 @@
-﻿# iCanOva Edge Gateway
+﻿# iCaNova Edge Gateway
 
 Embedded industrial edge gateway for connecting and monitoring industrial equipment through supported communication interfaces.
 
-**Brand:** iCanOva — Imagine. Connect. Innovate.  
-**Product family:** iCanOva Edge · **Product:** iCanOva Edge Gateway · **Category:** Industrial IoT Gateway  
-**Companion platform:** iCanOva Monitoring  
+**Brand:** iCaNova — Imagine. Connect. Innovate.  
+**Product family:** iCaNova Edge · **Product:** iCaNova Edge Gateway · **Category:** Industrial IoT Gateway  
+**Companion platform:** iCaNova Monitoring  
 **Descriptor:** Intelligent technology for connected industries.  
-Manufacturer: iCanOva · Parent: ASIEDU DEVELOPMENT HUB (ADH).  
+Manufacturer: iCaNova · Parent: ASIEDU DEVELOPMENT HUB (ADH).  
 Product identity: `doc/product/`.
 
 This repository is the edge firmware and device software. The web monitoring platform lives in the sibling repository [`icanova-monitoring-web`](https://github.com/AsieduDevelopmentHub/icanova-monitoring-web) (`dev/iot/icanova-monitoring-web` locally when renamed).
@@ -54,7 +54,7 @@ Saved settings: `/etc/gateway.conf` via the USB console (`config set …`). Defa
 
 | Path | Contents |
 |------|----------|
-| [doc/brand/](doc/brand/) | iCanOva brand specification |
+| [doc/brand/](doc/brand/) | iCaNova brand specification |
 | [doc/guide/getting_started.md](doc/guide/getting_started.md) | Wiring, build, test |
 | [doc/guide/cli.md](doc/guide/cli.md) | USB Serial CLI |
 | [doc/guide/web_ui.md](doc/guide/web_ui.md) | Wi-Fi API and embedded UI |

@@ -1,6 +1,6 @@
 # Web UI — ESP32 local API + overview
 
-**Product:** iCanOva Edge Gateway (family **iCanOva Edge**; embedded page). Companion platform: **iCanOva Monitoring** (`icanova-monitoring-web`).
+**Product:** iCaNova Edge Gateway (family **iCaNova Edge**; embedded page). Companion platform: **iCaNova Monitoring** (`icanova-monitoring-web`).
 
 Phase 3A: Wi-Fi soft-AP + JSON status API + thin genset overview page on the **ESP32-C3** only. USB Serial CLI is unchanged. Mega / Uno / Nano stay RS485 benches (no Wi-Fi stack).
 

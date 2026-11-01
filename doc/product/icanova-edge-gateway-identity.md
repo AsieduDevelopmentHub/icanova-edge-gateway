@@ -1,4 +1,4 @@
-# iCanOva Edge Gateway — product identity
+# iCaNova Edge Gateway — product identity
 
 Canonical naming values: [`product-identity.json`](./product-identity.json).
 
@@ -6,15 +6,15 @@ Canonical naming values: [`product-identity.json`](./product-identity.json).
 
 | Field | Value |
 | ----- | ----- |
-| Product name | iCanOva Edge Gateway |
-| Product family | iCanOva Edge |
+| Product name | iCaNova Edge Gateway |
+| Product family | iCaNova Edge |
 | Product category | Industrial IoT Gateway |
-| Manufacturer / brand owner | iCanOva |
+| Manufacturer / brand owner | iCaNova |
 | Parent company | ASIEDU DEVELOPMENT HUB (ADH) |
 | Tagline | Imagine. Connect. Innovate. |
 | Descriptor | Intelligent technology for connected industries. |
 | Primary function | Modbus RTU data acquisition and industrial equipment connectivity |
-| Companion platform | iCanOva Monitoring |
+| Companion platform | iCaNova Monitoring |
 | Model number | **MODEL: TBD** (provisional — no official SKU in firmware or hardware docs) |
 | Hardware revision (product) | Not yet verified |
 | Firmware version field | Not yet verified (no dedicated FW version string in firmware today) |
@@ -52,8 +52,8 @@ Deep Sea Electronics (DSE) remains a supported **equipment** manufacturer. DSE m
 
 Future enclosure label fields (do not fabricate artwork or change physical hardware in this phase):
 
-1. iCanOva wordmark placeholder (text until logo approved)
-2. Product name: iCanOva Edge Gateway
+1. iCaNova wordmark placeholder (text until logo approved)
+2. Product name: iCaNova Edge Gateway
 3. Model number (when assigned)
 4. Hardware revision (when assigned)
 5. Serial number (when a product serial scheme is defined; today field devices use efuse MAC as Device ID)

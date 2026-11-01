@@ -9,7 +9,7 @@ static const char OVERVIEW_HTML[] PROGMEM = R"HTML(<!DOCTYPE html>
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>iCanOva Edge Gateway</title>
+<title>iCaNova Edge Gateway</title>
 <style>
 :root{
   --bg:#111820;--bg2:#263746;--ink:#F2F1ED;--muted:#B8BABC;
@@ -59,9 +59,9 @@ footer{margin-top:2rem;color:var(--muted);font-size:.75rem}
 <body>
 <div class="wrap" id="app">
   <header class="hero">
-    <p class="brand">iCanOva</p>
-    <p class="sub">iCanOva Edge Gateway</p>
-    <p class="meta">Imagine. Connect. Innovate. · Family: iCanOva Edge</p>
+    <p class="brand">iCaNova</p>
+    <p class="sub">iCaNova Edge Gateway</p>
+    <p class="meta">Imagine. Connect. Innovate. · Family: iCaNova Edge</p>
     <nav>
       <button type="button" id="tabMon" class="on">Monitor</button>
       <button type="button" id="tabCfg">Configure</button>
@@ -92,7 +92,7 @@ footer{margin-top:2rem;color:var(--muted);font-size:.75rem}
     <div class="scroll"><table class="cfg"><thead><tr><th>Address</th><th>Name</th><th>Access</th><th>Value</th><th>Write</th></tr></thead><tbody id="cfgRows"></tbody></table></div>
     <p class="meta" id="cfgMsg"></p>
   </div>
-  <footer>iCanOva Edge Gateway · ASIEDU DEVELOPMENT HUB (ADH). Monitor polls /api/status. Configure reads and writes GenComm pages.</footer>
+  <footer>iCaNova Edge Gateway · ASIEDU DEVELOPMENT HUB (ADH). Monitor polls /api/status. Configure reads and writes GenComm pages.</footer>
 </div>
 <script>
 const $=id=>document.getElementById(id);
