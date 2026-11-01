@@ -1,14 +1,9 @@
 # Logo assets
 
-Final logo is on hold.
+Approved iCaNova Industrial Intelligence logo sheet is in the monitoring web repo:
 
-Until approval, applications use the text wordmark **iCaNova**.
+`icanova-monitoring-web/docs/brand/logo/`
 
-Place approved SVG/PNG files here later:
+Runtime PNGs are served from `public/brand/` there (`logo-mark.png`, `logo-lockup-light.png`, favicons).
 
-```text
-logo/
-  primary/
-  monochrome/
-  icon/
-```
+Wordmark casing in copy: **iCaNova**. Lockup artwork keeps the stylized copper **A**.

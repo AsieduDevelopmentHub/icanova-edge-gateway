@@ -1,7 +1,8 @@
-# 4 MB, one application slot, filesystem left where the default table put it.
+# 4 MB dual-OTA. App slots ~1.5 MB each (current firmware ~1.33 MB).
 # Name,   Type, SubType, Offset,  Size, Flags
 nvs,      data, nvs,     0x9000,  0x5000,
 otadata,  data, ota,     0xe000,  0x2000,
-app0,     app,  ota_0,   0x10000, 0x280000,
-spiffs,   data, spiffs,  0x290000,0x160000,
+ota_0,    app,  ota_0,   0x10000, 0x180000,
+ota_1,    app,  ota_1,   0x190000,0x180000,
+spiffs,   data, spiffs,  0x310000,0xE0000,
 coredump, data, coredump,0x3F0000,0x10000,

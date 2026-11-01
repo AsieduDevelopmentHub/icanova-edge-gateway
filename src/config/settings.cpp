@@ -50,6 +50,11 @@ const char *kKeys[] = {
     "uplink.batch",
     "uplink.key",
     "uplink.bearer",
+    "site.lat",
+    "site.lon",
+    "ota.enable",
+    "ota.check_period_s",
+    "ota.channel",
     nullptr,
 };
 
@@ -141,6 +146,13 @@ void setDefaults(GatewayConfig *c) {
   strncpy(c->uplinkPath, "/ncu/ingest", sizeof(c->uplinkPath) - 1);
   c->uplinkPeriodS = 30;
   c->uplinkBatch = 4;
+  c->siteLat = 0;
+  c->siteLon = 0;
+  c->siteLatSet = false;
+  c->siteLonSet = false;
+  c->otaEnable = false;
+  c->otaCheckPeriodS = 3600;
+  strncpy(c->otaChannel, "stable", sizeof(c->otaChannel) - 1);
 }
 
 bool assign(GatewayConfig *c, const char *key, const char *value, char *err,
@@ -383,6 +395,73 @@ bool assign(GatewayConfig *c, const char *key, const char *value, char *err,
     }
     return true;
   }
+  if (strcmp(key, "site.lat") == 0) {
+    if (!value[0]) {
+      c->siteLat = 0;
+      c->siteLatSet = false;
+      return true;
+    }
+    char *end = nullptr;
+    const float v = strtof(value, &end);
+    if (end == value || (end && *end) || v < -90.0f || v > 90.0f) {
+      setErr(err, errN, "site.lat must be -90..90");
+      return false;
+    }
+    c->siteLat = v;
+    c->siteLatSet = true;
+    return true;
+  }
+  if (strcmp(key, "site.lon") == 0) {
+    if (!value[0]) {
+      c->siteLon = 0;
+      c->siteLonSet = false;
+      return true;
+    }
+    char *end = nullptr;
+    const float v = strtof(value, &end);
+    if (end == value || (end && *end) || v < -180.0f || v > 180.0f) {
+      setErr(err, errN, "site.lon must be -180..180");
+      return false;
+    }
+    c->siteLon = v;
+    c->siteLonSet = true;
+    return true;
+  }
+  if (strcmp(key, "ota.enable") == 0) {
+    if (strEqualsIgnoreCase(value, "on") == 0) {
+      c->otaEnable = true;
+    } else if (strEqualsIgnoreCase(value, "off") == 0) {
+      c->otaEnable = false;
+    } else {
+      setErr(err, errN, "ota.enable must be on or off");
+      return false;
+    }
+    return true;
+  }
+  if (strcmp(key, "ota.check_period_s") == 0) {
+    uint32_t v = 0;
+    if (!parseU32(value, &v) || v < 300 || v > 86400) {
+      setErr(err, errN, "ota.check_period_s must be 300..86400");
+      return false;
+    }
+    c->otaCheckPeriodS = static_cast<uint16_t>(v);
+    return true;
+  }
+  if (strcmp(key, "ota.channel") == 0) {
+    const char *canon = nullptr;
+    if (strEqualsIgnoreCase(value, "stable") == 0) {
+      canon = "stable";
+    } else if (strEqualsIgnoreCase(value, "beta") == 0) {
+      canon = "beta";
+    }
+    if (!canon) {
+      setErr(err, errN, "ota.channel must be stable or beta");
+      return false;
+    }
+    strncpy(c->otaChannel, canon, sizeof(c->otaChannel) - 1);
+    c->otaChannel[sizeof(c->otaChannel) - 1] = '\0';
+    return true;
+  }
   setErr(err, errN, "unknown key");
   return false;
 }
@@ -429,7 +508,15 @@ bool writeFile() {
       snprintf(keyHex + i * 2, 3, "%02x", gCfg.uplinkKey[i]);
     }
   }
-  char body[1800];
+  char latBuf[24] = "";
+  char lonBuf[24] = "";
+  if (gCfg.siteLatSet) {
+    snprintf(latBuf, sizeof(latBuf), "%.6f", static_cast<double>(gCfg.siteLat));
+  }
+  if (gCfg.siteLonSet) {
+    snprintf(lonBuf, sizeof(lonBuf), "%.6f", static_cast<double>(gCfg.siteLon));
+  }
+  char body[2200];
   const int n = snprintf(
       body, sizeof(body),
       "# gateway configuration\n"
@@ -455,7 +542,12 @@ bool writeFile() {
       "uplink.period_s=%u\n"
       "uplink.batch=%u\n"
       "uplink.key=%s\n"
-      "uplink.bearer=%s\n",
+      "uplink.bearer=%s\n"
+      "site.lat=%s\n"
+      "site.lon=%s\n"
+      "ota.enable=%s\n"
+      "ota.check_period_s=%u\n"
+      "ota.channel=%s\n",
       gCfg.hostname, static_cast<unsigned>(gCfg.idleMin), gCfg.device,
       static_cast<unsigned>(gCfg.slave), static_cast<unsigned long>(gCfg.baud),
       parityStr(gCfg.parity), static_cast<unsigned>(gCfg.fc),
@@ -466,7 +558,10 @@ bool writeFile() {
       gCfg.uplinkOn ? "on" : "off", gCfg.uplinkHost,
       static_cast<unsigned>(gCfg.uplinkPort), gCfg.uplinkPath,
       static_cast<unsigned>(gCfg.uplinkPeriodS),
-      static_cast<unsigned>(gCfg.uplinkBatch), keyHex, gCfg.uplinkBearer);
+      static_cast<unsigned>(gCfg.uplinkBatch), keyHex, gCfg.uplinkBearer, latBuf,
+      lonBuf, gCfg.otaEnable ? "on" : "off",
+      static_cast<unsigned>(gCfg.otaCheckPeriodS),
+      gCfg.otaChannel[0] ? gCfg.otaChannel : "stable");
   if (n < 0 || n >= static_cast<int>(sizeof(body))) {
     return false;
   }
@@ -692,6 +787,25 @@ bool format(const char *key, char *out, size_t outN, bool maskSecrets) {
     } else {
       snprintf(out, outN, "%s", gCfg.uplinkBearer);
     }
+  } else if (strcmp(ck, "site.lat") == 0) {
+    if (!gCfg.siteLatSet) {
+      out[0] = '\0';
+    } else {
+      snprintf(out, outN, "%.6f", static_cast<double>(gCfg.siteLat));
+    }
+  } else if (strcmp(ck, "site.lon") == 0) {
+    if (!gCfg.siteLonSet) {
+      out[0] = '\0';
+    } else {
+      snprintf(out, outN, "%.6f", static_cast<double>(gCfg.siteLon));
+    }
+  } else if (strcmp(ck, "ota.enable") == 0) {
+    snprintf(out, outN, "%s", gCfg.otaEnable ? "on" : "off");
+  } else if (strcmp(ck, "ota.check_period_s") == 0) {
+    snprintf(out, outN, "%u", static_cast<unsigned>(gCfg.otaCheckPeriodS));
+  } else if (strcmp(ck, "ota.channel") == 0) {
+    snprintf(out, outN, "%s",
+             gCfg.otaChannel[0] ? gCfg.otaChannel : "stable");
   } else {
     return false;
   }

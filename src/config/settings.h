@@ -33,6 +33,15 @@ struct GatewayConfig {
   bool uplinkKeySet;
   // Bearer for HTTPS JSON to Convex. Empty keeps the LAN NCU1 collector path.
   char uplinkBearer[65];
+  // Optional site coordinates (decimal degrees). NaN means unset.
+  float siteLat;
+  float siteLon;
+  bool siteLatSet;
+  bool siteLonSet;
+  // Cloud OTA pull.
+  bool otaEnable;
+  uint16_t otaCheckPeriodS;
+  char otaChannel[16];
 };
 
 namespace Settings {
