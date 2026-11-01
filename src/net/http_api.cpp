@@ -2,10 +2,13 @@
 
 #include "net/http_api.h"
 
+#include <HTTPClient.h>
 #include <WebServer.h>
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "config/config.h"
 #include "config/settings.h"
@@ -13,7 +16,9 @@
 #include "modbus/modbus_client.h"
 #include "net/gencomm_catalog.h"
 #include "net/overview_html.h"
+#include "ota/ota.h"
 #include "telemetry/snapshot.h"
+#include "uplink/gts_roots.h"
 
 namespace {
 
@@ -228,6 +233,167 @@ void handleControl() {
   sendJson(resp.result == ModbusResult::Ok ? 200 : 502, jsonBuf);
 }
 
+void handleOtaGet() { Ota::handleStatus(server); }
+
+void handleOtaPost() { Ota::handleUploadDone(server); }
+
+void handleOtaUpload() { Ota::handleUpload(server); }
+
+void handleOtaCloud() { Ota::handleCloud(server); }
+
+void identityHex(char out[13]) {
+  uint8_t mac[6] = {};
+  const uint64_t efuse = ESP.getEfuseMac();
+  memcpy(mac, &efuse, 6);
+  for (int i = 0; i < 6; i++) {
+    snprintf(out + i * 2, 3, "%02x", mac[i]);
+  }
+  out[12] = '\0';
+}
+
+bool parseFloatField(const String &body, const char *key, float *out) {
+  const String needle = String("\"") + key + "\"";
+  const int at = body.indexOf(needle);
+  if (at < 0) {
+    return false;
+  }
+  const int colon = body.indexOf(':', at);
+  if (colon < 0) {
+    return false;
+  }
+  char *end = nullptr;
+  const float v = strtof(body.c_str() + colon + 1, &end);
+  if (end == body.c_str() + colon + 1) {
+    return false;
+  }
+  *out = v;
+  return true;
+}
+
+void handleLocationGet() {
+  const GatewayConfig &cfg = Settings::get();
+  char lat[24] = "null";
+  char lon[24] = "null";
+  if (cfg.siteLatSet) {
+    snprintf(lat, sizeof(lat), "%.6f", static_cast<double>(cfg.siteLat));
+  }
+  if (cfg.siteLonSet) {
+    snprintf(lon, sizeof(lon), "%.6f", static_cast<double>(cfg.siteLon));
+  }
+  snprintf(jsonBuf, sizeof(jsonBuf),
+           "{\"lat\":%s,\"lon\":%s,\"staConnected\":%s}", lat, lon,
+           WiFi.status() == WL_CONNECTED ? "true" : "false");
+  sendJson(200, jsonBuf);
+}
+
+bool syncLocationToCloud(float lat, float lon, char *err, size_t errN) {
+  const GatewayConfig &cfg = Settings::get();
+  if (!cfg.uplinkBearer[0] || !cfg.uplinkHost[0]) {
+    snprintf(err, errN, "uplink not configured");
+    return false;
+  }
+  if (WiFi.status() != WL_CONNECTED) {
+    snprintf(err, errN, "STA not connected");
+    return false;
+  }
+  char id[13];
+  identityHex(id);
+  char body[160];
+  const int bodyN =
+      snprintf(body, sizeof(body),
+               "{\"identity\":\"%s\",\"latitude\":%.6f,\"longitude\":%.6f}", id,
+               static_cast<double>(lat), static_cast<double>(lon));
+  if (bodyN <= 0 || bodyN >= static_cast<int>(sizeof(body))) {
+    snprintf(err, errN, "body");
+    return false;
+  }
+  WiFiClientSecure client;
+  client.setCACert(GTS_ROOTS);
+  client.setTimeout(10);
+  if (!client.connect(cfg.uplinkHost, cfg.uplinkPort ? cfg.uplinkPort : 443,
+                      8000)) {
+    snprintf(err, errN, "connect failed");
+    return false;
+  }
+  char head[360];
+  const int headN = snprintf(
+      head, sizeof(head),
+      "POST /ncu/location HTTP/1.1\r\nHost: %s\r\nAuthorization: Bearer %s\r\n"
+      "Content-Type: application/json\r\nContent-Length: %d\r\n"
+      "Connection: close\r\n\r\n",
+      cfg.uplinkHost, cfg.uplinkBearer, bodyN);
+  if (headN < 0 || headN >= static_cast<int>(sizeof(head)) ||
+      client.write(reinterpret_cast<const uint8_t *>(head),
+                   static_cast<size_t>(headN)) != static_cast<size_t>(headN) ||
+      client.write(reinterpret_cast<const uint8_t *>(body),
+                   static_cast<size_t>(bodyN)) != static_cast<size_t>(bodyN)) {
+    snprintf(err, errN, "send failed");
+    client.stop();
+    return false;
+  }
+  char line[64];
+  const int got = client.readBytesUntil('\n', line, sizeof(line) - 1);
+  client.stop();
+  if (got <= 0) {
+    snprintf(err, errN, "no response");
+    return false;
+  }
+  line[got] = '\0';
+  int code = 0;
+  sscanf(line, "HTTP/%*s %d", &code);
+  if (code < 200 || code >= 300) {
+    snprintf(err, errN, "http %d", code);
+    return false;
+  }
+  return true;
+}
+
+void handleLocationPost() {
+  const String body = server.arg("plain");
+  float lat = 0;
+  float lon = 0;
+  if (!parseFloatField(body, "lat", &lat) &&
+      !parseFloatField(body, "latitude", &lat)) {
+    sendJson(400, "{\"ok\":false,\"error\":\"lat required\"}");
+    return;
+  }
+  if (!parseFloatField(body, "lon", &lon) &&
+      !parseFloatField(body, "longitude", &lon)) {
+    sendJson(400, "{\"ok\":false,\"error\":\"lon required\"}");
+    return;
+  }
+  if (lat < -90.0f || lat > 90.0f || lon < -180.0f || lon > 180.0f) {
+    sendJson(400, "{\"ok\":false,\"error\":\"out of range\"}");
+    return;
+  }
+  char err[64];
+  char latS[24];
+  char lonS[24];
+  snprintf(latS, sizeof(latS), "%.6f", static_cast<double>(lat));
+  snprintf(lonS, sizeof(lonS), "%.6f", static_cast<double>(lon));
+  if (!Settings::put("site.lat", latS, err, sizeof(err)) ||
+      !Settings::put("site.lon", lonS, err, sizeof(err)) ||
+      !Settings::save(err, sizeof(err))) {
+    snprintf(jsonBuf, sizeof(jsonBuf), "{\"ok\":false,\"error\":\"%s\"}", err);
+    sendJson(500, jsonBuf);
+    return;
+  }
+  bool cloud = body.indexOf("\"sync\":true") >= 0 ||
+               body.indexOf("\"sync\": true") >= 0;
+  bool cloudOk = false;
+  char cloudErr[48] = "";
+  if (cloud) {
+    cloudOk = syncLocationToCloud(lat, lon, cloudErr, sizeof(cloudErr));
+  }
+  snprintf(jsonBuf, sizeof(jsonBuf),
+           "{\"ok\":true,\"lat\":%.6f,\"lon\":%.6f,\"cloudSynced\":%s%s%s%s}",
+           static_cast<double>(lat), static_cast<double>(lon),
+           cloud ? (cloudOk ? "true" : "false") : "false",
+           cloud && !cloudOk ? ",\"cloudError\":\"" : "",
+           cloud && !cloudOk ? cloudErr : "", cloud && !cloudOk ? "\"" : "");
+  sendJson(200, jsonBuf);
+}
+
 }  // namespace
 
 namespace HttpApi {
@@ -240,12 +406,20 @@ void begin() {
   server.on("/api/read", HTTP_GET, handleRead);
   server.on("/api/write", HTTP_POST, handleWrite);
   server.on("/api/control", HTTP_POST, handleControl);
+  server.on("/api/ota", HTTP_GET, handleOtaGet);
+  server.on("/api/ota", HTTP_POST, handleOtaPost, handleOtaUpload);
+  server.on("/api/ota/cloud", HTTP_POST, handleOtaCloud);
+  server.on("/api/location", HTTP_GET, handleLocationGet);
+  server.on("/api/location", HTTP_POST, handleLocationPost);
   server.on("/api/status", HTTP_OPTIONS, handleOptions);
   server.on("/api/health", HTTP_OPTIONS, handleOptions);
   server.on("/api/catalog", HTTP_OPTIONS, handleOptions);
   server.on("/api/read", HTTP_OPTIONS, handleOptions);
   server.on("/api/write", HTTP_OPTIONS, handleOptions);
   server.on("/api/control", HTTP_OPTIONS, handleOptions);
+  server.on("/api/ota", HTTP_OPTIONS, handleOptions);
+  server.on("/api/ota/cloud", HTTP_OPTIONS, handleOptions);
+  server.on("/api/location", HTTP_OPTIONS, handleOptions);
   server.onNotFound(handleNotFound);
   server.begin();
   Serial.print(F("[HTTP] Listening on :"));

@@ -9,6 +9,9 @@
 #include "devices/dse7320_registers.h"
 #include "devices/modbus_device.h"
 #include "modbus/modbus_client.h"
+#if defined(ARDUINO_ARCH_ESP32)
+#include "ota/build_info.h"
+#endif
 
 namespace {
 
@@ -457,6 +460,16 @@ size_t writeHealthJson(char *buf, size_t bufSize) {
     return 0;
   }
   const TelemetrySnapshot &s = get();
+#if defined(ARDUINO_ARCH_ESP32)
+  const int n = snprintf(
+      buf, bufSize,
+      "{\"wifi\":\"%s\",\"ip\":\"%s\",\"rssi\":%d,\"modbusLastOk\":%s,"
+      "\"link\":\"%s\",\"uptimeMs\":%lu,\"ageMs\":%lu,\"fw\":\"%s\",\"git\":\"%s\"}",
+      s.wifiMode, s.wifiIp, static_cast<int>(s.rssi),
+      s.ok ? "true" : "false", s.link,
+      static_cast<unsigned long>(s.uptimeMs),
+      static_cast<unsigned long>(s.ageMs), FW_VERSION, GIT_HASH);
+#else
   const int n = snprintf(
       buf, bufSize,
       "{\"wifi\":\"%s\",\"ip\":\"%s\",\"rssi\":%d,\"modbusLastOk\":%s,"
@@ -465,6 +478,7 @@ size_t writeHealthJson(char *buf, size_t bufSize) {
       s.ok ? "true" : "false", s.link,
       static_cast<unsigned long>(s.uptimeMs),
       static_cast<unsigned long>(s.ageMs));
+#endif
   return n > 0 ? static_cast<size_t>(n) : 0;
 }
 

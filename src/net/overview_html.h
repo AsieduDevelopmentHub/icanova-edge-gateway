@@ -54,7 +54,11 @@ font-size:.9rem}
 .empty{color:var(--muted);font-size:.9rem}
 .stale{opacity:.55}
 footer{margin-top:2rem;color:var(--muted);font-size:.75rem}
+#map{height:260px;margin-top:.7rem;border:1px solid var(--line);background:var(--bg2)}
+.bar{height:.45rem;background:var(--bg2);border:1px solid var(--line);margin:.5rem 0}
+.bar>i{display:block;height:100%;background:var(--accent);width:0}
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
 <div class="wrap" id="app">
@@ -65,6 +69,8 @@ footer{margin-top:2rem;color:var(--muted);font-size:.75rem}
     <nav>
       <button type="button" id="tabMon" class="on">Monitor</button>
       <button type="button" id="tabCfg">Configure</button>
+      <button type="button" id="tabLoc">Location</button>
+      <button type="button" id="tabOta">Update</button>
     </nav>
     <p class="sub" id="support">Connecting…</p>
     <div class="headline" id="headline">—</div>
@@ -92,7 +98,36 @@ footer{margin-top:2rem;color:var(--muted);font-size:.75rem}
     <div class="scroll"><table class="cfg"><thead><tr><th>Address</th><th>Name</th><th>Access</th><th>Value</th><th>Write</th></tr></thead><tbody id="cfgRows"></tbody></table></div>
     <p class="meta" id="cfgMsg"></p>
   </div>
-  <footer>iCaNova Edge Gateway · ASIEDU DEVELOPMENT HUB (ADH). Monitor polls /api/status. Configure reads and writes GenComm pages.</footer>
+  <div id="location" hidden>
+    <section class="section">
+      <h2>Site coordinates</h2>
+      <p class="meta">Saved on this gateway. Sync to cloud when STA has internet and uplink is configured.</p>
+      <div class="tools">
+        <label class="meta">Lat <input id="locLat" inputmode="decimal" size="12"/></label>
+        <label class="meta">Lon <input id="locLon" inputmode="decimal" size="12"/></label>
+        <button type="button" id="locGeo" class="act">Use my location</button>
+        <button type="button" id="locSave" class="act">Save</button>
+        <button type="button" id="locSync" class="act">Save + sync cloud</button>
+      </div>
+      <div id="map"></div>
+      <p class="meta" id="locMsg"></p>
+    </section>
+  </div>
+  <div id="ota" hidden>
+    <section class="section">
+      <h2>Firmware update</h2>
+      <p class="meta" id="otaMeta">Loading…</p>
+      <div class="tools">
+        <input type="file" id="otaFile" accept=".bin,application/octet-stream"/>
+        <button type="button" id="otaUpload" class="act">Upload .bin</button>
+        <button type="button" id="otaCheck" class="act">Check cloud</button>
+        <button type="button" id="otaApply" class="act">Apply cloud update</button>
+      </div>
+      <div class="bar"><i id="otaBar"></i></div>
+      <p class="meta" id="otaMsg"></p>
+    </section>
+  </div>
+  <footer>iCaNova Edge Gateway · ASIEDU DEVELOPMENT HUB (ADH).</footer>
 </div>
 <script>
 const $=id=>document.getElementById(id);
@@ -198,15 +233,120 @@ async function loadCatalog(){
   $('cfgMsg').textContent=catalog.pages.length+' pages. Values shown are the last snapshot until you read the module.';
   renderCfg();
 }
+let map=null,marker=null,leafletReady=false;
+function ensureMap(){
+  if(map||typeof L==='undefined'){if(map)setTimeout(()=>map.invalidateSize(),50);return;}
+  leafletReady=true;
+  map=L.map('map').setView([5.6,-0.2],6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OSM'}).addTo(map);
+  map.on('click',e=>{
+    $('locLat').value=e.latlng.lat.toFixed(6);
+    $('locLon').value=e.latlng.lng.toFixed(6);
+    if(marker)marker.setLatLng(e.latlng);else marker=L.marker(e.latlng).addTo(map);
+  });
+}
+function setMapPoint(lat,lon){
+  if(!map||!Number.isFinite(lat)||!Number.isFinite(lon))return;
+  const ll=[lat,lon];
+  map.setView(ll,14);
+  if(marker)marker.setLatLng(ll);else marker=L.marker(ll).addTo(map);
+}
+async function loadLocation(){
+  $('locMsg').textContent='Loading…';
+  try{
+    const r=await fetch('/api/location');
+    const j=await r.json();
+    if(j.lat!=null)$('locLat').value=j.lat;
+    if(j.lon!=null)$('locLon').value=j.lon;
+    ensureMap();
+    if(j.lat!=null&&j.lon!=null)setMapPoint(Number(j.lat),Number(j.lon));
+    $('locMsg').textContent=j.staConnected?'STA online — map and cloud sync available when this browser has internet.':'STA offline — local save still works.';
+  }catch(e){$('locMsg').textContent=e.message;}
+}
+async function saveLocation(sync){
+  const lat=Number($('locLat').value),lon=Number($('locLon').value);
+  if(!Number.isFinite(lat)||!Number.isFinite(lon)){$('locMsg').textContent='Enter valid lat and lon.';return;}
+  $('locMsg').textContent='Saving…';
+  try{
+    const r=await fetch('/api/location',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lat,lon,sync:!!sync})});
+    const j=await r.json();
+    if(!r.ok||!j.ok){$('locMsg').textContent=j.error||'save failed';return;}
+    setMapPoint(lat,lon);
+    $('locMsg').textContent=sync?(j.cloudSynced?'Saved and synced to cloud.':'Saved locally. Cloud: '+(j.cloudError||'failed')):'Saved locally.';
+  }catch(e){$('locMsg').textContent=e.message;}
+}
+async function loadOta(){
+  try{
+    const r=await fetch('/api/ota');
+    const j=await r.json();
+    $('otaMeta').textContent='Firmware '+j.fw+' · '+j.git+' · slot '+j.slot+(j.otaEnable?' · cloud OTA on':' · cloud OTA off')+' · channel '+(j.channel||'stable');
+    $('otaBar').style.width=(j.progress||0)+'%';
+    if(j.error)$('otaMsg').textContent=j.error;
+  }catch(e){$('otaMeta').textContent=e.message;}
+}
 function show(which){
   $('monitor').hidden=which!=='mon';
   $('configure').hidden=which!=='cfg';
+  $('location').hidden=which!=='loc';
+  $('ota').hidden=which!=='ota';
   $('tabMon').classList.toggle('on',which==='mon');
   $('tabCfg').classList.toggle('on',which==='cfg');
+  $('tabLoc').classList.toggle('on',which==='loc');
+  $('tabOta').classList.toggle('on',which==='ota');
   if(which==='cfg')loadCatalog().catch(e=>{$('cfgMsg').textContent=e.message;});
+  if(which==='loc')loadLocation();
+  if(which==='ota')loadOta();
 }
 $('tabMon').onclick=()=>show('mon');
 $('tabCfg').onclick=()=>show('cfg');
+$('tabLoc').onclick=()=>show('loc');
+$('tabOta').onclick=()=>show('ota');
+$('locGeo').onclick=()=>{
+  if(!navigator.geolocation){$('locMsg').textContent='Geolocation not available.';return;}
+  $('locMsg').textContent='Getting location…';
+  navigator.geolocation.getCurrentPosition(p=>{
+    $('locLat').value=p.coords.latitude.toFixed(6);
+    $('locLon').value=p.coords.longitude.toFixed(6);
+    ensureMap();
+    setMapPoint(p.coords.latitude,p.coords.longitude);
+    $('locMsg').textContent='Location from browser.';
+  },e=>{$('locMsg').textContent=e.message||'geolocation failed';},{enableHighAccuracy:true,timeout:15000});
+};
+$('locSave').onclick=()=>saveLocation(false);
+$('locSync').onclick=()=>saveLocation(true);
+$('otaUpload').onclick=async()=>{
+  const f=$('otaFile').files&&$('otaFile').files[0];
+  if(!f){$('otaMsg').textContent='Choose a .bin file.';return;}
+  if(!confirm('Upload '+f.name+' ('+f.size+' bytes) and reboot?'))return;
+  $('otaMsg').textContent='Uploading…';
+  try{
+    const fd=new FormData();
+    fd.append('firmware',f,f.name||'firmware.bin');
+    const r=await fetch('/api/ota',{method:'POST',body:fd});
+    const j=await r.json();
+    if(!r.ok||!j.ok){$('otaMsg').textContent=j.error||'upload failed';return;}
+    $('otaBar').style.width='100%';
+    $('otaMsg').textContent='Update applied. Rebooting…';
+  }catch(e){$('otaMsg').textContent=e.message;}
+};
+async function cloudOta(apply){
+  $('otaMsg').textContent=apply?'Applying cloud update…':'Checking cloud…';
+  try{
+    const r=await fetch('/api/ota/cloud',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apply:!!apply})});
+    const j=await r.json();
+    await loadOta();
+    if(j.rebooting){$('otaMsg').textContent='Update applied. Rebooting…';return;}
+    $('otaMsg').textContent=j.error||(j.ok?'Up to date.':'Check failed.');
+  }catch(e){$('otaMsg').textContent=e.message;}
+}
+$('otaCheck').onclick=()=>cloudOta(false);
+$('otaApply').onclick=()=>{if(confirm('Download and apply the published firmware from cloud?'))cloudOta(true);};
+(function(){
+  const s=document.createElement('script');
+  s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.onload=()=>{leafletReady=true;};
+  document.head.appendChild(s);
+})();
 $('cfgPage').onchange=()=>{pageId=Number($('cfgPage').value);renderCfg();};
 $('cfgFind').oninput=renderCfg;
 $('cfgRw').onchange=renderCfg;

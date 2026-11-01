@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "config/settings.h"
+#include "ota/build_info.h"
 #include "telemetry/snapshot.h"
 #include "uplink/gts_roots.h"
 
@@ -673,9 +674,11 @@ void heartbeat() {
   if (cfg.uplinkBearer[0]) {
     char id[13];
     identityHex(id);
-    char body[96];
-    const int n = snprintf(body, sizeof(body),
-                           "{\"kind\":\"heartbeat\",\"identity\":\"%s\"}", id);
+    char body[160];
+    const int n = snprintf(
+        body, sizeof(body),
+        "{\"kind\":\"heartbeat\",\"identity\":\"%s\",\"fw\":\"%s\",\"git\":\"%s\"}",
+        id, FW_VERSION, GIT_HASH);
     if (n <= 0 || n >= static_cast<int>(sizeof(body))) {
       Serial.println(F("Heartbeat failed: packet."));
       return;

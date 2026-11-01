@@ -21,6 +21,7 @@ namespace {
 
 bool gBusy = false;
 bool gRebootPending = false;
+bool gUploadOk = false;
 int gProgress = 0;
 char gErr[96] = "";
 uint32_t gLastCheckMs = 0;
@@ -242,6 +243,7 @@ bool downloadAndFlash(const char *url, uint32_t expectedSize, const uint8_t expe
 void begin() {
   clearErr();
   gBusy = false;
+  gUploadOk = false;
   gProgress = 0;
   gUploadWritten = 0;
   gRebootPending = false;
@@ -280,13 +282,18 @@ const char *runningSlot() {
 }
 
 void handleStatus(WebServer &server) {
-  char body[320];
+  char errJson[120];
+  if (gErr[0]) {
+    snprintf(errJson, sizeof(errJson), "\"%s\"", gErr);
+  } else {
+    snprintf(errJson, sizeof(errJson), "null");
+  }
+  char body[360];
   snprintf(body, sizeof(body),
            "{\"fw\":\"%s\",\"git\":\"%s\",\"slot\":\"%s\",\"busy\":%s,"
-           "\"progress\":%d,\"error\":%s%s%s,\"otaEnable\":%s,\"channel\":\"%s\"}",
+           "\"progress\":%d,\"error\":%s,\"otaEnable\":%s,\"channel\":\"%s\"}",
            FW_VERSION, GIT_HASH, runningSlot(), gBusy ? "true" : "false",
-           gProgress, gErr[0] ? "\"" : "null", gErr[0] ? gErr : "",
-           gErr[0] ? "\"" : "", Settings::get().otaEnable ? "true" : "false",
+           gProgress, errJson, Settings::get().otaEnable ? "true" : "false",
            Settings::get().otaChannel[0] ? Settings::get().otaChannel : "stable");
   server.sendHeader("Access-Control-Allow-Origin", "*");
   server.send(200, "application/json", body);
@@ -297,6 +304,7 @@ void handleUpload(WebServer &server) {
   if (upload.status == UPLOAD_FILE_START) {
     clearErr();
     gBusy = true;
+    gUploadOk = false;
     gProgress = 0;
     gUploadWritten = 0;
     if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
@@ -313,6 +321,8 @@ void handleUpload(WebServer &server) {
         gUploadWritten += upload.currentSize;
         if (upload.totalSize > 0) {
           gProgress = static_cast<int>((gUploadWritten * 100) / upload.totalSize);
+        } else if (gUploadWritten > 0) {
+          gProgress = 50;
         }
       }
     }
@@ -323,12 +333,14 @@ void handleUpload(WebServer &server) {
         gBusy = false;
       } else {
         gProgress = 100;
+        gUploadOk = true;
       }
     }
   } else if (upload.status == UPLOAD_FILE_ABORTED) {
     setErr("upload aborted");
     Update.abort();
     gBusy = false;
+    gUploadOk = false;
   }
 }
 
@@ -338,10 +350,11 @@ void handleUploadDone(WebServer &server) {
     char body[160];
     snprintf(body, sizeof(body), "{\"ok\":false,\"error\":\"%s\"}", gErr);
     gBusy = false;
+    gUploadOk = false;
     server.send(500, "application/json", body);
     return;
   }
-  if (!Update.hasError() && gProgress == 100) {
+  if (gUploadOk) {
     gBusy = false;
     gRebootPending = true;
     server.send(200, "application/json",
@@ -366,13 +379,20 @@ void handleCloud(WebServer &server) {
     return;
   }
   checkCloud(apply);
-  char body[240];
+  const bool availableOnly = !apply && gErr[0] && strncmp(gErr, "available:", 10) == 0;
+  const bool failed = gErr[0] && !availableOnly;
+  char errJson[120];
+  if (gErr[0]) {
+    snprintf(errJson, sizeof(errJson), "\"%s\"", gErr);
+  } else {
+    snprintf(errJson, sizeof(errJson), "null");
+  }
+  char body[280];
   snprintf(body, sizeof(body),
-           "{\"ok\":%s,\"error\":%s%s%s,\"progress\":%d,\"rebooting\":%s}",
-           gErr[0] ? "false" : "true", gErr[0] ? "\"" : "null",
-           gErr[0] ? gErr : "", gErr[0] ? "\"" : "", gProgress,
+           "{\"ok\":%s,\"error\":%s,\"progress\":%d,\"rebooting\":%s}",
+           failed ? "false" : "true", errJson, gProgress,
            gRebootPending ? "true" : "false");
-  server.send(gErr[0] ? 502 : 200, "application/json", body);
+  server.send(failed ? 502 : 200, "application/json", body);
 }
 
 void checkCloud(bool applyIfNewer) {

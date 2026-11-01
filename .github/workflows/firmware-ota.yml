@@ -1,0 +1,80 @@
+name: Firmware OTA publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Firmware version (e.g. 0.2.0)
+        required: true
+        type: string
+      channel:
+        description: Release channel
+        required: true
+        type: choice
+        options:
+          - stable
+          - beta
+        default: stable
+      notes:
+        description: Optional release notes
+        required: false
+        type: string
+  push:
+    tags:
+      - "fw-v*"
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PlatformIO
+        run: pip install -U platformio
+
+      - name: Build ESP32-C3 firmware
+        run: pio run -e esp32-c3-supermini
+
+      - name: Resolve version
+        id: meta
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ inputs.version }}"
+            CHANNEL="${{ inputs.channel }}"
+            NOTES="${{ inputs.notes }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+            VERSION="${TAG#fw-v}"
+            CHANNEL="stable"
+            NOTES="tag ${TAG}"
+          fi
+          HASH="$(git rev-parse --short=8 HEAD)"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "channel=${CHANNEL}" >> "$GITHUB_OUTPUT"
+          echo "notes=${NOTES}" >> "$GITHUB_OUTPUT"
+          echo "git_hash=${HASH}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ steps.meta.outputs.version }}
+          path: .pio/build/esp32-c3-supermini/firmware.bin
+
+      - name: Publish to Convex
+        env:
+          CONVEX_SITE_URL: ${{ secrets.CONVEX_SITE_URL }}
+          OTA_PUBLISH_SECRET: ${{ secrets.OTA_PUBLISH_SECRET }}
+        run: |
+          python tools/upload_firmware_to_convex.py \
+            --bin .pio/build/esp32-c3-supermini/firmware.bin \
+            --version "${{ steps.meta.outputs.version }}" \
+            --channel "${{ steps.meta.outputs.channel }}" \
+            --git-hash "${{ steps.meta.outputs.git_hash }}" \
+            --notes "${{ steps.meta.outputs.notes }}"

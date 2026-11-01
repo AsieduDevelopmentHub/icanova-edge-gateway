@@ -8,6 +8,7 @@
 #if defined(ARDUINO_ARCH_ESP32)
 #include "net/http_api.h"
 #include "net/wifi_portal.h"
+#include "ota/ota.h"
 #include "telemetry/snapshot.h"
 #include "uplink/uplink.h"
 #endif
@@ -28,6 +29,7 @@ void setup() {
   Telemetry::begin();
   Telemetry::setIdleHook([]() { cli.poll(); });
   WifiPortal::begin();
+  Ota::begin();
   HttpApi::begin();
   Uplink::begin();
 #else
@@ -67,6 +69,7 @@ void loop() {
   HttpApi::poll();
   Telemetry::poll();
   Uplink::poll();
+  Ota::poll();
   cli.poll();
 #endif
 }
