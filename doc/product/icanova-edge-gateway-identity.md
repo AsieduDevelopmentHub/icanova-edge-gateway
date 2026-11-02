@@ -34,7 +34,8 @@ Intended application: connect industrial controllers and field equipment (initia
 | Soft-AP SSID prefix | `ICANOVA-EDGE` → `ICANOVA-EDGE-XXXX` | `config.h` / Wi-Fi portal |
 | Soft-AP password (default) | `icanovaedge` | `config.h` / settings seed |
 | Default hostname | `icanova-edge` | Settings defaults |
-| Device ID | ESP32 efuse MAC (12 lowercase hex) | CLI / uplink docs |
+| Device ID (cloud link) | Assigned `device.id` serial (preferred); efuse MAC fallback | settings / uplink |
+| HW MAC | ESP32 efuse MAC (12 lowercase hex) | CLI / inventory |
 | Terminal-block configuration | Not yet verified | — |
 | SIM / mobile connectivity (shipped) | Not claimed as finished product feature | README |
 | Power-input specifications | Not yet verified | — |
@@ -56,7 +57,7 @@ Future enclosure label fields (do not fabricate artwork or change physical hardw
 2. Product name: iCaNova Edge Gateway
 3. Model number (when assigned)
 4. Hardware revision (when assigned)
-5. Serial number (when a product serial scheme is defined; today field devices use efuse MAC as Device ID)
+5. Serial number — set as `device.id` on the gateway and register the same value in Convex when linking to a site
 6. Supply input rating (when verified)
 7. RS485 terminal identification
 8. SIM access identification (only if productized)

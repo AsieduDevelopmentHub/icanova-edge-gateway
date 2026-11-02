@@ -42,6 +42,8 @@ struct GatewayConfig {
   bool otaEnable;
   uint16_t otaCheckPeriodS;
   char otaChannel[16];
+  /** Assigned product serial for cloud site linking (empty → efuse MAC). */
+  char deviceId[33];
 };
 
 namespace Settings {

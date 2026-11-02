@@ -55,6 +55,7 @@ const char *kKeys[] = {
     "ota.enable",
     "ota.check_period_s",
     "ota.channel",
+    "device.id",
     nullptr,
 };
 
@@ -153,6 +154,7 @@ void setDefaults(GatewayConfig *c) {
   c->otaEnable = false;
   c->otaCheckPeriodS = 3600;
   strncpy(c->otaChannel, "stable", sizeof(c->otaChannel) - 1);
+  c->deviceId[0] = '\0';
 }
 
 bool assign(GatewayConfig *c, const char *key, const char *value, char *err,
@@ -462,6 +464,46 @@ bool assign(GatewayConfig *c, const char *key, const char *value, char *err,
     c->otaChannel[sizeof(c->otaChannel) - 1] = '\0';
     return true;
   }
+  if (strcmp(key, "device.id") == 0) {
+    // Empty clears → fall back to efuse MAC for cloud identity.
+    if (value[0] == '\0') {
+      c->deviceId[0] = '\0';
+      return true;
+    }
+    const size_t n = strlen(value);
+    if (n < 4 || n > 32) {
+      setErr(err, errN, "device.id must be 4..32 characters (or empty)");
+      return false;
+    }
+    for (size_t i = 0; i < n; i++) {
+      const char ch = value[i];
+      const bool ok = (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
+                      (ch >= '0' && ch <= '9') || ch == '-';
+      if (!ok) {
+        setErr(err, errN, "device.id may use letters, digits, and hyphen");
+        return false;
+      }
+    }
+    if (value[0] == '-' || value[n - 1] == '-') {
+      setErr(err, errN, "device.id cannot start or end with hyphen");
+      return false;
+    }
+    for (size_t i = 0; i + 1 < n; i++) {
+      if (value[i] == '-' && value[i + 1] == '-') {
+        setErr(err, errN, "device.id cannot contain --");
+        return false;
+      }
+    }
+    for (size_t i = 0; i < n; i++) {
+      char ch = value[i];
+      if (ch >= 'A' && ch <= 'Z') {
+        ch = static_cast<char>(ch - 'A' + 'a');
+      }
+      c->deviceId[i] = ch;
+    }
+    c->deviceId[n] = '\0';
+    return true;
+  }
   setErr(err, errN, "unknown key");
   return false;
 }
@@ -516,7 +558,7 @@ bool writeFile() {
   if (gCfg.siteLonSet) {
     snprintf(lonBuf, sizeof(lonBuf), "%.6f", static_cast<double>(gCfg.siteLon));
   }
-  char body[2200];
+  char body[2300];
   const int n = snprintf(
       body, sizeof(body),
       "# gateway configuration\n"
@@ -547,7 +589,8 @@ bool writeFile() {
       "site.lon=%s\n"
       "ota.enable=%s\n"
       "ota.check_period_s=%u\n"
-      "ota.channel=%s\n",
+      "ota.channel=%s\n"
+      "device.id=%s\n",
       gCfg.hostname, static_cast<unsigned>(gCfg.idleMin), gCfg.device,
       static_cast<unsigned>(gCfg.slave), static_cast<unsigned long>(gCfg.baud),
       parityStr(gCfg.parity), static_cast<unsigned>(gCfg.fc),
@@ -561,7 +604,7 @@ bool writeFile() {
       static_cast<unsigned>(gCfg.uplinkBatch), keyHex, gCfg.uplinkBearer, latBuf,
       lonBuf, gCfg.otaEnable ? "on" : "off",
       static_cast<unsigned>(gCfg.otaCheckPeriodS),
-      gCfg.otaChannel[0] ? gCfg.otaChannel : "stable");
+      gCfg.otaChannel[0] ? gCfg.otaChannel : "stable", gCfg.deviceId);
   if (n < 0 || n >= static_cast<int>(sizeof(body))) {
     return false;
   }
@@ -806,6 +849,8 @@ bool format(const char *key, char *out, size_t outN, bool maskSecrets) {
   } else if (strcmp(ck, "ota.channel") == 0) {
     snprintf(out, outN, "%s",
              gCfg.otaChannel[0] ? gCfg.otaChannel : "stable");
+  } else if (strcmp(ck, "device.id") == 0) {
+    snprintf(out, outN, "%s", gCfg.deviceId);
   } else {
     return false;
   }

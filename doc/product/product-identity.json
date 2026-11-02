@@ -20,7 +20,7 @@
   "notes": [
     "No official product model number is defined in firmware or hardware docs.",
     "Board designation ESP32-C3 SuperMini is a development-board profile, not a product model SKU.",
-    "Device identity for uplink/registration uses the ESP32 efuse MAC (12 lowercase hex); do not invent serial numbers.",
+    "Cloud link identity prefers assigned device.id (product serial); efuse MAC remains hardware inventory and legacy fallback.",
     "Network identity defaults (hostname + Soft-AP) were migrated from icanova-gw / DSE-GW; see network-identity-implementation-notes.md.",
     "This file is the gateway documentation source of truth. Firmware mirrors display strings in src/brand/product_identity.h. Soft-AP compile defaults live in src/config/config.h. The web repo mirrors values in docs/product/product-identity.json."
   ]

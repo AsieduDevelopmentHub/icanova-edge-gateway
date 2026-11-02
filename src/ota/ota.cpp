@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "config/settings.h"
+#include "identity/device_id.h"
 #include "ota/build_info.h"
 #include "uplink/gts_roots.h"
 
@@ -44,16 +45,6 @@ const char *slotLabel(const esp_partition_t *part) {
     return "ota_1";
   }
   return "app";
-}
-
-void identityHex(char out[13]) {
-  uint8_t mac[6] = {};
-  const uint64_t efuse = ESP.getEfuseMac();
-  memcpy(mac, &efuse, 6);
-  for (int i = 0; i < 6; i++) {
-    snprintf(out + i * 2, 3, "%02x", mac[i]);
-  }
-  out[12] = '\0';
 }
 
 bool parseJsonString(const char *json, const char *key, char *out, size_t outN) {
@@ -413,10 +404,13 @@ void checkCloud(bool applyIfNewer) {
   gBusy = true;
   gProgress = 0;
 
-  char id[13];
-  identityHex(id);
+  char id[33];
+  if (!DeviceId::linkIdentity(id, sizeof(id))) {
+    setErr("identity");
+    return;
+  }
   const char *channel = cfg.otaChannel[0] ? cfg.otaChannel : "stable";
-  char path[96];
+  char path[160];
   snprintf(path, sizeof(path), "/ncu/ota/check?channel=%s&current=%s&identity=%s",
            channel, FW_VERSION, id);
 

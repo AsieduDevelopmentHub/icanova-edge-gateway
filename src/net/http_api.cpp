@@ -13,6 +13,7 @@
 #include "config/config.h"
 #include "config/settings.h"
 #include "devices/dse_scf.h"
+#include "identity/device_id.h"
 #include "modbus/modbus_client.h"
 #include "net/gencomm_catalog.h"
 #include "net/overview_html.h"
@@ -241,16 +242,6 @@ void handleOtaUpload() { Ota::handleUpload(server); }
 
 void handleOtaCloud() { Ota::handleCloud(server); }
 
-void identityHex(char out[13]) {
-  uint8_t mac[6] = {};
-  const uint64_t efuse = ESP.getEfuseMac();
-  memcpy(mac, &efuse, 6);
-  for (int i = 0; i < 6; i++) {
-    snprintf(out + i * 2, 3, "%02x", mac[i]);
-  }
-  out[12] = '\0';
-}
-
 bool parseFloatField(const String &body, const char *key, float *out) {
   const String needle = String("\"") + key + "\"";
   const int at = body.indexOf(needle);
@@ -296,9 +287,12 @@ bool syncLocationToCloud(float lat, float lon, char *err, size_t errN) {
     snprintf(err, errN, "STA not connected");
     return false;
   }
-  char id[13];
-  identityHex(id);
-  char body[160];
+  char id[33];
+  if (!DeviceId::linkIdentity(id, sizeof(id))) {
+    snprintf(err, errN, "identity");
+    return false;
+  }
+  char body[200];
   const int bodyN =
       snprintf(body, sizeof(body),
                "{\"identity\":\"%s\",\"latitude\":%.6f,\"longitude\":%.6f}", id,

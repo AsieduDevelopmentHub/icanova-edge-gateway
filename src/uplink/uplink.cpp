@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "config/settings.h"
+#include "identity/device_id.h"
 #include "ota/build_info.h"
 #include "telemetry/snapshot.h"
 #include "uplink/gts_roots.h"
@@ -377,24 +378,18 @@ size_t buildPlain(char *buf, size_t cap, uint32_t seq, uint8_t count) {
   return static_cast<size_t>(p - buf);
 }
 
-void identityHex(char out[13]) {
-  uint8_t mac[6] = {};
-  const uint64_t efuse = ESP.getEfuseMac();
-  memcpy(mac, &efuse, 6);
-  for (int i = 0; i < 6; i++) {
-    snprintf(out + i * 2, 3, "%02x", mac[i]);
-  }
-  out[12] = '\0';
-}
-
 size_t buildCloud(char *buf, size_t cap, uint32_t seq, uint8_t count) {
-  char id[13];
-  identityHex(id);
+  char id[33];
+  char mac[13];
+  if (!DeviceId::linkIdentity(id, sizeof(id))) {
+    return 0;
+  }
+  DeviceId::hwMacHex(mac);
   char *p = buf;
   char *end = buf + cap;
   p += snprintf(p, static_cast<size_t>(end - p),
-                "{\"v\":2,\"identity\":\"%s\",\"boot\":%lu,\"epoch\":%lu,\"seq\":%lu,\"samples\":[",
-                id, static_cast<unsigned long>(gBoot), static_cast<unsigned long>(gEpoch),
+                "{\"v\":2,\"identity\":\"%s\",\"mac\":\"%s\",\"boot\":%lu,\"epoch\":%lu,\"seq\":%lu,\"samples\":[",
+                id, mac, static_cast<unsigned long>(gBoot), static_cast<unsigned long>(gEpoch),
                 static_cast<unsigned long>(seq));
   for (uint8_t i = 0; i < count && p < end; i++) {
     const Sample &s = gSamples[i];
@@ -672,13 +667,18 @@ void heartbeat() {
   Serial.println(cfg.uplinkPath);
   HttpReply reply{};
   if (cfg.uplinkBearer[0]) {
-    char id[13];
-    identityHex(id);
-    char body[160];
+    char id[33];
+    char mac[13];
+    if (!DeviceId::linkIdentity(id, sizeof(id))) {
+      Serial.println(F("Heartbeat failed: identity."));
+      return;
+    }
+    DeviceId::hwMacHex(mac);
+    char body[220];
     const int n = snprintf(
         body, sizeof(body),
-        "{\"kind\":\"heartbeat\",\"identity\":\"%s\",\"fw\":\"%s\",\"git\":\"%s\"}",
-        id, FW_VERSION, GIT_HASH);
+        "{\"kind\":\"heartbeat\",\"identity\":\"%s\",\"mac\":\"%s\",\"fw\":\"%s\",\"git\":\"%s\"}",
+        id, mac, FW_VERSION, GIT_HASH);
     if (n <= 0 || n >= static_cast<int>(sizeof(body))) {
       Serial.println(F("Heartbeat failed: packet."));
       return;

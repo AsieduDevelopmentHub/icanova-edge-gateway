@@ -20,6 +20,7 @@
 #include "rs485/rs485.h"
 #include "util/str_util.h"
 #if defined(ARDUINO_ARCH_ESP32)
+#include "identity/device_id.h"
 #include "net/wifi_portal.h"
 #include "telemetry/snapshot.h"
 #if defined(ARDUINO_ARCH_ESP32)
@@ -89,15 +90,14 @@ void Cli::printBrandIntro() {
   Serial.println(F(BOARD_NAME));
 #if defined(ARDUINO_ARCH_ESP32)
   {
-    const uint64_t efuse = ESP.getEfuseMac();
+    char id[33];
+    char mac[13];
+    DeviceId::linkIdentity(id, sizeof(id));
+    DeviceId::hwMacHex(mac);
     Serial.print(F("Device ID: "));
-    Serial.printf("%02x%02x%02x%02x%02x%02x\n",
-                  static_cast<unsigned>((efuse >> 0) & 0xff),
-                  static_cast<unsigned>((efuse >> 8) & 0xff),
-                  static_cast<unsigned>((efuse >> 16) & 0xff),
-                  static_cast<unsigned>((efuse >> 24) & 0xff),
-                  static_cast<unsigned>((efuse >> 32) & 0xff),
-                  static_cast<unsigned>((efuse >> 40) & 0xff));
+    Serial.println(id);
+    Serial.print(F("HW MAC: "));
+    Serial.println(mac);
   }
 #endif
   Serial.println(F("Communication: RS485 / Modbus RTU"));
