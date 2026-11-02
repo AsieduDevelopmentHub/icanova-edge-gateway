@@ -1,0 +1,529 @@
+## WATCH loop — comm / regs / scf-flags / alarms
+    Type any key to abort.
+
+======== cycle 1/8 ========
+--- COMM ---
+Slave 1  baud 9600 8N1  FC03
+--- REGS (batch) ---
+Manufacturer Code: 1
+Model Number: 32841
+Serial Number: unavailable
+Operating mode: Auto
+Control Unit Status: 1024
+Oil pressure: 30 kPa
+Coolant temperature: unavailable
+Oil temperature: unavailable
+Fuel level: 9 %
+Charge alternator voltage: 0.0 V
+Battery voltage: 13.5 V
+Engine RPM: 0 rpm
+Frequency: 0.0 Hz
+Line 1 voltage: 0.0 V
+Line 2 voltage: 0.0 V
+Line 3 voltage: unavailable
+Line 1-2 voltage: 0.0 V
+Line 2-3 voltage: unavailable
+Line 3-1 voltage: unavailable
+Line 1 current: 6.7 A
+Line 2 current: 10.6 A
+Line 3 current: unavailable
+Line 1 power: 0 W
+Line 2 power: 0 W
+Line 3 power: unavailable
+Mains frequency: 50.2 Hz
+Mains L1 voltage: 210.1 V
+Mains L2 voltage: 204.4 V
+Mains L3 voltage: unavailable
+Mains L1-L2 voltage: 364.7 V
+Mains L2-L3 voltage: unavailable
+Mains L3-L1 voltage: unavailable
+BATCH FAIL @1408 qty=1 result=2
+Total real power: 0 W
+Generator Phase A Apparent Power: 0 VA
+Generator Phase B Apparent Power: 0 VA
+Generator Phase C Apparent Power: unavailable
+Total apparent power: 0 VA
+Generator Phase A Reactive Power: 0 VAr
+Generator Phase B Reactive Power: 0 VAr
+Generator Phase C Reactive Power: unavailable
+Total reactive power: 0 VAr
+Generator Phase A Power Factor: 0.00
+Generator Phase B Power Factor: 0.00
+Generator Phase C Power Factor: unavailable
+Power factor: unavailable
+Load percent: 0.0 %
+Engine hours: 4138.81 h
+Energy export: 19711.6 kWh
+Engine starts: 4184
+--- SCF (read flags only, no writes) ---
+Flags: 0xF6C0 0x0 0xFE00 0x8000 0x701 0x200 0x0 0x0
+Supported (read):
+  [+] auto
+  [+] manual
+  [+] test_on_load
+  [+] start_engine
+  [+] mute_alarm
+  [+] transfer_gen
+  [+] transfer_mains
+  [+] telemetry_start
+  [+] telemetry_stop
+  [+] reset_alarms2
+  [+] reset_alarms2
+  [+] clear_telem_alarm
+  [+] lock_controls
+  [+] unlock_controls
+  [+] reset_maint
+--- ALARMS (active only) ---
+Alarm page 154: FAIL
+Batches OK=6 FAIL=2
+LINK: DEGRADED
+(next in 3s, any key aborts)
+WATCH aborted.
+>
+PS D:\dev\hardware\dse-modbus-gateway>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  [+] clear_telem_alarm
+  [+] lock_controls
+  [+] unlock_controls
+  [+] reset_maint
+--- ALARMS (active only) ---
+Alarm page 154: FAIL
+Batches OK=6 FAIL=2
+LINK: DEGRADED
+(next in 3s, any key aborts)
+WATCH aborted.
+>
+PS D:\dev\hardware\dse-modbus-gateway> pio device monitor
+--- forcing DTR inactive
+--- forcing RTS inactive
+UserSideException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+PS D:\dev\hardware\dse-modbus-gateway> pio device monitor
+--- forcing DTR inactive
+--- forcing RTS inactive
+
+Please build project in debug configuration to get more details about an exception.
+See https://docs.platformio.org/page/projectconf/build_configurations.html
+
+
+--- Terminal on COM8 | 115200 8-N-1
+--- Available filters and text transformations: debug, default, direct, esp32_exception_decoder, hexlify, log2file, nocontrol, printable, send_on_enter, time
+--- More details at https://bit.ly/pio-monitor-filters
+--- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+iaal
+## DSE iterate (all)  slave=1  baud=9600
+Manufacturer Code: 1
+Model Number: 32841
+Serial Number: unimplemented
+Operating mode: Auto
+Control Unit Status: 1024
+Oil pressure: 30 kPa
+Coolant temperature: under range
+Oil temperature: unimplemented
+Fuel level: 9 %
+Charge alternator voltage: 0.0 V
+Battery voltage: 13.4 V
+Engine RPM: 0 rpm
+Frequency: 0.0 Hz
+Line 1 voltage: 0.0 V
+Line 2 voltage: 0.0 V
+Line 3 voltage: unimplemented
+Line 1-2 voltage: 0.0 V
+Line 2-3 voltage: unimplemented
+Line 3-1 voltage: unimplemented
+Line 1 current: 5.9 A
+Line 2 current: 9.0 A
+Line 3 current: unimplemented
+Line 1 power: 0 W
+Line 2 power: 0 W
+Line 3 power: unimplemented
+Mains frequency: 50.2 Hz
+Mains L1 voltage: 218.4 V
+Mains L2 voltage: 218.1 V
+Mains L3 voltage: unimplemented
+Mains L1-L2 voltage: 381.1 V
+Mains L2-L3 voltage: unimplemented
+Mains L3-L1 voltage: unimplemented
+Engine status: unimplemented
+Engine State (alt): unimplemented
+Total real power: 0 W
+Generator Phase A Apparent Power: 0 VA
+Generator Phase B Apparent Power: 0 VA
+Generator Phase C Apparent Power: unimplemented
+Total apparent power: 0 VA
+Generator Phase A Reactive Power: 0 VAr
+Generator Phase B Reactive Power: 0 VAr
+Generator Phase C Reactive Power: unimplemented
+Total reactive power: 0 VAr
+Generator Phase A Power Factor: 0.00
+Generator Phase B Power Factor: 0.00
+Generator Phase C Power Factor: unimplemented
+Power factor: under range
+Load percent: 0.0 %
+Engine hours: 4138.81 h
+Energy export: 19711.6 kWh
+Engine starts: 4184
+BATCH FAIL @1357 qty=3 result=1
+> sf anl
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE manual key=35702 complement=29833
+========================================
+MODBUS RTU DIAGNOSTIC
+TXN #42
+Device: DSE 7320 / 7320 MKII
+REQUEST fields: slave=1 fc=0x3 addr=0x1000 qty=8
+Runtime UART: 9600 8N1
+FINAL TX BYTE ARRAY: 01 03 10 00 00 08 40 CC
+[1] Clear RX buffer
+RX stale bytes: 193
+STALE:
+0D 04 00 00 00 44 F0 F5 0D 04 00 00 00 44 F0 F5
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 8 expected: 8
+DE/RE after switch to RX: 0
+TX start us: 103061267
+TX complete us: 103069653
+DE->RX us: 103069655
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 03 10 F6 C0 00 00 FE 00 80 00 07 01 02 00 00 00 00 00 1E 15
+RX length: 21
+RX char us: 1146
+RX gaps us: 0 989 1058 1024 1058 1054 1026 1026 1072 1026 1025 1058 1046 1026 1066 1020 1031 1058 1026 1046 1066
+RX timing: 20 on 9600 grid, 0 late
+UART err: none
+Time to first RX byte: 0 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 03 10 F6 C0 00 00 FE 00 80 00 07 01 02 00 00 00 00 00 1E 15
+PAYLOAD: 01 03 10 F6 C0 00 00 FE 00 80 00 07 01 02 00 00 00 00 00
+RECEIVED CRC LOW:  0x1E
+RECEIVED CRC HIGH: 0x15
+RECEIVED CRC COMBINED: 0x151E
+CALCULATED CRC: 0x151E
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Register[0]=0xF6C0
+Register[1]=0x0
+Register[2]=0xFE00
+Register[3]=0x8000
+Register[4]=0x701
+Register[5]=0x200
+Register[6]=0x0
+Register[7]=0x0
+RESULT: VALID MODBUS RESPONSE
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #43
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 76 74 89 13 51
+[1] Clear RX buffer
+RX stale bytes: 0
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 103105783
+TX complete us: 103119349
+DE->RX us: 103119350
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+33 03 75 30 00 1A DA 10
+RX length: 8
+RX char us: 1146
+RX gaps us: 65535 1023 1066 1021 1050 1065 1020 1066
+RX timing: 7 on 9600 grid, 0 late
+UART err: none
+Time to first RX byte: 305 ms
+[6] Frame validation / CRC audit
+RAW RX: 33 03 75 30 00 1A DA 10
+PAYLOAD: 33 03 75 30 00 1A
+RECEIVED CRC LOW:  0xDA
+RECEIVED CRC HIGH: 0x10
+RECEIVED CRC COMBINED: 0x10DA
+CALCULATED CRC: 0x10DA
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 51
+Function byte: 0x3
+Expected exception FC: 0x90
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+SCF write FAILED
+> sstane
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE start_engine key=35705 complement=29830
+========================================
+MODBUS RTU DIAGNOSTIC
+TXN #44
+Device: DSE 7320 / 7320 MKII
+REQUEST fields: slave=1 fc=0x3 addr=0x1000 qty=8
+Runtime UART: 9600 8N1
+FINAL TX BYTE ARRAY: 01 03 10 00 00 08 40 CC
+[1] Clear RX buffer
+RX stale bytes: 208
+STALE:
+33 03 75 30 00 1A DA 10 33 03 75 30 00 1A DA 10
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 8 expected: 8
+DE/RE after switch to RX: 0
+TX start us: 116503538
+TX complete us: 116511924
+DE->RX us: 116511926
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 03 10 F6 C0 00 00 FE 00 80 00 07 01 02 00 00 00 00 00 1E 15
+RX length: 21
+RX char us: 1146
+RX gaps us: 1000 1033 1027 1058 1026 1046 1072 1020 1024 1073 1020 1031 1046 1058 1020 1058 1026 1058 1022 1046 1034
+RX timing: 20 on 9600 grid, 0 late
+UART err: none
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 03 10 F6 C0 00 00 FE 00 80 00 07 01 02 00 00 00 00 00 1E 15
+PAYLOAD: 01 03 10 F6 C0 00 00 FE 00 80 00 07 01 02 00 00 00 00 00
+RECEIVED CRC LOW:  0x1E
+RECEIVED CRC HIGH: 0x15
+RECEIVED CRC COMBINED: 0x151E
+CALCULATED CRC: 0x151E
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Register[0]=0xF6C0
+Register[1]=0x0
+Register[2]=0xFE00
+Register[3]=0x8000
+Register[4]=0x701
+Register[5]=0x200
+Register[6]=0x0
+Register[7]=0x0
+RESULT: VALID MODBUS RESPONSE
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #45
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 79 74 86 63 56
+[1] Clear RX buffer
+RX stale bytes: 0
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 116548099
+TX complete us: 116561665
+DE->RX us: 116561666
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 03 04 00 00 42 C4 CB 01 03 84 00 21 7F FD 7F FF 00 09 00 00 00 87 00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF 00 00 00 00 FF FF FF FF FF FF FF FF 00 00 00 38 00 00 00 52 FF FF FF FF 00 00 00 00 00 00 00 00 00 00 00 00 7F FF FF FF 7F FF 01 F6 00 00 08 8D 00 00 08 7A FF FF FF FF 00
+RX length: 96
+RX char us: 1146
+RX gaps us: 65535 1006 1030 1058 1028 1047 1058 1026 2248 1072 1020 1023 1047 1034 1063 1021 1061 1070 1009 1025 1058 1026 1058 1025 1058 1021 1063 1020 1057 1025 1072 1026 1046 1021 1072 1021 1027 1058 1028 1046 1034 1064 1020 1071 1021 1030 1052 1065 1021 1028 1058 1025 1058 1022 1064 1020 1058 1025 1037 1046 1059 1022 1057 1027
+RX timing: 62 on 9600 grid, 1 late
+UART err: none
+Time to first RX byte: 501 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 03 04 00 00 42 C4 CB 01
+PAYLOAD: 01 03 04 00 00 42 C4
+RECEIVED CRC LOW:  0xCB
+RECEIVED CRC HIGH: 0x01
+RECEIVED CRC COMBINED: 0x1CB
+CALCULATED CRC: 0xCB
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 1
+Function byte: 0x3
+Expected exception FC: 0x90
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+SCF write FAILED
+> itl
+Unknown command: itterate
+> atel
+## DSE iterate (all)  slave=1  baud=9600
+Manufacturer Code: 1
+Model Number: 32841
+Serial Number: unimplemented
+Operating mode: Manual
+Control Unit Status: 1536
+Oil pressure: 401 kPa
+Coolant temperature: under range
+Oil temperature: unimplemented
+Fuel level: 9 %
+Charge alternator voltage: 14.2 V
+Battery voltage: 13.6 V
+Engine RPM: 1587 rpm
+Frequency: 52.9 Hz
+Line 1 voltage: 234.8 V
+Line 2 voltage: 234.4 V
+Line 3 voltage: unimplemented
+Line 1-2 voltage: 406.9 V
+Line 2-3 voltage: unimplemented
+Line 3-1 voltage: unimplemented
+Line 1 current: 4.8 A
+Line 2 current: 7.3 A
+Line 3 current: unimplemented
+Line 1 power: -283 W
+Line 2 power: -372 W
+Line 3 power: unimplemented
+Mains frequency: 50.3 Hz
+Mains L1 voltage: 219.7 V
+Mains L2 voltage: 218.7 V
+Mains L3 voltage: unimplemented
+Mains L1-L2 voltage: 382.7 V
+Mains L2-L3 voltage: unimplemented
+Mains L3-L1 voltage: unimplemented
+Engine status: unimplemented
+Engine State (alt): unimplemented
+Total real power: -454 W
+Generator Phase A Apparent Power: 1232 VA
+Generator Phase B Apparent Power: 1784 VA
+Generator Phase C Apparent Power: unimplemented
+Total apparent power: 3016 VA
+Generator Phase A Reactive Power: 679 VAr
+Generator Phase B Reactive Power: 659 VAr
+Generator Phase C Reactive Power: unimplemented
+Total reactive power: 1338 VAr
+Generator Phase A Power Factor: -0.10
+Generator Phase B Power Factor: -0.12
+Generator Phase C Power Factor: unimplemented
+Power factor: -0.15
+Load percent: -2.8 %
+Engine hours: 4138.81 h
+Energy export: 19711.6 kWh
+Engine starts: 4185
+Oil level: unimplemented
+Coolant level: unimplemented
+> ia 
+## DSE iterate (all)  slave=1  baud=9600
+Manufacturer Code: 1
+Model Number: 32841
+Serial Number: unimplemented
+Operating mode: Auto
+Control Unit Status: 1024
+Oil pressure: 383 kPa
+Coolant temperature: under range
+Oil temperature: unimplemented
+Fuel level: 9 %
+Charge alternator voltage: 14.2 V
+Battery voltage: 13.8 V
+Engine RPM: 1602 rpm
+Frequency: 53.4 Hz
+Line 1 voltage: 234.6 V
+Line 2 voltage: 234.5 V
+Line 3 voltage: unimplemented
+Line 1-2 voltage: 406.1 V
+Line 2-3 voltage: unimplemented
+Line 3-1 voltage: unimplemented
+Line 1 current: 4.5 A
+Line 2 current: 6.7 A
+Line 3 current: unimplemented
+Line 1 power: -192 W
+Line 2 power: -277 W
+Line 3 power: unimplemented
+Mains frequency: 50.2 Hz
+Mains L1 voltage: 219.7 V
+Mains L2 voltage: 217.7 V
+Mains L3 voltage: unimplemented
+Mains L1-L2 voltage: 381.7 V
+Mains L2-L3 voltage: unimplemented
+Mains L3-L1 voltage: unimplemented
+Engine status: unimplemented
+Engine State (alt): unimplemented
+Total real power: -640 W
+Generator Phase A Apparent Power: 1157 VA
+Generator Phase B Apparent Power: 1836 VA
+Generator Phase C Apparent Power: unimplemented
+Total apparent power: 2993 VA
+Generator Phase A Reactive Power: -512 VAr
+Generator Phase B Reactive Power: -940 VAr
+Generator Phase C Reactive Power: unimplemented
+Total reactive power: -1452 VAr
+Generator Phase A Power Factor: -0.18
+Generator Phase B Power Factor: -0.22
+Generator Phase C Power Factor: unimplemented
+Power factor: -0.21
+Load percent: -4.0 %
+Engine hours: 4138.82 h
+Energy export: 19711.6 kWh
+Engine starts: 4185
+Oil level: unimplemented
+Coolant level: unimplemented
+> ie
+Unknown command: iterateall
+> ea
+## DSE iterate (all)  slave=1  baud=9600
+Manufacturer Code: 1
+Model Number: 32841
+Serial Number: unimplemented
+Operating mode: Auto
+Control Unit Status: 1536
+Oil pressure: 30 kPa
+Coolant temperature: under range
+Oil temperature: unimplemented
+Fuel level: 9 %
+Charge alternator voltage: 0.0 V
+Battery voltage: 13.6 V
+Engine RPM: 0 rpm
+Frequency: 0.0 Hz
+Line 1 voltage: 0.0 V
+Line 2 voltage: 0.0 V
+Line 3 voltage: unimplemented
+Line 1-2 voltage: 0.0 V
+Line 2-3 voltage: unimplemented
+Line 3-1 voltage: unimplemented
+Line 1 current: 4.8 A
+Line 2 current: 5.5 A
+Line 3 current: unimplemented
+Line 1 power: 0 W
+Line 2 power: 0 W
+Line 3 power: unimplemented
+Mains frequency: 50.2 Hz
+Mains L1 voltage: 219.1 V
+Mains L2 voltage: 218.2 V
+Mains L3 voltage: unimplemented
+Mains L1-L2 voltage: 381.8 V
+Mains L2-L3 voltage: unimplemented
+Mains L3-L1 voltage: unimplemented
+Engine status: unimplemented
+Engine State (alt): unimplemented
+Total real power: 0 W
+Generator Phase A Apparent Power: 0 VA
+Generator Phase B Apparent Power: 0 VA
+Generator Phase C Apparent Power: unimplemented
+Total apparent power: 0 VA
+Generator Phase A Reactive Power: 0 VAr
+Generator Phase B Reactive Power: 0 VAr
+Generator Phase C Reactive Power: unimplemented
+Total reactive power: 0 VAr
+Generator Phase A Power Factor: 0.00
+Generator Phase B Power Factor: 0.00
+Generator Phase C Power Factor: unimplemented
+Power factor: under range
+Load percent: 0.0 %
+Engine hours: 4138.83 h
+Energy export: 19711.6 kWh
+Engine starts: 4185
+Oil level: unimplemented
+Coolant level: unimplemented

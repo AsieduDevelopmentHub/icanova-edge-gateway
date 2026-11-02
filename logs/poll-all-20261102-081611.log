@@ -1,0 +1,16 @@
+# iCaNova Edge Gateway poll all capture
+# captured_at: 2026-11-02T08:19:37
+# port: COM8 baud: 115200
+# command: device select dse7320; status; poll all
+# device: DSE 7320 / 7320B class (modbus profile dse7320)
+
+
+login: [Kadmin
+Password: [K
+Login incorrect.
+login: [Kdevice select dse7320
+Login incorrect.
+login: [Kstatus
+Password: [K
+Login incorrect.
+login: [K

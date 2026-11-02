@@ -1,0 +1,2813 @@
+# GenComm page poll — 2026-11-02T08:41:59
+
+- Gateway: `http://10.73.214.31`
+- Device: DSE 7320 / 7320 MKII (model 32841)
+- Formula: `address = page * 256 + offset`
+- Health: wifi=STA ip=10.73.214.31 link=ok modbusLastOk=True
+- Live Modbus reads: yes
+- Probe: `{'result': 'ok', 'addr': 1024, 'exception': 0, 'words': [0, 32765]}`
+- Pages: 55
+
+## Page 0 — Communications Status Information
+
+- Base address: `0` (`page * 256 + offset`)
+- Registers: 21
+- Read runs: 2 ok / 4 fail
+- First error: `@15 qty=7 -> exception:1`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 0 | 0 | Extended exception code | r | 16 | 0 (0x0000) |
+| 1 | 1 | Extended exception address | r | 16 | 0 (0x0000) |
+| 2 | 2 | Telemetry alarm flag for satellite 1 | r | 16/16 | 0 (0x0000) |
+| 3 | 3 | Telemetry alarm flag2 for satellites 17-32 | r | 16 | 0 (0x0000) |
+| 4 | 4 | Communication error flag for satellite 1 | r | 16/16 | 0 (0x0000) |
+| 5 | 5 | Communication error flags for satellites 17- 32 | r | 16 | 0 (0x0000) |
+| 6 | 6 | Password status | r | 16 | 2 (0x0002) |
+| 7 | 7 | Number of satellite sockets available | r | 32 | 0 (0x0000) |
+| 8 | 8 | Number of languages available for telemetry | r | 16 | 2 (0x0002) |
+| 9 | 9 | GenComm version number | r | 16 | 2 (0x0002) |
+| 10 | 10 | Baud rates available | r | 32 | 8176 (0x1FF0)<br>0 (0x0000) |
+| 15 | 15 | USB connection status | r | 16 | — |
+| 16 | 16 | RS232 port received rate counter | r | 16 | — |
+| 17 | 17 | RS232 port lost rate counter | r | 16 | — |
+| 18 | 18 | RS232 port quality instrument | r | 16 | — |
+| 19 | 19 | RS485 port 1 received rate counter | r | 16 | — |
+| 20 | 20 | RS485 port 1 lost rate counter | r | 16 | — |
+| 21 | 21 | RS485 port 1 quality instrument | r | 16 | — |
+| 27 | 27 | DSENet quality instrument | r | 16 | — |
+| 30 | 30 | MSC Connection 1 quaily instrument | r | 16 | — |
+| 33 | 33 | MSC Connection 2 quaily instrument | r | 16 | — |
+
+## Page 1 — Current slave address
+
+- Base address: `256` (`page * 256 + offset`)
+- Registers: 14
+- Read runs: 2 ok / 5 fail
+- First error: `@288 qty=1 -> exception:2`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 256 | 0 | Current slave address | rw | 16 | 1 (0x0001) |
+| 257 | 1 | Site identity code | rw | 16 | unimplemented |
+| 258 | 2 | Device identity code | rw | 16 | unimplemented |
+| 259 | 3 | Baud rate | rw | 16 | 7 (0x0007) |
+| 260 | 4 | Current language code | rw | 16 | 2057 (0x0809) |
+| 262 | 6 | Satellite socket 1 enable flag | rw | 16/16 | 0 (0x0000) |
+| 263 | 7 | Satellite socket 17-32 enable flags | rw | 16 | 0 (0x0000) |
+| 264 | 8 | Master inactivity time-out, 0 means never time-out | rw | 16 | 50 (0x0032) |
+| 265 | 9 | Password time-out, 0 means never time-out | rw | 16 | 300 (0x012C) |
+| 288 | 32 | Current password | w | 16 | — |
+| 290 | 34 | Set new read only password | w | 16 | — |
+| 292 | 36 | Set new control password | w | 16 | — |
+| 294 | 38 | Set new configure password | w | 16 | — |
+| 296 | 40 | Display unit type connected to module | r | 16 | — |
+
+## Page 2 — Modem mode
+
+- Base address: `512` (`page * 256 + offset`)
+- Registers: 18
+- Read runs: 22 ok / 3 fail
+- First error: `@672 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 512 | 0 | Modem mode | r | 16 | 6 (0x0006) |
+| 513 | 1 | Connect delay time | r |  | 600 (0x0258) |
+| 514 | 2 | Number of retries on each number | r | 16 | 4 (0x0004) |
+| 515 | 3 | Delay between retries | r |  | 50 (0x0032) |
+| 516 | 4 | Delay before repeat cycle | r |  | 100 (0x0064) |
+| 517 | 5 | Short message service (SMS) enabled | r | 16 | 0 (0x0000) |
+| 576 | 64 | First dialling string | r |  | 8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 592 | 80 | Second dialling string | r |  | 8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 608 | 96 | Third dialling string | r |  | 8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 624 | 112 | Fourth dialling string | r |  | 8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 640 | 128 | Modem initialisation string – | r |  | 17712 (0x4530)<br>21303 (0x5337)<br>15670 (0x3D36)<br>12371 (0x3053)<br>12349 (0x303D)<br>12326 (0x3026)<br>21296 (0x5330)<br>9795 (0x2643)<br>12582 (0x3126)<br>17459 (0x4433)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 656 | 144 | Modem initialisation string – | r |  | 17712 (0x4530)<br>21303 (0x5337)<br>15670 (0x3D36)<br>12371 (0x3053)<br>12349 (0x303D)<br>12838 (0x3226)<br>21296 (0x5330)<br>9795 (0x2643)<br>12582 (0x3126)<br>17459 (0x4433)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 672 | 160 | Modem hang-up string | r |  | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 688 | 176 | Modem dial back string | r |  | 8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 704 | 192 | Short message service (SMS) message center number | r |  | 8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 720 | 208 | Short message service (SMS) recipient number 1 | r |  | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 736 | 224 | Short message service (SMS) recipient number 2 | r |  | 8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+| 752 | 240 | Short message service (SMS) recipient number 3 | r |  | 8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020)<br>8224 (0x2020) |
+
+## Page 3 — Manufacturer code
+
+- Base address: `768` (`page * 256 + offset`)
+- Registers: 39
+- Read runs: 3 ok / 2 fail
+- First error: `@792 qty=8 -> exception:1`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 768 | 0 | Manufacturer code | r | 16 | 1 (0x0001) |
+| 769 | 1 | Model number | r | 16 | 7320 (0x1C98) |
+| 770 | 2 | Serial number | r | 32 | unimplemented<br>unimplemented |
+| 772 | 4 | Control mode | r | 16 | 2 (0x0002) |
+| 773 | 5 | Control mode selection (330/331/334/335) | r | 16 | unimplemented |
+| 774 | 6 | Control unit not configured | r | 16/16 | 0 (0x0000) |
+| 775 | 7 | S.M. 1 status | r |  | 255 (0x00FF) |
+| 776 | 8 | String checksum | r | 32 | unimplemented<br>unimplemented |
+| 778 | 10 | S.M. 1 timer | r | 16 | 0 (0x0000) |
+| 779 | 11 | S.M. 2 timer | r | 16 | 0 (0x0000) |
+| 780 | 12 | S.M. 3 timer | r | 16 | 0 (0x0000) |
+| 781 | 13 | S.M. 4 timer | r | 16 | 0 (0x0000) |
+| 782 | 14 | S.M. 5 timer | r | 16 | unimplemented |
+| 783 | 15 | S.M. 6 timer | r | 16 | unimplemented |
+| 784 | 16 | S.M. 7 timer | r | 16 | unimplemented |
+| 785 | 17 | S.M. 8 timer | r | 16 | unimplemented |
+| 786 | 18 | S.M. 1 state | r | 16 | 0 (0x0000) |
+| 787 | 19 | S.M. 2 state | r | 16 | 0 (0x0000) |
+| 788 | 20 | S.M. 3 state | r | 16 | 1 (0x0001) |
+| 789 | 21 | S.M. 4 state | r | 16 | 0 (0x0000) |
+| 790 | 22 | S.M. 5 state | r | 16 | unimplemented |
+| 791 | 23 | S.M. 6 state | r | 16 | unimplemented |
+| 792 | 24 | S.M. 7 state | r | 16 | — |
+| 793 | 25 | S.M. 8 state | r | 16 | — |
+| 794 | 26 | Change in event log contents | r |  | — |
+| 795 | 27 | Battery Charger Mode | r | 16 | — |
+| 796 | 28 | Battery Charger De-Rating Mode | r | 16 | — |
+| 797 | 29 | Battery Charger Active Cell Count | r | 16 | — |
+| 798 | 30 | Battery Chemistry ID | r | 16 | — |
+| 799 | 31 | Charging Stages | r | 16 | — |
+| 800 | 32 | Heater fitted | r |  | — |
+| 801 | 33 | Controller mode (8661) | r | 16 | — |
+| 802 | 34 | Battery Charger Mode (Auxiliary) | r | 16 | — |
+| 803 | 35 | Active Cell Count (Auxiliary) | r | 16 | — |
+| 804 | 36 | Battery Chemistry ID (Auxiliary) | r | 16 | — |
+| 805 | 37 | Charging Stages (Auxiliary) | r | 16 | — |
+| 806 | 38 | External Panel Lock Active | r | 16/16 | — |
+| 771 | 3 | Test on load mode | r |  | unimplemented |
+| 777 | 9 | Temperature Alarm | r |  | unimplemented |
+
+## Page 4 — Oil pressure
+
+- Base address: `1024` (`page * 256 + offset`)
+- Registers: 148
+- Read runs: 11 ok / 21 fail
+- First error: `@1112 qty=8 -> exception:1`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 1024 | 0 | Oil pressure | r | 16 | 0 (0x0000) |
+| 1025 | 1 | Coolant temperature | r |  | 32765 (0x7FFD) |
+| 1026 | 2 | Oil temperature | r |  | 32767 (0x7FFF) |
+| 1027 | 3 | Fuel level | r | 16 | 127 (0x007F) |
+| 1028 | 4 | Charge alternator voltage | r | 16 | 136 (0x0088) |
+| 1029 | 5 | Engine Battery voltage | r | 16 | 137 (0x0089) |
+| 1030 | 6 | Engine speed | r | 16 | 0 (0x0000) |
+| 1031 | 7 | Generator frequency | r | 16 | 0 (0x0000) |
+| 1032 | 8 | Generator L1-N voltage | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1034 | 10 | Generator L2-N voltage | r | 32 | unimplemented<br>unimplemented |
+| 1036 | 12 | Generator L3-N voltage | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1038 | 14 | Generator L1-L2 voltage | r | 32 | unimplemented<br>unimplemented |
+| 1040 | 16 | Generator L2-L3 voltage | r | 32 | unimplemented<br>unimplemented |
+| 1042 | 18 | Generator L3-L1 voltage | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1044 | 20 | Generator L1 current | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1046 | 22 | Generator L2 current | r | 32 | unimplemented<br>unimplemented |
+| 1048 | 24 | Generator L3 current | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1050 | 26 | Generator earth current | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1052 | 28 | Generator L1 watts | r |  | 0 (0x0000)<br>0 (0x0000) |
+| 1054 | 30 | Generator L2 watts | r |  | 32767 (0x7FFF)<br>unimplemented |
+| 1056 | 32 | Generator L3 watts | r |  | 0 (0x0000)<br>0 (0x0000) |
+| 1058 | 34 | Generator current lag/lead | r |  | 32767 (0x7FFF) |
+| 1059 | 35 | Mains frequency | r | 16 | 503 (0x01F7) |
+| 1060 | 36 | Mains L1-N voltage | r | 32 | 0 (0x0000)<br>2324 (0x0914) |
+| 1062 | 38 | Mains L2-N voltage | r | 32 | unimplemented<br>unimplemented |
+| 1064 | 40 | Mains L3-N voltage | r | 32 | 0 (0x0000)<br>2339 (0x0923) |
+| 1066 | 42 | Mains L1-L2 voltage | r | 32 | unimplemented<br>unimplemented |
+| 1068 | 44 | Mains L2-L3 voltage | r | 32 | unimplemented<br>unimplemented |
+| 1070 | 46 | Mains L3-L1 voltage | r | 32 | 0 (0x0000)<br>4015 (0x0FAF) |
+| 1072 | 48 | Mains voltage phase lag/lead | r |  | 32767 (0x7FFF) |
+| 1073 | 49 | Generator phase rotation | r | 16 | unimplemented |
+| 1074 | 50 | Mains phase rotation | r | 16 | unimplemented |
+| 1075 | 51 | Mains current lag/lead | r |  | 32767 (0x7FFF) |
+| 1076 | 52 | Mains L1 current | r | 32 | unimplemented<br>unimplemented |
+| 1078 | 54 | Mains L2 current | r | 32 | unimplemented<br>unimplemented |
+| 1080 | 56 | Mains L3 current | r | 32 | unimplemented<br>unimplemented |
+| 1082 | 58 | Mains earth current | r | 32 | unimplemented<br>unimplemented |
+| 1084 | 60 | Mains L1 watts | r |  | 32767 (0x7FFF)<br>unimplemented |
+| 1086 | 62 | Mains L2 watts | r |  | 32767 (0x7FFF)<br>unimplemented |
+| 1088 | 64 | Mains L3 watts | r |  | 32767 (0x7FFF)<br>unimplemented |
+| 1090 | 66 | Bus current lag/lead | r |  | 32767 (0x7FFF) |
+| 1091 | 67 | Bus frequency | r | 16 | unimplemented |
+| 1092 | 68 | Bus L1-N voltage | r | 32 | unimplemented<br>unimplemented |
+| 1094 | 70 | Bus L2-N voltage | r | 32 | unimplemented<br>unimplemented |
+| 1096 | 72 | Bus L3-N voltage | r | 32 | unimplemented<br>unimplemented |
+| 1098 | 74 | Bus L1-L2 voltage | r | 32 | unimplemented<br>unimplemented |
+| 1100 | 76 | Bus L2-L3 voltage | r | 32 | unimplemented<br>unimplemented |
+| 1102 | 78 | Bus L3-L1 voltage | r | 32 | unimplemented<br>unimplemented |
+| 1104 | 80 | Bus L1 current | r | 32 | unimplemented<br>unimplemented |
+| 1106 | 82 | Bus L2 current | r | 32 | unimplemented<br>unimplemented |
+| 1108 | 84 | Bus L3 current | r | 32 | unimplemented<br>unimplemented |
+| 1110 | 86 | Bus earth current | r | 32 | unimplemented<br>unimplemented |
+| 1112 | 88 | Bus L1 watts | r |  | —<br>— |
+| 1114 | 90 | Bus L2 watts | r |  | —<br>— |
+| 1116 | 92 | Bus L3 watts | r |  | —<br>— |
+| 1118 | 94 | Bus phase rotation | r | 16 | — |
+| 1119 | 95 | Bus 2 frequency | r | 16 | — |
+| 1120 | 96 | Bus 2 L1-N voltage | r | 32 | —<br>— |
+| 1122 | 98 | Bus 2 L2-N voltage | r | 32 | —<br>— |
+| 1124 | 100 | Bus 2 L3-N voltage | r | 32 | —<br>— |
+| 1126 | 102 | Bus 2 L1-L2 voltage | r | 32 | —<br>— |
+| 1128 | 104 | Bus 2 L2-L3 voltage | r | 32 | —<br>— |
+| 1130 | 106 | Bus 2 L3-L1 voltage | r | 32 | —<br>— |
+| 1132 | 108 | Bus 2 L1 current | r | 32 | —<br>— |
+| 1134 | 110 | Bus 2 L2 current | r | 32 | —<br>— |
+| 1136 | 112 | Bus 2 L3 current | r | 32 | —<br>— |
+| 1138 | 114 | Bus 2 earth current | r | 32 | —<br>— |
+| 1140 | 116 | Bus 2 L1 watts | r |  | —<br>— |
+| 1142 | 118 | Bus 2 L2 watts | r |  | —<br>— |
+| 1144 | 120 | Bus 2 L3 watts | r |  | —<br>— |
+| 1146 | 122 | Bus 2 phase rotation | r | 16 | — |
+| 1147 | 123 | Bus 2 current lag/lead | r |  | — |
+| 1148 | 124 | S1 frequency | r | 16 | — |
+| 1149 | 125 | S1 L1-N voltage | r | 32 | —<br>— |
+| 1151 | 127 | S1 L2-N voltage | r | 32 | —<br>— |
+| 1153 | 129 | S1 L3-N voltage | r | 32 | —<br>— |
+| 1155 | 131 | S1 L1-L2 voltage | r | 32 | —<br>— |
+| 1157 | 133 | S1 L2-L3 voltage | r | 32 | —<br>— |
+| 1159 | 135 | S1 L3-L1 voltage | r | 32 | —<br>— |
+| 1161 | 137 | S1 L1 current | r | 32 | —<br>— |
+| 1163 | 139 | S1 L2 current | r | 32 | —<br>— |
+| 1165 | 141 | S1 L3 current | r | 32 | —<br>— |
+| 1167 | 143 | S1 earth current | r | 32 | —<br>— |
+| 1169 | 145 | S1 L1 watts | r |  | —<br>— |
+| 1171 | 147 | S1 L2 watts | r |  | —<br>— |
+| 1173 | 149 | S1 L3 watts | r |  | —<br>— |
+| 1175 | 151 | S1 current lag/lead | r |  | — |
+| 1176 | 152 | S2 frequency | r | 16 | — |
+| 1177 | 153 | S2 L1-N voltage | r | 32 | —<br>— |
+| 1179 | 155 | S2 L2-N voltage | r | 32 | —<br>— |
+| 1181 | 157 | S2 L3-N voltage | r | 32 | —<br>— |
+| 1183 | 159 | S2 L1-L2 voltage | r | 32 | —<br>— |
+| 1185 | 161 | S2 L2-L3 voltage | r | 32 | —<br>— |
+| 1187 | 163 | S2 L3-L1 voltage | r | 32 | —<br>— |
+| 1189 | 165 | S2 L1 current | r | 32 | —<br>— |
+| 1191 | 167 | S2 L2 current | r | 32 | —<br>— |
+| 1193 | 169 | S2 L3 current | r | 32 | —<br>— |
+| 1195 | 171 | S2 earth current | r | 32 | —<br>— |
+| 1197 | 173 | S2 L1 watts | r |  | —<br>— |
+| 1199 | 175 | S2 L2 watts | r |  | —<br>— |
+| 1201 | 177 | S2 L3 watts | r |  | —<br>— |
+| 1203 | 179 | S2 current lag/lead | r |  | — |
+| 1204 | 180 | Load L1 current | r | 32 | —<br>— |
+| 1206 | 182 | Load L2 current | r | 32 | —<br>— |
+| 1208 | 184 | Load L3 current | r | 32 | —<br>— |
+| 1210 | 186 | Load L1 watts | r |  | —<br>— |
+| 1212 | 188 | Load L2 watts | r |  | —<br>— |
+| 1214 | 190 | Load L3 watts | r |  | —<br>— |
+| 1216 | 192 | Load current lag/lead | r |  | — |
+| 1217 | 193 | S1 phase rotation | r | 16 | — |
+| 1218 | 194 | S2 phase rotation | r | 16 | — |
+| 1219 | 195 | Governor output | r | 16S | — |
+| 1220 | 196 | AVR output | r | 16S | — |
+| 1221 | 197 | DC Plant Battery Charge State | r | 16 | — |
+| 1222 | 198 | DC Plant Battery Discharge State | r | 16 | — |
+| 1223 | 199 | DC Voltage | r | 16 | — |
+| 1224 | 200 | DC Shunt 1 Current | r | 32S | —<br>— |
+| 1226 | 202 | DC Shunt 2 Current | r | 32S | —<br>— |
+| 1228 | 204 | DC Load Current | r | 32S | —<br>— |
+| 1230 | 206 | DC Plant Battery Current | r | 32S | —<br>— |
+| 1232 | 208 | DC Total Current | r | 32S | —<br>— |
+| 1234 | 210 | DC Plant Battery Cycles | r | 32 | —<br>— |
+| 1236 | 212 | DC Charger Watts | r |  | —<br>— |
+| 1238 | 214 | DC Plant Battery Watts | r |  | —<br>— |
+| 1240 | 216 | DC Load Watts | r |  | —<br>— |
+| 1242 | 218 | DC Total Watts | r |  | —<br>— |
+| 1244 | 220 | DC Charge Mode | r | 16 | — |
+| 1245 | 221 | DC Plant Battery temperature | r |  | — |
+| 1246 | 222 | DC Battery Cycle State | r | 16 | — |
+| 1247 | 223 | Mains zero sequence voltage angle | r | 16S | — |
+| 1248 | 224 | Mains positive sequence voltage angle | r | 16S | — |
+| 1249 | 225 | Mains negative sequence voltage angle | r | 16S | — |
+| 1250 | 226 | Mains zero sequence voltage magnitude | r | 32 | —<br>— |
+| 1252 | 228 | Mains positive sequence voltage magnitude | r | 32 | —<br>— |
+| 1254 | 230 | Mains negative sequence voltage magnitude | r | 32 | —<br>— |
+| 1256 | 232 | Battery Charger Output Current | r | 32S | —<br>— |
+| 1258 | 234 | Battery Charger Output Voltage | r | 32S | —<br>— |
+| 1260 | 236 | Battery Open Circuit Voltage | r | 32S | —<br>— |
+| 1262 | 238 | Load L1-N voltage (8661) | r | 32 | —<br>— |
+| 1264 | 240 | Load L2-N voltage (8661) | r | 32 | —<br>— |
+| 1266 | 242 | Load L3-N voltage (8661) | r | 32 | —<br>— |
+| 1268 | 244 | Load L1-L2 voltage (8661) | r | 32 | —<br>— |
+| 1270 | 246 | Load L2-L3 voltage (8661) | r | 32 | —<br>— |
+| 1272 | 248 | Load L3-L1 voltage (8661) | r | 32 | —<br>— |
+| 1274 | 250 | Load frequency | r | 16 | — |
+| 1275 | 251 | Load phase rotation | r | 16 | — |
+| 1276 | 252 | Battery Charger Auxiliary Voltage | r | 32S | —<br>— |
+| 1278 | 254 | Battery Charger Auxiliary Current | r | 32S | —<br>— |
+
+## Page 5 — Coolant pressure 1
+
+- Base address: `1280` (`page * 256 + offset`)
+- Registers: 165
+- Read runs: 26 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 1280 | 0 | Coolant pressure 1 | r | 16 | unimplemented |
+| 1281 | 1 | Coolant pressure 2 | r | 16 | unimplemented |
+| 1282 | 2 | Fuel pressure 1 | r | 16 | unimplemented |
+| 1283 | 3 | Fuel pressure 2 | r | 16 | unimplemented |
+| 1284 | 4 | Turbo pressure 1 | r | 16 | unimplemented |
+| 1285 | 5 | Turbo pressure 2 | r | 16 | unimplemented |
+| 1286 | 6 | Inlet manifold temperature 1 | r |  | 32767 (0x7FFF) |
+| 1287 | 7 | Inlet manifold temperature 2 | r |  | 32767 (0x7FFF) |
+| 1288 | 8 | Exhaust temperature 1 | r |  | 32767 (0x7FFF) |
+| 1289 | 9 | Exhaust temperature 2 | r |  | 32767 (0x7FFF) |
+| 1290 | 10 | Fuel consumption | r | 32 | unimplemented<br>unimplemented |
+| 1292 | 12 | Water in Fuel | r | 16 | unimplemented |
+| 1293 | 13 | CAN BIT data | r | 16 | unimplemented |
+| 1294 | 14 | Atmospheric pressure | r | 16 | unimplemented |
+| 1295 | 15 | Fuel temperature | r |  | 32767 (0x7FFF) |
+| 1296 | 16 | Fuel level (Units) <8xxx phase 2> | r | 32 | 0 (0x0000)<br>1270 (0x04F6) |
+| 1298 | 18 | Selected units for fuel level <8xxx phase 2> | r | 16 | 0 (0x0000) |
+| 1328 | 48 | Auxiliary sender 1 category | r | 16 | unimplemented |
+| 1329 | 49 | Auxiliary sender 1 value | r |  | 32767 (0x7FFF) |
+| 1330 | 50 | Auxiliary sender 2 category | r | 16 | unimplemented |
+| 1331 | 51 | Auxiliary sender 2 value | r |  | 32767 (0x7FFF) |
+| 1332 | 52 | Auxiliary sender 3 category | r | 16 | unimplemented |
+| 1333 | 53 | Auxiliary sender 3 value | r |  | 32767 (0x7FFF) |
+| 1334 | 54 | Auxiliary sender 4 category | r | 16 | unimplemented |
+| 1335 | 55 | Auxiliary sender 4 value | r |  | 32767 (0x7FFF) |
+| 1344 | 64 | Exhaust after treatment fuel used | r |  | unimplemented<br>unimplemented |
+| 1346 | 66 | After treatment temperature T1 | r |  | 32767 (0x7FFF) |
+| 1347 | 67 | After treatment temperature T3 | r |  | 32767 (0x7FFF) |
+| 1348 | 68 | Engine reference torque | r |  | unimplemented<br>unimplemented |
+| 1350 | 70 | Engine percentage torque | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1352 | 72 | Engine demand torque | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1354 | 74 | Percentage load at speed | r |  | unimplemented |
+| 1355 | 75 | Accelerator position | r |  | unimplemented |
+| 1356 | 76 | Nominal friction percentage torque | r |  | 32767 (0x7FFF) |
+| 1357 | 77 | Oil level | r |  | unimplemented |
+| 1358 | 78 | Crank case pressure | r |  | 32767 (0x7FFF) |
+| 1359 | 79 | Coolant level | r |  | unimplemented |
+| 1360 | 80 | Injector Rail 1 pressure | r |  | unimplemented |
+| 1361 | 81 | Injector Rail 2 pressure | r |  | unimplemented |
+| 1362 | 82 | Engine EGR flow | r |  | unimplemented |
+| 1363 | 83 | Pre filter oil pressure | r |  | unimplemented |
+| 1364 | 84 | Instant break power | r |  | unimplemented<br>unimplemented |
+| 1366 | 86 | Exhaust gas port 1-16 temperature | r |  | 32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF)<br>32767 (0x7FFF) |
+| 1382 | 102 | Intercooler temperature | r |  | 32767 (0x7FFF) |
+| 1383 | 103 | Turbo oil temperature | r |  | 32767 (0x7FFF) |
+| 1384 | 104 | ECU temperature | r |  | 32767 (0x7FFF) |
+| 1385 | 105 | Fan speed | r |  | unimplemented |
+| 1386 | 106 | Total engine revolutions | r |  | unimplemented<br>unimplemented |
+| 1388 | 108 | Air inlet pressure | r |  | unimplemented |
+| 1389 | 109 | Air filter differential pressure | r |  | unimplemented |
+| 1390 | 110 | Air trap inlet pressure | r |  | unimplemented |
+| 1391 | 111 | Turbo pressure 3 | r |  | unimplemented |
+| 1392 | 112 | Turbo pressure 4 | r |  | unimplemented |
+| 1393 | 113 | Inlet manifold temperature 3 | r |  | 32767 (0x7FFF) |
+| 1394 | 114 | Inlet manifold temperature 4 | r |  | 32767 (0x7FFF) |
+| 1395 | 115 | Inlet manifold temperature 5 | r |  | 32767 (0x7FFF) |
+| 1396 | 116 | Inlet manifold temperature 6 | r |  | 32767 (0x7FFF) |
+| 1397 | 117 | Trip fuel | r |  | unimplemented<br>unimplemented |
+| 1399 | 119 | Electrical potential | r |  | unimplemented |
+| 1400 | 120 | PGI Engine type | r |  | unimplemented |
+| 1401 | 121 | PGI Engine version number | r |  | unimplemented |
+| 1402 | 122 | DPTC filter lamp command | r |  | unimplemented |
+| 1403 | 123 | Exhaust system high temperature lamp | r |  | unimplemented |
+| 1404 | 124 | DPTC Action regeneration forced | r |  | unimplemented |
+| 1405 | 125 | Shutdown wait to start | r |  | unimplemented |
+| 1406 | 126 | Shutdown protection | r |  | unimplemented |
+| 1407 | 127 | Shutdown Approaching | r |  | unimplemented |
+| 1408 | 128 | Engine operating state | r |  | unimplemented |
+| 1409 | 129 | Shutdown coolant override | r |  | unimplemented |
+| 1410 | 130 | Battle short override | r |  | unimplemented |
+| 1411 | 131 | Module engine hours | r |  | unimplemented |
+| 1412 | 132 | Module oil pressure | r |  | unimplemented |
+| 1413 | 133 | Module coolant temperature | r |  | unimplemented |
+| 1414 | 134 | Module engine RPM | r |  | unimplemented |
+| 1415 | 135 | Module charge alternator | r |  | unimplemented |
+| 1416 | 136 | Module speed feed | r |  | unimplemented |
+| 1417 | 137 | Frequency adjust | r |  | unimplemented |
+| 1418 | 138 | Engine operating state | r |  | unimplemented |
+| 1419 | 139 | Engine alarm warning | r |  | unimplemented |
+| 1420 | 140 | Engine alarm shutdown | r |  | unimplemented |
+| 1421 | 141 | Engine alarm electrical trip | r |  | unimplemented |
+| 1422 | 142 | CAN amber stop lamp | r |  | unimplemented |
+| 1423 | 143 | CAN amber lamp flash | r |  | unimplemented |
+| 1424 | 144 | CAN Red stop lamp | r |  | unimplemented |
+| 1425 | 145 | CAN red lamp flash | r |  | unimplemented |
+| 1426 | 146 | CAN protect lamp | r |  | unimplemented |
+| 1427 | 147 | CAN protect lamp flash | r |  | unimplemented |
+| 1428 | 148 | Malfunction Lamp | r |  | unimplemented |
+| 1429 | 149 | Malfunction lamp flash | r |  | unimplemented |
+| 1430 | 150 | Electrical potential | r |  | unimplemented |
+| 1431 | 151 | Battery potential | r |  | unimplemented |
+| 1432 | 152 | Charging potential | r |  | unimplemented |
+| 1433 | 153 | Charge alternator current | r |  | unimplemented |
+| 1434 | 154 | Battery current | r |  | 32767 (0x7FFF) |
+| 1435 | 155 | Engine torque mode | r |  | unimplemented |
+| 1436 | 156 | Engine starter mode | r |  | unimplemented |
+| 1437 | 157 | CAN CI status | r |  | unimplemented |
+| 1438 | 158 | Demand speed | r |  | unimplemented |
+| 1439 | 159 | Speed up | r |  | unimplemented |
+| 1440 | 160 | Speed down | r |  | unimplemented |
+| 1441 | 161 | Speed fail | r |  | unimplemented |
+| 1442 | 162 | Current SD source | r |  | unimplemented |
+| 1443 | 163 | Feedback SD CAN | r |  | unimplemented |
+| 1444 | 164 | Feedback SD analogue | r |  | unimplemented |
+| 1445 | 165 | Failure codes | r |  | unimplemented |
+| 1446 | 166 | Actual droop | r |  | unimplemented |
+| 1447 | 167 | Start status | r |  | unimplemented |
+| 1448 | 168 | Protection override status | r |  | unimplemented |
+| 1449 | 169 | MTU running state | r |  | unimplemented |
+| 1450 | 170 | Cylinder cut off | r |  | unimplemented |
+| 1451 | 171 | Load gen status | r |  | unimplemented |
+| 1452 | 172 | Extended stop status | r |  | unimplemented |
+| 1453 | 173 | Current operating mode | r |  | unimplemented |
+| 1454 | 174 | MTU required torque | r |  | unimplemented |
+| 1455 | 175 | Trip average fuel | r |  | unimplemented |
+| 1456 | 176 | ECU rated power | r |  | unimplemented |
+| 1457 | 177 | ECU rated speed | r |  | unimplemented |
+| 1458 | 178 | ECU idle speed | r |  | unimplemented |
+| 1459 | 179 | ECU desired speed | r |  | unimplemented |
+| 1460 | 180 | ECU preheat status | r |  | unimplemented |
+| 1461 | 181 | Manifold pressure | r |  | unimplemented |
+| 1462 | 182 | Intercooler level | r |  | unimplemented |
+| 1464 | 184 | Auto DPF Regeneration Inhibit | r |  | 0 (0x0000) |
+| 1465 | 185 | DPTC Active Regeneration Inhibit Switch (received from engine) SPN 3703 | r |  | unimplemented |
+| 1466 | 186 | Soot Load | r |  | unimplemented |
+| 1467 | 187 | Ash Load | r |  | unimplemented |
+| 1470 | 190 | LCD Temperature | r | 16S | unimplemented |
+| 1471 | 191 | DEF Tank Level | r |  | unimplemented |
+| 1472 | 192 | DEF Tank Temperature | r | 16S | unimplemented |
+| 1473 | 193 | DEF Level Status | r |  | unimplemented |
+| 1474 | 194 | DEF Consumption | r |  | unimplemented |
+| 1475 | 195 | Aftertreatment Status Reason | r |  | unimplemented |
+| 1476 | 196 | Aftertreatment Status Severity | r |  | unimplemented |
+| 1477 | 197 | Time left until action needed | r |  | unimplemented |
+| 1478 | 198 | Time until Torque Reduction | r |  | unimplemented |
+| 1479 | 199 | Time until Speed Reduction | r |  | unimplemented |
+| 1480 | 200 | EGR Pressure | r |  | unimplemented |
+| 1481 | 201 | EGR Temperature | r | 16S | unimplemented |
+| 1482 | 202 | Ambient Air Temperature | r | 16S | unimplemented |
+| 1483 | 203 | Air Intake Temperature | r | 16S | unimplemented |
+| 1484 | 204 | DEF Lamps – SCR Inducement | r |  | 15 (0x000F) |
+| 1485 | 205 | DEF Lamps – DEF Level Low | r |  | 15 (0x000F) |
+| 1486 | 206 | Generator high-resolution frequency | r | 16 | 9252 (0x2424) |
+| 1487 | 207 | Mains high-resolution frequency | r | 16 | 9252 (0x2424) |
+| 1488 | 208 | Bus high-resolution frequency | r | 16 | 9252 (0x2424) |
+| 1489 | 209 | Bus 2 high-resolution frequency | r | 16 | 9252 (0x2424) |
+| 1490 | 210 | Oil Pressure | r |  | 9252 (0x2424) |
+| 1491 | 211 | CAN Alternate engine speed selected | r | 16 | 9252 (0x2424) |
+| 1492 | 212 | Generator Excitation Field Current | r |  | 9252 (0x2424)<br>9252 (0x2424) |
+| 1494 | 214 | Generator Excitation Field Voltage | r |  | 9252 (0x2424)<br>9252 (0x2424) |
+| 1496 | 216 | Generator Output Voltage Bias Percentage | r |  | 9252 (0x2424) |
+| 1501 | 221 | Instant Fuel Rate | r |  | 9252 (0x2424) |
+| 1502 | 222 | DPTC Filter Status | r |  | 9252 (0x2424) |
+| 1503 | 223 | DPTC Active Regeneration Inhibit | r |  | 9252 (0x2424) |
+| 1504 | 224 | DPTC Active Regeneration Inhibit ET | r |  | 9252 (0x2424) |
+| 1505 | 225 | DEF Tank Status | r |  | 9252 (0x2424) |
+| 1506 | 226 | Gas Fuel Pressure | r |  | 9252 (0x2424) |
+| 1507 | 227 | Throttle Position 1 | r |  | 9252 (0x2424) |
+| 1508 | 228 | Throttle Position 2 | r |  | 9252 (0x2424) |
+| 1509 | 229 | DC Charger Current | r | 32S | 9252 (0x2424)<br>9252 (0x2424) |
+| 1511 | 231 | Trip Average Fuel Efficiency | r |  | 9252 (0x2424) |
+| 1512 | 232 | Instantaneous Fuel Efficiency | r |  | 9252 (0x2424) |
+| 1513 | 233 | Fuel Distance (in mm) | r | 16S | 9252 (0x2424) |
+| 1469 | 189 | Battery Charger PCB Temperature | r | 16S | unimplemented |
+| 1291 | 11 | Bad Data | r |  | unimplemented |
+
+## Page 6 — Generator total watts
+
+- Base address: `1536` (`page * 256 + offset`)
+- Registers: 104
+- Read runs: 14 ok / 9 fail
+- First error: `@1645 qty=4 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 1536 | 0 | Generator total watts | r | 32S | 0 (0x0000)<br>0 (0x0000) |
+| 1538 | 2 | Generator L1 VA | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1540 | 4 | Generator L2 VA | r | 32 | unimplemented<br>unimplemented |
+| 1542 | 6 | Generator L3 VA | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1544 | 8 | Generator total VA | r | 32S | 0 (0x0000)<br>0 (0x0000) |
+| 1546 | 10 | Generator L1 Var | r | 32S | 0 (0x0000)<br>0 (0x0000) |
+| 1548 | 12 | Generator L2 Var | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1550 | 14 | Generator L3 Var | r | 32S | 0 (0x0000)<br>0 (0x0000) |
+| 1552 | 16 | Generator total Var | r | 32S | 0 (0x0000)<br>0 (0x0000) |
+| 1554 | 18 | Generator power factor L1 | r | 16S | under range |
+| 1555 | 19 | Generator power factor L2 | r | 16S | unimplemented |
+| 1556 | 20 | Generator power factor L3 | r | 16S | under range |
+| 1557 | 21 | Generator average power factor | r | 16S | under range |
+| 1558 | 22 | Generator percentage of full power | r | 16S | 0 (0x0000) |
+| 1559 | 23 | Generator percentage of full Var | r | 16S | 0 (0x0000) |
+| 1560 | 24 | Mains total watts | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1562 | 26 | Mains L1 VA | r | 32 | unimplemented<br>unimplemented |
+| 1564 | 28 | Mains L2 VA | r | 32 | unimplemented<br>unimplemented |
+| 1566 | 30 | Mains L3 VA | r | 32 | unimplemented<br>unimplemented |
+| 1568 | 32 | Mains total VA | r | 32 | unimplemented<br>unimplemented |
+| 1570 | 34 | Mains L1 Var | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1572 | 36 | Mains L2 Var | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1574 | 38 | Mains L3 Var | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1576 | 40 | Mains total Var | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1578 | 42 | Mains power factor L1 | r | 16S | unimplemented |
+| 1579 | 43 | Mains power factor L2 | r | 16S | unimplemented |
+| 1580 | 44 | Mains power factor L3 | r | 16S | unimplemented |
+| 1581 | 45 | Mains average power factor | r | 16S | unimplemented |
+| 1614 | 78 | Gen L1 lead /lag | r | 16 | 1 (0x0001) |
+| 1615 | 79 | Gen L2 lead /lag | r | 16 | unimplemented |
+| 1616 | 80 | Gen L3 lead /lag | r | 16 | 1 (0x0001) |
+| 1617 | 81 | Gen total lead /lag | r | 16 | 1 (0x0001) |
+| 1618 | 82 | Gen L1 percentage of full power | r | 16S | 0 (0x0000) |
+| 1619 | 83 | Gen L2 percentage of full power | r | 16S | unimplemented |
+| 1620 | 84 | Gen L3 percentage of full power | r | 16S | 0 (0x0000) |
+| 1645 | 109 | Mains L1 lead/lag | r | 16 | — |
+| 1646 | 110 | Mains L2 lead/lag | r | 16 | — |
+| 1647 | 111 | Mains L3 lead/lag | r | 16 | — |
+| 1648 | 112 | Mains total lead/lag | r | 16 | — |
+| 1650 | 114 | Generator L-N voltage average | r | 32 | 0 (0x0000)<br>2263 (0x08D7) |
+| 1652 | 116 | Generator L-N voltage difference | r | 32 | 0 (0x0000)<br>6 (0x0006) |
+| 1654 | 118 | Generator L-N voltage min | r | 32 | 0 (0x0000)<br>2260 (0x08D4) |
+| 1656 | 120 | Generator L-N voltage max | r | 32 | 0 (0x0000)<br>2266 (0x08DA) |
+| 1658 | 122 | Generator L-L voltage average | r | 32 | 0 (0x0000)<br>3971 (0x0F83) |
+| 1660 | 124 | Generator L-L voltage difference | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1662 | 126 | Generator L-L voltage min | r | 32 | 0 (0x0000)<br>3971 (0x0F83) |
+| 1664 | 128 | Generator L-L voltage max | r | 32 | 0 (0x0000)<br>3971 (0x0F83) |
+| 1666 | 130 | Generator current average | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1668 | 132 | Generator current difference | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1670 | 134 | Generator current min | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1672 | 136 | Generator current max | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1674 | 138 | Generator watts average | r | 16S | 0 (0x0000) |
+| 1675 | 139 | Generator watts difference | r | 16S | 0 (0x0000) |
+| 1676 | 140 | Generator watts min | r | 16S | 0 (0x0000) |
+| 1677 | 141 | Generator watts max | r | 16S | 0 (0x0000) |
+| 1678 | 142 | Generator VA average | r | 16 | 0 (0x0000) |
+| 1679 | 143 | Generator VA difference | r | 16 | 0 (0x0000) |
+| 1680 | 144 | Generator VA min | r | 16 | 0 (0x0000) |
+| 1681 | 145 | Generator VA max | r | 16 | 0 (0x0000) |
+| 1682 | 146 | Generator Var average | r | 16S | 0 (0x0000) |
+| 1683 | 147 | Generator Var difference | r | 16S | 0 (0x0000) |
+| 1684 | 148 | Generator Var min | r | 16S | 0 (0x0000) |
+| 1685 | 149 | Generator Var max | r | 16S | 0 (0x0000) |
+| 1686 | 150 | Generator power factor average | r | 16S | under range |
+| 1687 | 151 | Generator power factor difference | r | 16S | unimplemented |
+| 1688 | 152 | Generator power factor min | r | 16S | unimplemented |
+| 1689 | 153 | Generator power factor max | r | 16S | unimplemented |
+| 1690 | 154 | Mains L-N voltage average | r | 32 | 0 (0x0000)<br>2338 (0x0922) |
+| 1692 | 156 | Mains L-N voltage difference | r | 32 | 0 (0x0000)<br>13 (0x000D) |
+| 1694 | 158 | Mains L-N voltage min | r | 32 | 0 (0x0000)<br>2332 (0x091C) |
+| 1696 | 160 | Mains L-N voltage max | r | 32 | 0 (0x0000)<br>2345 (0x0929) |
+| 1698 | 162 | Mains L-L voltage average | r | 32 | 0 (0x0000)<br>4027 (0x0FBB) |
+| 1700 | 164 | Mains L-L voltage difference | r | 32 | 0 (0x0000)<br>0 (0x0000) |
+| 1702 | 166 | Mains L-L voltage min | r | 32 | 0 (0x0000)<br>4027 (0x0FBB) |
+| 1704 | 168 | Mains L-L voltage max | r | 32 | 0 (0x0000)<br>4027 (0x0FBB) |
+| 1706 | 170 | Mains current average | r | 32 | —<br>— |
+| 1708 | 172 | Bus L-N voltage difference | r | 32 | —<br>— |
+| 1710 | 174 | Bus L-N voltage min | r | 32 | —<br>— |
+| 1712 | 176 | Bus L-N voltage max | r | 32 | —<br>— |
+| 1714 | 178 | Bus L-L voltage average | r | 32 | —<br>— |
+| 1716 | 180 | Bus L-L voltage difference | r | 32 | —<br>— |
+| 1718 | 182 | Bus L-L voltage min | r | 32 | —<br>— |
+| 1720 | 184 | Bus L-L voltage max | r | 32 | —<br>— |
+| 1722 | 186 | Bus 2 L-N voltage average | r | 32 | —<br>— |
+| 1724 | 188 | Bus 2 L-N voltage difference | r | 32 | —<br>— |
+| 1726 | 190 | Bus 2 L-N voltage min | r | 32 | —<br>— |
+| 1728 | 192 | Bus 2 L-N voltage max | r | 32 | —<br>— |
+| 1730 | 194 | Bus 2 L-L voltage average | r | 32 | —<br>— |
+| 1732 | 196 | Bus 2 L-L voltage difference | r | 32 | —<br>— |
+| 1734 | 198 | Bus 2 L-L voltage min | r | 32 | —<br>— |
+| 1736 | 200 | Bus 2 L-L voltage max | r | 32 | —<br>— |
+| 1738 | 202 | DC Charger Watts | r |  | —<br>— |
+| 1740 | 204 | DC Load Watts | r |  | —<br>— |
+| 1742 | 206 | DC Battery Watts | r |  | —<br>— |
+| 1744 | 208 | DC Total Watts | r |  | —<br>— |
+| 1746 | 210 | DC percentage of full power | r | 32S | —<br>— |
+| 1748 | 212 | Time To Empty (87xx v5.3) | r | 32S | —<br>— |
+| 1750 | 214 | Mains L1-N voltage 10s rolling average | r | 32 | —<br>— |
+| 1752 | 216 | Mains L2-N voltage 10s rolling average | r | 32 | —<br>— |
+| 1754 | 218 | Mains L3-N voltage 10s rolling average | r | 32 | —<br>— |
+| 1756 | 220 | Mains L1-L2 voltage 10s rolling average | r | 32 | —<br>— |
+| 1758 | 222 | Mains L2-L3 voltage 10s rolling average | r | 32 | —<br>— |
+| 1760 | 224 | Mains L3-L1 voltage 10s rolling average | r | 32 | —<br>— |
+| 1762 | 226 | Mains voltage asymmetry | r | 32 | —<br>— |
+
+## Page 7 — Current time since 1/1/70
+
+- Base address: `1792` (`page * 256 + offset`)
+- Registers: 51
+- Read runs: 7 ok / 6 fail
+- First error: `@1848 qty=8 -> exception:1`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 1792 | 0 | Current time since 1/1/70 | r | 32 | 27368 (0x6AE8)<br>19628 (0x4CAC) |
+| 1794 | 2 | Time to next engine maintenance | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1796 | 4 | Time of next engine maintenance since 1/1/70 | r | 32 | unimplemented<br>unimplemented |
+| 1798 | 6 | Engine run time | r | 32 | 139 (0x008B)<br>25890 (0x6522) |
+| 1800 | 8 | Generator positive KW hours | r | 32 | 1 (0x0001)<br>51566 (0xC96E) |
+| 1802 | 10 | Generator negative KW hours | r | 32 | unimplemented<br>unimplemented |
+| 1804 | 12 | Generator KVA hours | r | 32 | 1 (0x0001)<br>64658 (0xFC92) |
+| 1806 | 14 | Generator KVAr hours | r | 32 | 0 (0x0000)<br>250 (0x00FA) |
+| 1808 | 16 | Number of starts | r | 32 | 0 (0x0000)<br>2141 (0x085D) |
+| 1810 | 18 | Mains positive KW hours | r | 32 | unimplemented<br>unimplemented |
+| 1812 | 20 | Mains negative KW hours | r | 32 | unimplemented<br>unimplemented |
+| 1814 | 22 | Mains KVA hours | r | 32 | unimplemented<br>unimplemented |
+| 1816 | 24 | Mains KVAr hours | r | 32 | unimplemented<br>unimplemented |
+| 1818 | 26 | Bus positive KW hours | r | 32 | unimplemented<br>unimplemented |
+| 1820 | 28 | Bus negative KW hours | r | 32 | unimplemented<br>unimplemented |
+| 1822 | 30 | Bus KVA hours | r | 32 | unimplemented<br>unimplemented |
+| 1824 | 32 | Bus KVAr hours | r | 32 | unimplemented<br>unimplemented |
+| 1826 | 34 | Fuel used | r | 32 | unimplemented<br>unimplemented |
+| 1828 | 36 | Maximum positive mains R.O.C.O.F. | r | 32 | unimplemented<br>unimplemented |
+| 1830 | 38 | Maximum negative mains R.O.C.O.F. | r | 32 | unimplemented<br>unimplemented |
+| 1832 | 40 | Maximum positive mains vector shift | r | 32 | unimplemented<br>unimplemented |
+| 1834 | 42 | Maximum negative mains vector shift | r | 32 | unimplemented<br>unimplemented |
+| 1836 | 44 | Time to next engine maintenance alarm 1 | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1838 | 46 | Time of next engine maintenance alarm 1 since 1/1/70 | r | 32 | unimplemented<br>unimplemented |
+| 1840 | 48 | Time to next engine maintenance alarm 2 | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1842 | 50 | Time of next engine maintenance alarm 2 since 1/1/70 | r | 32 | unimplemented<br>unimplemented |
+| 1844 | 52 | Time to next engine maintenance alarm 3 | r | 32S | unimplemented<br>65535 (0xFFFF) |
+| 1846 | 54 | Time of next engine maintenance alarm 3 since 1/1/70 | r | 32 | unimplemented<br>unimplemented |
+| 1848 | 56 | Time to next plant battery maintenance | r | 32S | —<br>— |
+| 1850 | 58 | Time of next plant battery maintenance since 1/1/70 | r | 32 | —<br>— |
+| 1852 | 60 | Cycles to next plant battery maintenance | r | 32 | —<br>— |
+| 1854 | 62 | Capacity remaining to next plant battery maintenance | r | 32 | —<br>— |
+| 1856 | 64 | Time to next plant battery maintenance alarm 1 | r | 32S | —<br>— |
+| 1858 | 66 | Time of next plant battery maintenance alarm 1 since 1/1/70 | r | 32 | —<br>— |
+| 1860 | 68 | Cycles to next plant battery maintenance alarm 1 | r | 32 | —<br>— |
+| 1862 | 70 | Capacity remaining to next plant battery maintenance alarm 1 | r | 32 | —<br>— |
+| 1864 | 72 | Time to next plant battery maintenance alarm 2 | r | 32S | —<br>— |
+| 1866 | 74 | Time of next plant battery maintenance alarm 2 since 1/1/70 | r | 32 | —<br>— |
+| 1868 | 76 | Cycles to next plant battery maintenance alarm 2 | r | 32 | —<br>— |
+| 1870 | 78 | Capacity remaining to next plant battery maintenance alarm 2 | r | 32 | —<br>— |
+| 1872 | 80 | Time to next plant battery maintenance alarm 3 | r | 32S | —<br>— |
+| 1874 | 82 | Time of next plant battery maintenance alarm 3 since 1/1/70 | r | 32 | —<br>— |
+| 1876 | 84 | Cycles to next plant battery maintenance alarm 3 | r | 32 | —<br>— |
+| 1878 | 86 | Capacity remaining to next plant battery maintenance alarm 3 | r | 32 | —<br>— |
+| 1880 | 88 | Plant Battery Run Time | r | 32 | —<br>— |
+| 1882 | 90 | Plant Battery Cycles | r | 32 | —<br>— |
+| 1884 | 92 | Plant Battery Charge State | r | 16 | —<br>— |
+| 1886 | 94 | Load kWh | r | 32 | —<br>— |
+| 1888 | 96 | Battery charging kWh | r | 32 | —<br>— |
+| 1890 | 98 | Battery discharging kWh | r | 32 | —<br>— |
+| 1892 | 100 | Fuel Efficiency KWh/L (accumulated) | r | 16 | — |
+
+## Page 8 — Number of named alarms
+
+- Base address: `2048` (`page * 256 + offset`)
+- Registers: 59
+- Read runs: 9 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 2048 | 0 | Number of named alarms | r | 16 | 61 (0x003D) |
+| 2049 | 1 | Emergency stop | r |  | 4383 (0x111F) |
+| 2050 | 2 | Under speed | r |  | 4369 (0x1111) |
+| 2051 | 3 | Loss of speed sensing | r |  | 4369 (0x1111) |
+| 2052 | 4 | Generator high frequency | r |  | 4607 (0x11FF) |
+| 2053 | 5 | Air flap | r |  | 61951 (0xF1FF) |
+| 2054 | 6 | Fuel level sender fault | r |  | 61937 (0xF1F1) |
+| 2055 | 7 | Low battery voltage | r |  | 4383 (0x111F) |
+| 2056 | 8 | Generator failed to close | r |  | 4351 (0x10FF) |
+| 2057 | 9 | Mains low voltage | r |  | unimplemented |
+| 2058 | 10 | Mains low frequency | r |  | unimplemented |
+| 2059 | 11 | Generator phase rotation wrong | r |  | unimplemented |
+| 2060 | 12 | Local telemetry configuration lost | r |  | 61951 (0xF1FF) |
+| 2061 | 13 | Failure to synchronise | r |  | unimplemented |
+| 2062 | 14 | Priority selection error | r |  | unimplemented |
+| 2063 | 15 | Multiset communications (MSC) too few sets | r |  | unimplemented |
+| 2064 | 16 | Minimum sets not reached | r |  | unimplemented |
+| 2065 | 17 | Auxiliary sender 1 low | r |  | unimplemented |
+| 2066 | 18 | Auxiliary sender 2 high | r |  | unimplemented |
+| 2067 | 19 | Auxiliary sender 3 fault | r |  | unimplemented |
+| 2068 | 20 | Engine control unit (ECU) link lost | r |  | 4369 (0x1111) |
+| 2069 | 21 | Out of sync | r |  | 61951 (0xF1FF) |
+| 2070 | 22 | Mains kW Limit | r |  | unimplemented |
+| 2071 | 23 | Mains G59 low frequency | r |  | unimplemented |
+| 2072 | 24 | Mains G59 trip | r |  | unimplemented |
+| 2073 | 25 | Bus 1 phase rotation wrong | r |  | unimplemented |
+| 2176 | 128 | Number of unnamed digital inputs | r | 16 | 9 (0x0009) |
+| 2177 | 129 | Unnamed digital input 1 | r |  | 1 (0x0001) |
+| 2178 | 130 | Unnamed digital input 5 | r |  | 4369 (0x1111) |
+| 2179 | 131 | Unnamed digital input 9 | r |  | 8191 (0x1FFF) |
+| 2180 | 132 | Unnamed digital input 13 | r |  | unimplemented |
+| 2181 | 133 | Unnamed digital inputs 17-20 | r | 16 | unimplemented |
+| 2182 | 134 | Unnamed digital inputs 21-24 | r | 16 | unimplemented |
+| 2183 | 135 | Unnamed digital inputs 25-28 | r | 16 | unimplemented |
+| 2184 | 136 | Unnamed digital inputs 29-32 | r | 16 | unimplemented |
+| 2185 | 137 | Unnamed digital inputs 33-36 | r | 16 | unimplemented |
+| 2186 | 138 | Unnamed digital inputs 37-40 | r | 16 | unimplemented |
+| 2187 | 139 | Unnamed digital inputs 41-44 | r | 16 | unimplemented |
+| 2188 | 140 | Unnamed digital inputs 45-48 | r | 16 | unimplemented |
+| 2189 | 141 | Unnamed digital inputs 49-52 | r | 16 | unimplemented |
+| 2190 | 142 | Unnamed digital inputs 53-56 | r | 16 | unimplemented |
+| 2191 | 143 | Unnamed digital inputs 57-60 | r | 16 | unimplemented |
+| 2192 | 144 | Unnamed digital inputs 61-64 | r | 16 | unimplemented |
+| 2193 | 145 | Unnamed digital inputs 65-68 | r | 16 | unimplemented |
+| 2194 | 146 | Unnamed digital inputs 69-72 | r | 16 | unimplemented |
+| 2195 | 147 | Unnamed digital inputs 73-76 | r | 16 | unimplemented |
+| 2196 | 148 | Unnamed digital inputs 77-80 | r | 16 | unimplemented |
+| 2197 | 149 | Unnamed digital inputs 81-84 | r | 16 | unimplemented |
+| 2198 | 150 | Unnamed digital inputs 85-88 | r | 16 | unimplemented |
+| 2199 | 151 | Unnamed digital inputs 89-92 | r | 16 | unimplemented |
+| 2200 | 152 | Unnamed digital inputs 93-96 | r | 16 | unimplemented |
+| 2201 | 153 | Unnamed digital inputs 97-100 | r | 16 | unimplemented |
+| 2202 | 154 | Unnamed digital inputs 101-104 | r | 16 | unimplemented |
+| 2203 | 155 | Unnamed digital inputs 105-108 | r | 16 | unimplemented |
+| 2204 | 156 | Unnamed digital inputs 109-112 | r | 16 | unimplemented |
+| 2205 | 157 | Unnamed digital inputs 113-116 | r | 16 | unimplemented |
+| 2206 | 158 | Unnamed digital inputs 117-120 | r | 16 | unimplemented |
+| 2207 | 159 | Unnamed digital inputs 121-124 | r | 16 | unimplemented |
+| 2208 | 160 | Unnamed digital inputs 125-128 | r | 16 | unimplemented |
+
+## Page 9 — V1 Voltage L1 THD
+
+- Base address: `2304` (`page * 256 + offset`)
+- Registers: 22
+- Read runs: 14 ok / 3 fail
+- First error: `@2376 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 2304 | 0 | V1 Voltage L1 THD | r |  | unimplemented |
+| 2305 | 1 | V1 Voltage L1 Fundamental level | r | 16 | unimplemented |
+| 2306 | 2 | rd V1 Voltage L1 3 harmonic level | r | 16 | unimplemented |
+| 2307 | 3 | th V1 Voltage L1 5 harmonic level | r | 16 | unimplemented |
+| 2308 | 4 | th V1 Voltage L1 7 harmonic level | r | 16 | unimplemented |
+| 2309 | 5 | th V1 Voltage L1 9 harmonic level | r | 16 | unimplemented |
+| 2310 | 6 | th V1 Voltage L1 11 harmonic level | r | 16 | unimplemented |
+| 2311 | 7 | th V1 Voltage L1 13 harmonic level | r | 16 | unimplemented |
+| 2312 | 8 | th V1 Voltage L1 15 harmonic level | r | 16 | unimplemented |
+| 2313 | 9 | th V1 Voltage L1 17 harmonic level | r | 16 | unimplemented |
+| 2314 | 10 | th V1 Voltage L1 19 harmonic level | r | 16 | unimplemented |
+| 2315 | 11 | st V1 Voltage L1 21 harmonic level | r | 16 | unimplemented |
+| 2316 | 12 | V1 Voltage L2 THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 2328 | 24 | V1 Voltage L3 THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 2340 | 36 | V2 Voltage L1 THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 2352 | 48 | V2 Voltage L2 THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 2364 | 60 | V2 Voltage L3 THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 2376 | 72 | Current L1 THD etc | r |  | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 2388 | 84 | Current L2 THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 2400 | 96 | Current L3 THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 2412 | 108 | Current Neutral/Earth THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 2424 | 120 | th Current 5 CT THD etc | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+
+## Page 10 — AVR Software major version
+
+- Base address: `2560` (`page * 256 + offset`)
+- Registers: 33
+- Read runs: 5 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 2560 | 0 | AVR Software major version | r | 16 | unimplemented |
+| 2561 | 1 | AVR Software minor version | r | 16 | unimplemented |
+| 2562 | 2 | AVR Software build | r | 16 | unimplemented |
+| 2563 | 3 | AVR boot-loader major version | r | 16 | unimplemented |
+| 2564 | 4 | AVR boot-loader minor version | r | 16 | unimplemented |
+| 2565 | 5 | AVR boot-loader build | r | 16 | unimplemented |
+| 2566 | 6 | AVR status (see below) | r | 16 | unimplemented |
+| 2567 | 7 | Reserved flags | r |  | unimplemented |
+| 2568 | 8 | Alternator frequency | r | 16 | unimplemented |
+| 2569 | 9 | Alternator feedback voltage | r | 16 | unimplemented |
+| 2570 | 10 | Alternator droop current | r | 16 | unimplemented |
+| 2571 | 11 | Alternator droop current lag/lead | r |  | unimplemented |
+| 2572 | 12 | Auxiliary Supply voltage | r | 16 | unimplemented |
+| 2573 | 13 | Alternator excitation voltage | r | 16 | unimplemented |
+| 2574 | 14 | External pot. value | r | 16 | unimplemented |
+| 2575 | 15 | External control voltage | r |  | unimplemented |
+| 2576 | 16 | Voltage preset position | r | 16 | unimplemented |
+| 2577 | 17 | Droop preset position | r | 16 | unimplemented |
+| 2578 | 18 | UFRO preset position | r | 16 | unimplemented |
+| 2579 | 19 | P preset position | r | 16 | unimplemented |
+| 2580 | 20 | I preset position | r | 16 | unimplemented |
+| 2581 | 21 | D preset position | r | 16 | unimplemented |
+| 2582 | 22 | PWM output duty cycle | r | 16 | unimplemented |
+| 2583 | 23 | Voltage set point | r | 16 | unimplemented |
+| 2584 | 24 | Droop set point | r | 16 | unimplemented |
+| 2585 | 25 | UFRO knee set point | r | 16 | unimplemented |
+| 2586 | 26 | Alternator auxiliary winding voltage | r | 16 | unimplemented |
+| 2587 | 27 | Alternator excitation current | r | 16 | unimplemented |
+| 2588 | 28 | P set point | r | 16 | unimplemented |
+| 2589 | 29 | I set point | r | 16 | unimplemented |
+| 2590 | 30 | D set point | r | 16 | unimplemented |
+| 2591 | 31 | Auto frequency selection state (see below) | r | 16 | unimplemented |
+| 2624 | 64 | Alarm reset | r | 16 | unimplemented |
+
+## Page 11 — Software version
+
+- Base address: `2816` (`page * 256 + offset`)
+- Registers: 4
+- Read runs: 1 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 2816 | 0 | Software version | r | 16 | unimplemented |
+| 2817 | 1 | CPU power usage | r | 16 | unimplemented |
+| 2818 | 2 | Button number pressed, 0=none | r | 16 | unimplemented |
+| 2819 | 3 | Backup supply voltage | r | 16 | unimplemented |
+
+## Page 12 — Emergency stop input
+
+- Base address: `3072` (`page * 256 + offset`)
+- Registers: 11
+- Read runs: 3 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 3072 | 0 | Emergency stop input | r | 15/16-16/16 | 32767 (0x7FFF) |
+| 3073 | 1 | Start button input | r | 15/16-16/16 | unimplemented |
+| 3088 | 16 | Number of unnamed digital inputs | r | 16 | 8 (0x0008) |
+| 3089 | 17 | Unnamed digital input 1 | r | 16/16 | 0 (0x0000) |
+| 3090 | 18 | Unnamed digital input 17-32 | r | 16 | unimplemented |
+| 3091 | 19 | Unnamed digital input 33-48 | r | 16 | unimplemented |
+| 3092 | 20 | Unnamed digital input 49-64 | r | 16 | unimplemented |
+| 3093 | 21 | Unnamed digital input 65-80 | r | 16 | unimplemented |
+| 3094 | 22 | Unnamed digital input 81-96 | r | 16 | unimplemented |
+| 3095 | 23 | Unnamed digital input 97-112 | r | 16 | unimplemented |
+| 3096 | 24 | Unnamed digital input 113-128 | r | 16 | unimplemented |
+
+## Page 13 — Fuel relay
+
+- Base address: `3328` (`page * 256 + offset`)
+- Registers: 10
+- Read runs: 3 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 3328 | 0 | Fuel relay | r | 15/16-16/16 | unimplemented |
+| 3344 | 16 | Number of unnamed digital outputs | r | 16 | 8 (0x0008) |
+| 3345 | 17 | Unnamed digital output 1 | r | 16/16 | 33023 (0x80FF) |
+| 3346 | 18 | Unnamed digital output 17-32 | r | 16 | unimplemented |
+| 3347 | 19 | Unnamed digital output 33-48 | r | 16 | unimplemented |
+| 3348 | 20 | Unnamed digital output 49-64 | r | 16 | unimplemented |
+| 3349 | 21 | Unnamed digital output 65-80 | r | 16 | unimplemented |
+| 3350 | 22 | Unnamed digital output 81-96 | r | 16 | unimplemented |
+| 3351 | 23 | Unnamed digital output 97-112 | r | 16 | unimplemented |
+| 3352 | 24 | Unnamed digital output 113-128 | r | 16 | unimplemented |
+
+## Page 14 — Number of LEDs
+
+- Base address: `3584` (`page * 256 + offset`)
+- Registers: 33
+- Read runs: 4 ok / 1 fail
+- First error: `@3584 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 3584 | 0 | Number of LEDs | r | 16 | — |
+| 3585 | 1 | LED 1 colour (see table below) | r |  | — |
+| 3586 | 2 | LEDs 5-8 colour | r | 16 | — |
+| 3587 | 3 | LEDs 9-12 colour | r | 16 | — |
+| 3588 | 4 | LEDs 13-16 colour | r | 16 | — |
+| 3589 | 5 | LEDs 17-20 colour | r | 16 | — |
+| 3590 | 6 | LEDs 21-24 colour | r | 16 | — |
+| 3591 | 7 | LEDs 25-28 colour | r | 16 | — |
+| 3592 | 8 | LEDs 29-32 colour | r | 16 | unimplemented |
+| 3593 | 9 | LEDs 33-36 colour | r | 16 | unimplemented |
+| 3594 | 10 | LEDs 37-40 colour | r | 16 | unimplemented |
+| 3595 | 11 | LEDs 41-44 colour | r | 16 | unimplemented |
+| 3596 | 12 | LEDs 45-48 colour | r | 16 | unimplemented |
+| 3597 | 13 | LEDs 49-52 colour | r | 16 | unimplemented |
+| 3598 | 14 | LEDs 53-56 colour | r | 16 | unimplemented |
+| 3599 | 15 | LEDs 57-60 colour | r | 16 | unimplemented |
+| 3600 | 16 | LEDs 61-64 colour | r | 16 | unimplemented |
+| 3601 | 17 | LEDs 65-68 colour | r | 16 | unimplemented |
+| 3602 | 18 | LEDs 69-72 colour | r | 16 | unimplemented |
+| 3603 | 19 | LEDs 73-76 colour | r | 16 | unimplemented |
+| 3604 | 20 | LEDs 77-80 colour | r | 16 | unimplemented |
+| 3605 | 21 | LEDs 81-84 colour | r | 16 | unimplemented |
+| 3606 | 22 | LEDs 85-88 colour | r | 16 | unimplemented |
+| 3607 | 23 | LEDs 89-92 colour | r | 16 | unimplemented |
+| 3608 | 24 | LEDs 93-96 colour | r | 16 | unimplemented |
+| 3609 | 25 | LEDs 97-100 colour | r | 16 | unimplemented |
+| 3610 | 26 | LEDs 101-104 colour | r | 16 | unimplemented |
+| 3611 | 27 | LEDs 105-108 colour | r | 16 | unimplemented |
+| 3612 | 28 | LEDs 109-112 colour | r | 16 | unimplemented |
+| 3613 | 29 | LEDs 113-116 colour | r | 16 | unimplemented |
+| 3614 | 30 | LEDs 117-120 colour | r | 16 | unimplemented |
+| 3615 | 31 | LEDs 121-124 colour | r | 16 | unimplemented |
+| 3616 | 32 | LEDs 125-128 colour | r | 16 | unimplemented |
+
+## Page 16 — System control function 0 supported
+
+- Base address: `4096` (`page * 256 + offset`)
+- Registers: 9
+- Read runs: 1 ok / 1 fail
+- First error: `@4104 qty=1 -> exception:2`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 4096 | 0 | System control function 0 supported | r | 16/16 | 63168 (0xF6C0) |
+| 4097 | 1 | System control function 16-31 supported | r | 16 | 0 (0x0000) |
+| 4098 | 2 | System control function 32-47 supported | r | 16 | 65024 (0xFE00) |
+| 4099 | 3 | System control function 48-63 supported | r | 16 | 0 (0x0000) |
+| 4100 | 4 | System control function 64-79 supported | r | 16 | 1792 (0x0700) |
+| 4101 | 5 | System control function 80-95 supported | r | 16 | 0 (0x0000) |
+| 4102 | 6 | System control function 96-111supported | r | 16 | 0 (0x0000) |
+| 4103 | 7 | System control function 112-127 supported | r | 16 | 0 (0x0000) |
+| 4104 | 8 | System control key | r | 16 | — |
+
+## Page 17 — Number of active trouble codes
+
+- Base address: `4352` (`page * 256 + offset`)
+- Registers: 8
+- Read runs: 2 ok / 2 fail
+- First error: `@4352 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 4352 | 0 | Number of active trouble codes | r | 16 | — |
+| 4353 | 1 | Malfunction indicator lamp status | r | 15/16-16/16 | — |
+| 4354 | 2 | Trouble code 1 | r |  | —<br>—<br>—<br>—<br>— |
+| 4359 | 7 | Trouble code 2 | r |  | —<br>—<br>—<br>—<br>— |
+| 4364 | 12 | Trouble code 3 | r |  | —<br>—<br>—<br>—<br>unimplemented |
+| 4369 | 17 | Trouble code 4 | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 4599 | 247 | Trouble code 50 | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 4356 | 4 | Trouble code type | r | 16 | — |
+
+## Page 18 — Number of active trouble codes
+
+- Base address: `4608` (`page * 256 + offset`)
+- Registers: 6
+- Read runs: 2 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 4608 | 0 | Number of active trouble codes | r | 16 | unimplemented |
+| 4611 | 3 | Reserved for SAE assignment | r | 15/16-16/16 | unimplemented |
+| 4612 | 4 | Trouble code 1: Least significant 16 bits of SPN | r | 16 | unimplemented |
+| 4613 | 5 | Trouble code 1: CM | r | 16/16 | unimplemented |
+| 4614 | 6 | Trouble code 2 as above | r |  | unimplemented<br>unimplemented |
+| 4616 | 8 | Trouble code 3 as above | r |  | unimplemented<br>unimplemented |
+
+## Page 20 — Manufacturer string
+
+- Base address: `5120` (`page * 256 + offset`)
+- Registers: 8
+- Read runs: 8 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 5120 | 0 | Manufacturer string | r |  | 32 (0x0020) |
+| 5152 | 32 | Model string | r |  | 32 (0x0020) |
+| 5184 | 64 | Control unit not configured string | r |  | 32 (0x0020) |
+| 5216 | 96 | Module variant | r |  | 32 (0x0020) |
+| 5248 | 128 | Control unit failure string | r |  | 32 (0x0020) |
+| 5280 | 160 | Shutdown alarm string | r |  | 32 (0x0020) |
+| 5312 | 192 | Electrical trip alarm string | r |  | 32 (0x0020) |
+| 5344 | 224 | Warning alarm string | r |  | 32 (0x0020) |
+
+## Page 25 — Modbus gateway port 0 device identity
+
+- Base address: `6400` (`page * 256 + offset`)
+- Registers: 8
+- Read runs: 7 ok / 1 fail
+- First error: `@6496 qty=1 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 6400 | 0 | Modbus gateway port 0 device identity | r |  | unimplemented |
+| 6432 | 32 | Modbus gateway port 1 device identity | r |  | unimplemented |
+| 6464 | 64 | Modbus gateway port 2 device identity | r |  | unimplemented |
+| 6496 | 96 | Modbus gateway port 3 device identity | r |  | — |
+| 6528 | 128 | Modbus gateway port 4 device identity | r |  | unimplemented |
+| 6560 | 160 | Modbus gateway port 5 device identity | r |  | unimplemented |
+| 6592 | 192 | Modbus gateway port 6 device identity | r |  | unimplemented |
+| 6624 | 224 | Modbus gateway port 7 device identity | r |  | unimplemented |
+
+## Page 28 — S.M. 1 state string
+
+- Base address: `7168` (`page * 256 + offset`)
+- Registers: 8
+- Read runs: 8 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 7168 | 0 | S.M. 1 state string | r |  | 32 (0x0020) |
+| 7200 | 32 | S.M. 2 state string | r |  | 32 (0x0020) |
+| 7232 | 64 | S.M. 3 state string | r |  | 32 (0x0020) |
+| 7264 | 96 | S.M. 4 state string | r |  | 32 (0x0020) |
+| 7296 | 128 | S.M. 5 state string | r |  | 32 (0x0020) |
+| 7328 | 160 | S.M. 6 state string | r |  | 32 (0x0020) |
+| 7360 | 192 | S.M. 7 state string | r |  | 32 (0x0020) |
+| 7392 | 224 | S.M. 8 state string | r |  | 32 (0x0020) |
+
+## Page 29 — Category
+
+- Base address: `7424` (`page * 256 + offset`)
+- Registers: 21
+- Read runs: 10 ok / 1 fail
+- First error: `@7485 qty=6 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 7424 | 0 | Category | r |  | unimplemented |
+| 7425 | 1 | Multiplier | r | 16S | 65535 (0xFFFF) |
+| 7426 | 2 | Precision | r |  | unimplemented |
+| 7427 | 3 | Range Min | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 7429 | 5 | Range Max | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 7431 | 7 | Unit suffix string | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 7456 | 32 | Emergency stop active string | r |  | unimplemented |
+| 7488 | 64 | Low oil pressure inactive string | r |  | — |
+| 7520 | 96 | Low oil pressure active string | r |  | unimplemented |
+| 7552 | 128 | High coolant temperature inactive string | r |  | unimplemented |
+| 7584 | 160 | High coolant temperature active string | r |  | unimplemented |
+| 7616 | 192 | High oil temperature inactive string | r |  | unimplemented |
+| 7648 | 224 | High oil temperature active string | r |  | unimplemented |
+| 7477 | 53 | 0 | r |  | unimplemented |
+| 7478 | 54 | 0 | r |  | unimplemented |
+| 7479 | 55 | 0 | r |  | unimplemented |
+| 7480 | 56 | 0 | r |  | unimplemented |
+| 7481 | 57 | 224 | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>—<br>—<br>— |
+| 7485 | 61 | 2133 Expansion module 1 input A-H strings | r |  | —<br>— |
+| 7487 | 63 | 2133 Expansion module 2 input A-H strings | r |  | —<br>— |
+| 7489 | 65 | 2133 Expansion module 3 input A-H strings | r |  | —<br>— |
+
+## Page 70 — PLC Data store 1
+
+- Base address: `17920` (`page * 256 + offset`)
+- Registers: 11
+- Read runs: 3 ok / 1 fail
+- First error: `@17936 qty=4 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 17920 | 0 | PLC Data store 1 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 17922 | 2 | PLC Data store 2 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 17924 | 4 | PLC Data store 3 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 17926 | 6 | PLC Data store 4 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 17928 | 8 | PLC Data store 5 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 17930 | 10 | PLC Data store 6 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 17932 | 12 | PLC Data store 7 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 17934 | 14 | PLC Data store 8 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 17936 | 16 | PLC Data store 9 | rw |  | —<br>— |
+| 17938 | 18 | PLC Data store 10 | rw |  | —<br>— |
+| 18118 | 198 | PLC Data store 100 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+
+## Page 72 — PLC Data Register 1
+
+- Base address: `18432` (`page * 256 + offset`)
+- Registers: 11
+- Read runs: 4 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 18432 | 0 | PLC Data Register 1 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18434 | 2 | PLC Data Register 2 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18436 | 4 | PLC Data Register 3 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18438 | 6 | PLC Data Register 4 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18440 | 8 | PLC Data Register 5 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18442 | 10 | PLC Data Register 6 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18444 | 12 | PLC Data Register 7 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18446 | 14 | PLC Data Register 8 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18448 | 16 | PLC Data Register 9 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18450 | 18 | PLC Data Register 10 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+| 18630 | 198 | PLC Data Register 100 | rw |  | 32 (0x0020)<br>32 (0x0020) |
+
+## Page 74 — PLC Timer value 1
+
+- Base address: `18944` (`page * 256 + offset`)
+- Registers: 11
+- Read runs: 4 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 18944 | 0 | PLC Timer value 1 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18946 | 2 | PLC Timer value 2 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18948 | 4 | PLC Timer value 3 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18950 | 6 | PLC Timer value 4 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18952 | 8 | PLC Timer value 5 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18954 | 10 | PLC Timer value 6 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18956 | 12 | PLC Timer value 7 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18958 | 14 | PLC Timer value 8 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18960 | 16 | PLC Timer value 9 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 18962 | 18 | PLC Timer value 10 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19042 | 98 | PLC Timer value 50 | r |  | 32 (0x0020)<br>32 (0x0020) |
+
+## Page 76 — PLC Counter value 1
+
+- Base address: `19456` (`page * 256 + offset`)
+- Registers: 11
+- Read runs: 4 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 19456 | 0 | PLC Counter value 1 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19458 | 2 | PLC Counter value 2 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19460 | 4 | PLC Counter value 3 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19462 | 6 | PLC Counter value 4 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19464 | 8 | PLC Counter value 5 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19466 | 10 | PLC Counter value 6 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19468 | 12 | PLC Counter value 7 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19470 | 14 | PLC Counter value 8 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19472 | 16 | PLC Counter value 9 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19474 | 18 | PLC Counter value 10 | r |  | 32 (0x0020)<br>32 (0x0020) |
+| 19554 | 98 | PLC Counter value 50 | r |  | 32 (0x0020)<br>32 (0x0020) |
+
+## Page 137 — Generating set run priority
+
+- Base address: `35072` (`page * 256 + offset`)
+- Registers: 54
+- Read runs: 12 ok / 4 fail
+- First error: `@35072 qty=4 -> exception:1`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 35104 | 32 | Generating set run priority | rw | 16 | unimplemented |
+| 35105 | 33 | Frequency control offset | rw | 16 | unimplemented |
+| 35108 | 36 | Load level setting (minimum) | rw |  | unimplemented |
+| 35109 | 37 | Load level setting (maximum) | rw |  | unimplemented |
+| 35111 | 39 | VAr level setting (maximum) | rw |  | — |
+| 35112 | 40 | Bus / Mains load setting | rw | 16 | — |
+| 35113 | 41 | Internal governor IF gain | rw | 16 | — |
+| 35114 | 42 | Internal governor IF offset | rw |  | — |
+| 35115 | 43 | Internal AVR IF gain | rw | 16 | — |
+| 35116 | 44 | Internal AVR IF offset | rw |  | — |
+| 35117 | 45 | Commissioning screens enable flag | rw | 16 | — |
+| 35121 | 49 | Relay pulse rate | rw | 16 | — |
+| 35122 | 50 | Relay pulse length | rw | 16 | — |
+| 35123 | 51 | Gain (proportional gain) | rw | 16 | — |
+| 35124 | 52 | Compensation (integral gain) | rw | 16 | — |
+| 35150 | 78 | Cummins CM850 Governor gain | rw | 16 | unimplemented |
+| 35153 | 81 | Relay pulse rate | rw | 16 | unimplemented |
+| 35154 | 82 | Relay pulse length | rw | 16 | unimplemented |
+| 35155 | 83 | Gain (proportional gain) | rw | 16 | unimplemented |
+| 35156 | 84 | Compensation (integral gain) | rw | 16 | unimplemented |
+| 35162 | 90 | Power control mode (see below) | rw | 16 | unimplemented |
+| 35163 | 91 | Current power target | r | 16S | 65535 (0xFFFF) |
+| 35169 | 97 | Relay pulse rate | rw | 16 | — |
+| 35170 | 98 | Relay pulse length | rw | 16 | — |
+| 35171 | 99 | Gain (proportional gain) | rw | 16 | — |
+| 35172 | 100 | Compensation (integral gain) | rw | 16 | — |
+| 35185 | 113 | Relay pulse rate | rw | 16 | unimplemented |
+| 35186 | 114 | Relay pulse length | rw | 16 | unimplemented |
+| 35187 | 115 | Gain (proportional gain) | rw | 16 | unimplemented |
+| 35188 | 116 | Compensation (integral gain) | rw | 16 | unimplemented |
+| 35194 | 122 | Power factor setting | rw | 16s | 65535 (0xFFFF) |
+| 35195 | 123 | Reactive power control mode (see below) | rw | 16 | unimplemented |
+| 35196 | 124 | Current reactive power target | r | 16S | 65535 (0xFFFF) |
+| 35197 | 125 | Current power factor target | r | 16S | 65535 (0xFFFF) |
+| 35200 | 128 | Manual frequency trim | rw | 16S | unimplemented |
+| 35201 | 129 | Minimum frequency trim | rw | 16S | 0 (0x0000) |
+| 35202 | 130 | Maximum frequency trim | rw | 16S | 0 (0x0000) |
+| 35214 | 142 | Nominal voltage | r | 32 | unimplemented<br>unimplemented |
+| 35216 | 144 | Nominal voltage nudge | w | 16s | 65535 (0xFFFF) |
+| 35217 | 145 | Nominal frequency | r | 16 | unimplemented |
+| 35218 | 146 | Nominal frequency nudge | w | 16s | 65535 (0xFFFF) |
+| 35240 | 168 | Ramp on rate | r | 16 | unimplemented |
+| 35241 | 169 | Ramp off rate | w | 16 | unimplemented |
+| 35242 | 170 | Reactive power setpoint change ramp rate | r | 16 | unimplemented |
+| 35243 | 171 | Real power setpoint change ramp rate | w | 16 | unimplemented |
+| 35221 | 149 | Current limit | rw | 16s | 65535 (0xFFFF) |
+| 35232 | 160 | DSENet Battery charger 0 Modbus ID | r | 16 | unimplemented |
+| 35233 | 161 | DSENet Battery charger 1 Modbus ID | r | 16 | unimplemented |
+| 35234 | 162 | DSENet Battery charger 2 Modbus ID | r | 16 | unimplemented |
+| 35235 | 163 | DSENet Battery charger 3 Modbus ID | r | 16 | unimplemented |
+| 35072 | 0 | Constant Power Factor mode | rw |  | — |
+| 35073 | 1 | Voltage-Reactive Power mode | rw |  | — |
+| 35074 | 2 | Power-Power Factor mode | rw |  | — |
+| 35075 | 3 | Constant Reactive Power mode | rw |  | — |
+
+## Page 142 — Number of trouble codes
+
+- Base address: `36352` (`page * 256 + offset`)
+- Registers: 5
+- Read runs: 2 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 36352 | 0 | Number of trouble codes | r | 16 | 0 (0x0000) |
+| 36353 | 1 | Amber warning lamp status | r |  | unimplemented |
+| 36354 | 2 | Trouble Code 1 | r |  | 0 (0x0000)<br>0 (0x0000)<br>1 (0x0001)<br>0 (0x0000) |
+| 36358 | 6 | Trouble Code 2 | r |  | 0 (0x0000)<br>0 (0x0000)<br>1 (0x0001)<br>0 (0x0000) |
+| 36362 | 10 | Trouble Code 3 | r |  | 0 (0x0000)<br>0 (0x0000)<br>1 (0x0001)<br>0 (0x0000) |
+
+## Page 152 — 2130 Expansion Module 0 input E user scale
+
+- Base address: `38912` (`page * 256 + offset`)
+- Registers: 28
+- Read runs: 7 ok / 8 fail
+- First error: `@39024 qty=8 -> exception:1`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 38912 | 0 | 2130 Expansion Module 0 input E user scale | rw | 32 | 0 (0x0000)<br>1000 (0x03E8) |
+| 38914 | 2 | 2130 Expansion Module 0 input F user scale | rw | 32 | 0 (0x0000)<br>1000 (0x03E8) |
+| 38916 | 4 | 2130 Expansion Module 0 input G user scale | rw | 32 | 0 (0x0000)<br>1000 (0x03E8) |
+| 38918 | 6 | 2130 Expansion Module 0 input H user scale | rw | 32 | 0 (0x0000)<br>1000 (0x03E8) |
+| 38920 | 8 | 2130 Expansion Module 1 inputs E-H user scale | rw |  | 0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8) |
+| 38928 | 16 | 2130 Expansion Module 2 inputs E-H user scale | rw |  | 0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8) |
+| 38936 | 24 | 2130 Expansion Module 3 inputs E-H user scale | rw |  | 0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8)<br>0 (0x0000)<br>1000 (0x03E8) |
+| 38944 | 32 | 2131 Expansion Module 0 input A user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38946 | 34 | 2131 Expansion Module 0 input B user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38948 | 36 | 2131 Expansion Module 0 input C user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38950 | 38 | 2131 Expansion Module 0 input D user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38952 | 40 | 2131 Expansion Module 0 input E user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38954 | 42 | 2131 Expansion Module 0 input F user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38956 | 44 | 2131 Expansion Module 0 input G user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38958 | 46 | 2131 Expansion Module 0 input H user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38960 | 48 | 2131 Expansion Module 0 input I user scale | rw | 32 | unimplemented<br>unimplemented |
+| 38962 | 50 | 2131 Expansion Module 0 input J user scale | rw | 32 | unimplemented<br>unimplemented |
+| 39024 | 112 | 2133 Expansion Module 0 input A user scale | rw | 32 | —<br>— |
+| 39026 | 114 | 2133 Expansion Module 0 input B user scale | rw | 32 | —<br>— |
+| 39028 | 116 | 2133 Expansion Module 0 input C user scale | rw | 32 | —<br>— |
+| 39030 | 118 | 2133 Expansion Module 0 input D user scale | rw | 32 | —<br>— |
+| 39032 | 120 | 2133 Expansion Module 0 input E user scale | rw | 32 | —<br>— |
+| 39034 | 122 | 2133 Expansion Module 0 input F user scale | rw | 32 | —<br>— |
+| 39036 | 124 | 2133 Expansion Module 0 input G user scale | rw | 32 | —<br>— |
+| 39038 | 126 | 2133 Expansion Module 0 input H user scale | rw | 32 | —<br>— |
+| 39040 | 128 | 2133 Expansion Module 1 inputs A-H user scale | rw |  | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 39056 | 144 | 2133 Expansion Module 2 inputs A-H user scale | rw |  | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 39072 | 160 | 2133 Expansion Module 3 inputs A-H user scale | rw |  | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+
+## Page 153 — Number of unnamed alarm sources
+
+- Base address: `39168` (`page * 256 + offset`)
+- Registers: 79
+- Read runs: 6 ok / 8 fail
+- First error: `@39184 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 39168 | 0 | Number of unnamed alarm sources | rw | 16 | 206 (0x00CE) |
+| 39169 | 1 | Unnamed digital input 1 | rw |  | 1 (0x0001) |
+| 39170 | 2 | Unnamed digital input 5 | rw |  | 4369 (0x1111) |
+| 39171 | 3 | Unnamed digital input 9 (Flex sender A as digital input) | rw |  | 8191 (0x1FFF) |
+| 39172 | 4 | Unnamed digital input 13 (Flex sender E as digital input) | rw |  | unimplemented |
+| 39173 | 5 | 2130 expansion module 0 digital input A | rw |  | 4369 (0x1111) |
+| 39174 | 6 | 2130 expansion module 0 digital input E | rw |  | 4369 (0x1111) |
+| 39175 | 7 | 2130 expansion module 1 digital input A-H | rw |  | 4369 (0x1111)<br>4369 (0x1111) |
+| 39177 | 9 | 2130 expansion module 2 digital input A-H | rw |  | 4369 (0x1111)<br>4369 (0x1111) |
+| 39179 | 11 | 2130 expansion module 3 digital input A-H | rw |  | 4369 (0x1111)<br>4369 (0x1111) |
+| 39181 | 13 | Reserved for expansion modules 4-9 | rw |  | unimplemented<br>unimplemented<br>unimplemented<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>unimplemented |
+| 39193 | 25 | 2130 expansion module 0 analogue input E low | rw |  | 0 (0x0000) |
+| 39194 | 26 | 2130 expansion module 0 analogue input G low | rw |  | 0 (0x0000) |
+| 39195 | 27 | 2130 expansion module 1 analogue inputs E-H | rw |  | 0 (0x0000)<br>0 (0x0000) |
+| 39197 | 29 | 2130 expansion module 2 analogue inputs E-H | rw |  | 0 (0x0000)<br>0 (0x0000) |
+| 39199 | 31 | 2130 expansion module 3 analogue inputs E-H | rw |  | 0 (0x0000)<br>0 (0x0000) |
+| 39201 | 33 | Reserved for 2130 expansion module 4-9 analogue inputs E-H | rw |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 39213 | 45 | Internal flexible sender A analogue input low | rw |  | 17 (0x0011) |
+| 39214 | 46 | Maintenance alarm 3 | rw |  | 4369 (0x1111) |
+| 39215 | 47 | PLC function 4 | rw |  | 4369 (0x1111) |
+| 39216 | 48 | PLC function 8 | rw |  | — |
+| 39217 | 49 | PLC function 12 | rw |  | — |
+| 39218 | 50 | PLC function 16 | rw |  | — |
+| 39219 | 51 | PLC function 20 | rw |  | — |
+| 39220 | 52 | Internal flexible sender B fault alarm | rw |  | — |
+| 39221 | 53 | Internal flexible sender D analogue input low | rw |  | — |
+| 39222 | 54 | Internal flexible sender E analogue input high | rw |  | — |
+| 39223 | 55 | Internal flexible sender F fault alarm | rw |  | — |
+| 39224 | 56 | 2133 expansion module 0 analogue input A low | rw |  | unimplemented |
+| 39225 | 57 | 2133 expansion module 0 analogue input C low | rw |  | unimplemented |
+| 39226 | 58 | 2133 expansion module 0 analogue input E low | rw |  | unimplemented |
+| 39227 | 59 | 2133 expansion module 0 analogue input G low | rw |  | unimplemented |
+| 39232 | 64 | 2133 expansion module 2 analogue input A – | rw |  | —<br>—<br>—<br>— |
+| 39236 | 68 | 2133 expansion module 3 analogue input A – | rw |  | —<br>—<br>—<br>— |
+| 39240 | 72 | 2131 expansion module 0 analogue input A low | rw |  | — |
+| 39241 | 73 | 2131 expansion module 0 analogue input C low | rw |  | — |
+| 39242 | 74 | 2131 expansion module 0 analogue input E low | rw |  | — |
+| 39243 | 75 | 2131 expansion module 0 analogue input G low | rw |  | — |
+| 39244 | 76 | 2131 expansion module 0 analogue input I | rw |  | — |
+| 39260 | 92 | 2131 expansion module 0 digital input A | rw |  | — |
+| 39261 | 93 | 2131 expansion module 0 digital input E | rw |  | — |
+| 39262 | 94 | 2131 expansion module 0 digital input I | rw |  | — |
+| 39270 | 102 | DSENet Charger 0 Common Shutdown | rw |  | — |
+| 39271 | 103 | DSENet Charger 2 Common Shutdown | rw |  | — |
+| 39178 | 10 | 2130 expansion module 0 digital input E | rw |  | 4369 (0x1111) |
+| 39183 | 15 | 2130 expansion module 3 digital input A-H | rw |  | unimplemented<br>— |
+| 39185 | 17 | 2131 expansion module 0 digital input A | rw |  | — |
+| 39186 | 18 | 2131 expansion module 0 digital input E | rw |  | — |
+| 39187 | 19 | 2131 expansion module 0 digital input I | rw |  | — |
+| 39188 | 20 | 2131 expansion module 1 digital input C | rw |  | — |
+| 39189 | 21 | 2131 expansion module 1 digital input G | rw |  | — |
+| 39190 | 22 | 2131 expansion module 2 digital input A | rw |  | — |
+| 39191 | 23 | 2131 expansion module 2 digital input E | rw |  | — |
+| 39192 | 24 | 2131 expansion module 2 digital input I | rw |  | unimplemented |
+| 39198 | 30 | 2130 expansion module 0 analogue input G low | rw |  | 0 (0x0000) |
+| 39203 | 35 | 2130 expansion module 3 analogue inputs E-H | rw |  | unimplemented<br>unimplemented |
+| 39233 | 65 | 2131 expansion module 0 analogue input C low | rw |  | — |
+| 39234 | 66 | 2131 expansion module 0 analogue input E low | rw |  | — |
+| 39235 | 67 | 2131 expansion module 0 analogue input G low | rw |  | — |
+| 39237 | 69 | 2131 expansion module 1 analogue input A – | rw |  | —<br>—<br>—<br>—<br>—<br>— |
+| 39247 | 79 | 2131 expansion module 3 analogue input A – | rw |  | —<br>—<br>—<br>—<br>— |
+| 39252 | 84 | 2133 expansion module 0 analogue input A low | rw |  | — |
+| 39253 | 85 | 2133 expansion module 0 analogue input C low | rw |  | — |
+| 39254 | 86 | 2133 expansion module 0 analogue input E low | rw |  | — |
+| 39255 | 87 | 2133 expansion module 0 analogue input G low | rw |  | — |
+| 39268 | 100 | Charger ID0 Common Shutdown | rw |  | — |
+| 39269 | 101 | Charger ID2 Common Shutdown | rw |  | — |
+| 39263 | 95 | 2131 expansion module 1 digital input C | rw |  | — |
+| 39264 | 96 | 2131 expansion module 1 digital input G | rw |  | — |
+| 39265 | 97 | 2131 expansion module 2 digital input A | rw |  | — |
+| 39266 | 98 | 2131 expansion module 2 digital input E | rw |  | — |
+| 39267 | 99 | 2131 expansion module 2 digital input I | rw |  | — |
+| 39176 | 8 | Unnamed digital input 29 | rw |  | 4369 (0x1111) |
+| 39207 | 39 | Internal flexible sender A analogue input low | rw |  | unimplemented |
+| 39208 | 40 | Internal flexible sender C analogue input low | rw |  | unimplemented |
+| 39209 | 41 | Internal flexible sender E analogue input low | rw |  | unimplemented |
+| 39210 | 42 | Internal flexible sender G analogue input low | rw |  | unimplemented |
+| 39211 | 43 | Internal flexible sender I analogue input low | rw |  | unimplemented |
+| 39212 | 44 | Internal flexible sender K analogue input low | rw |  | unimplemented |
+
+## Page 154 — Number of named alarms
+
+- Base address: `39424` (`page * 256 + offset`)
+- Registers: 27
+- Read runs: 7 ok / 1 fail
+- First error: `@39432 qty=1 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 39424 | 0 | Number of named alarms | rw | 16 | 61 (0x003D) |
+| 39425 | 1 | Emergency stop | rw |  | 4369 (0x1111) |
+| 39426 | 2 | Under speed | rw |  | 4369 (0x1111) |
+| 39427 | 3 | Generator low voltage | rw |  | 4369 (0x1111) |
+| 39428 | 4 | Charge alternator failure | rw |  | 4369 (0x1111) |
+| 39429 | 5 | Mains fail to close | rw |  | 273 (0x0111) |
+| 39430 | 6 | Generator high current | rw |  | 4369 (0x1111) |
+| 39431 | 7 | CAN ECU Shutdown | rw |  | 4369 (0x1111) |
+| 39432 | 8 | Low fuel level switch | rw |  | — |
+| 39434 | 10 | Loading frequency alarm | rw |  | 4369 (0x1111) |
+| 39437 | 13 | ECU Information | rw |  | 273 (0x0111) |
+| 39440 | 16 | SCR Inducement | rw |  | 8191 (0x1FFF) |
+| 39441 | 17 | MSC priority Error | rw |  | unimplemented |
+| 39442 | 18 | Coolant sensor open circuit | rw |  | unimplemented |
+| 39443 | 19 | Mains decoupling low frequency | rw |  | unimplemented |
+| 39444 | 20 | Mains decoupling combined alarm | rw |  | unimplemented |
+| 39445 | 21 | High coolant temperature electrical trip alarm | rw |  | unimplemented |
+| 39446 | 22 | Bus 1 Live | rw |  | unimplemented |
+| 39449 | 25 | Water In Fuel | rw |  | unimplemented |
+| 39452 | 28 | High fuel level | rw |  | unimplemented |
+| 39454 | 30 | Load Not Live (8661) | rw |  | unimplemented |
+| 39455 | 31 | Heater Sensor Failure Alarm | rw |  | unimplemented |
+| 39456 | 32 | Mains Asymmetry High Alarm | rw |  | unimplemented |
+| 39457 | 33 | Bus Asymmetry High Alarm | rw |  | unimplemented |
+| 39458 | 34 | MSC Link 2 Data Error | rw |  | unimplemented |
+| 39459 | 35 | Bus 2 High Frequency | rw |  | unimplemented |
+| 39460 | 36 | MSC Link 2 Too Few Sets | rw |  | unimplemented |
+
+## Page 156 — 2130 Expansion module 0 enable
+
+- Base address: `39936` (`page * 256 + offset`)
+- Registers: 49
+- Read runs: 5 ok / 2 fail
+- First error: `@39976 qty=8 -> exception:1`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 39936 | 0 | 2130 Expansion module 0 enable | rw | 16 | 0 (0x0000) |
+| 39937 | 1 | 2130 Expansion module 1 enable | rw | 16 | 0 (0x0000) |
+| 39938 | 2 | 2130 Expansion module 2 enable | rw | 16 | 0 (0x0000) |
+| 39939 | 3 | 2130 Expansion module 3 enable | rw | 16 | 0 (0x0000) |
+| 39940 | 4 | 2130 Expansion module 4 enable | rw | 16 | 0 (0x0000) |
+| 39941 | 5 | 2130 Expansion module 5 enable | rw | 16 | 0 (0x0000) |
+| 39942 | 6 | 2130 Expansion module 6 enable | rw | 16 | 0 (0x0000) |
+| 39943 | 7 | 2130 Expansion module 7 enable | rw | 16 | 0 (0x0000) |
+| 39944 | 8 | 2130 Expansion module 8 enable | rw | 16 | 0 (0x0000) |
+| 39945 | 9 | 2130 Expansion module 9 enable | rw | 16 | 0 (0x0000) |
+| 39946 | 10 | 2157 Expansion module 0 enable | rw | 16 | 0 (0x0000) |
+| 39947 | 11 | 2157Expansion module 1 enable | rw | 16 | 0 (0x0000) |
+| 39948 | 12 | 2157Expansion module 2 enable | rw | 16 | 0 (0x0000) |
+| 39949 | 13 | 2157Expansion module 3 enable | rw | 16 | 0 (0x0000) |
+| 39950 | 14 | 2157Expansion module 4 enable | rw | 16 | 0 (0x0000) |
+| 39951 | 15 | 2157Expansion module 5 enable | rw | 16 | 0 (0x0000) |
+| 39952 | 16 | 2157Expansion module 6 enable | rw | 16 | 0 (0x0000) |
+| 39953 | 17 | 2157Expansion module 7 enable | rw | 16 | 0 (0x0000) |
+| 39954 | 18 | 2157Expansion module 8 enable | rw | 16 | 0 (0x0000) |
+| 39955 | 19 | 2157Expansion module 9 enable | rw | 16 | 0 (0x0000) |
+| 39956 | 20 | 2548 Expansion module 0 enable | rw | 16 | 0 (0x0000) |
+| 39957 | 21 | 2548Expansion module 1 enable | rw | 16 | 0 (0x0000) |
+| 39958 | 22 | 2548Expansion module 2 enable | rw | 16 | 0 (0x0000) |
+| 39959 | 23 | 2548Expansion module 3 enable | rw | 16 | 0 (0x0000) |
+| 39960 | 24 | 2548Expansion module 4 enable | rw | 16 | 0 (0x0000) |
+| 39961 | 25 | 2548Expansion module 5 enable | rw | 16 | 0 (0x0000) |
+| 39962 | 26 | 2548Expansion module 6 enable | rw | 16 | 0 (0x0000) |
+| 39963 | 27 | 2548Expansion module 7 enable | rw | 16 | 0 (0x0000) |
+| 39964 | 28 | 2548Expansion module 8 enable | rw | 16 | 0 (0x0000) |
+| 39965 | 29 | 2548Expansion module 9 enable | rw | 16 | 0 (0x0000) |
+| 39966 | 30 | 2131 Expansion module 0 enable | rw | 16 | 0 (0x0000) |
+| 39967 | 31 | 2131 Expansion module 1 enable | rw | 16 | 0 (0x0000) |
+| 39968 | 32 | 2131 Expansion module 2 enable | rw | 16 | 0 (0x0000) |
+| 39969 | 33 | 2131 Expansion module 3 enable | rw | 16 | 0 (0x0000) |
+| 39970 | 34 | 2133 Expansion module 0 enable | rw | 16 | 0 (0x0000) |
+| 39971 | 35 | 2133 Expansion module 1 enable | rw | 16 | 0 (0x0000) |
+| 39972 | 36 | 2133 Expansion module 2 enable | rw | 16 | 0 (0x0000) |
+| 39973 | 37 | 2133 Expansion module 3 enable | rw | 16 | 0 (0x0000) |
+| 39974 | 38 | 2152 Expansion module 0 enable | rw | 16 | 0 (0x0000) |
+| 39975 | 39 | 2152 Expansion module 1 enable | rw | 16 | 0 (0x0000) |
+| 39976 | 40 | 2152 Expansion module 2 enable | rw | 16 | — |
+| 39977 | 41 | 2152 Expansion module 3 enable | rw | 16 | — |
+| 39978 | 42 | 2510/20 Expansion module 0 enable | rw | 16 | — |
+| 39979 | 43 | 2510/20 Expansion module 1 enable | rw | 16 | — |
+| 39980 | 44 | 2510/20 Expansion module 2 enable | rw | 16 | — |
+| 39981 | 45 | DSENet Charger 0 Enable | rw | 16 | — |
+| 39982 | 46 | DSENet Charger 1 Enable | rw | 16 | — |
+| 39983 | 47 | DSENet Charger 2 Enable | rw | 16 | — |
+| 39984 | 48 | DSENet Charger 3 Enable | rw | 16 | — |
+
+## Page 158 — 2130 Expansion module 0 comms failure
+
+- Base address: `40448` (`page * 256 + offset`)
+- Registers: 21
+- Read runs: 3 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 40448 | 0 | 2130 Expansion module 0 comms failure | rw | 16 | 0 (0x0000) |
+| 40449 | 1 | 2130 Expansion module 1 comms failure | rw | 16 | 0 (0x0000) |
+| 40450 | 2 | 2130 Expansion module 2 comms failure | rw | 16 | 0 (0x0000) |
+| 40451 | 3 | 2130 Expansion module 3 comms failure | rw | 16 | 0 (0x0000) |
+| 40452 | 4 | 2130 Expansion module 4 comms failure | rw | 16 | 0 (0x0000) |
+| 40453 | 5 | 2130 Expansion module 5 comms failure | rw | 16 | 0 (0x0000) |
+| 40454 | 6 | 2130 Expansion module 6 comms failure | rw | 16 | 0 (0x0000) |
+| 40455 | 7 | 2130 Expansion module 7 comms failure | rw | 16 | 0 (0x0000) |
+| 40456 | 8 | 2130 Expansion module 8 comms failure | rw | 16 | 0 (0x0000) |
+| 40457 | 9 | 2130 Expansion module 9 comms failure | rw | 16 | 0 (0x0000) |
+| 40458 | 10 | 2157 Expansion module 0 comms failure | rw | 16 | 0 (0x0000) |
+| 40459 | 11 | 2157Expansion module 1 comms failure | rw | 16 | 0 (0x0000) |
+| 40460 | 12 | 2157Expansion module 2 comms failure | rw | 16 | 0 (0x0000) |
+| 40461 | 13 | 2157Expansion module 3 comms failure | rw | 16 | 0 (0x0000) |
+| 40462 | 14 | 2157Expansion module 4 comms failure | rw | 16 | 0 (0x0000) |
+| 40463 | 15 | 2157Expansion module 5 comms failure | rw | 16 | 0 (0x0000) |
+| 40464 | 16 | 2157Expansion module 6 comms failure | rw | 16 | 0 (0x0000) |
+| 40465 | 17 | 2157Expansion module 7 comms failure | rw | 16 | 0 (0x0000) |
+| 40466 | 18 | 2157Expansion module 8 comms failure | rw | 16 | 0 (0x0000) |
+| 40467 | 19 | 2157Expansion module 9 comms failure | rw | 16 | 0 (0x0000) |
+| 40468 | 20 | 2548 Expansion module 0 comms failure | rw | 16 | 0 (0x0000) |
+
+## Page 160 — Digital input A function
+
+- Base address: `40960` (`page * 256 + offset`)
+- Registers: 162
+- Read runs: 24 ok / 10 fail
+- First error: `@41023 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 40960 | 0 | Digital input A function | rw | 16 | 24 (0x0018) |
+| 40961 | 1 | Digital input B function | rw | 16 | 21 (0x0015) |
+| 40962 | 2 | Digital input C function | rw | 16 | 22 (0x0016) |
+| 40963 | 3 | Digital input D function | rw | 16 | 0 (0x0000) |
+| 40964 | 4 | Digital input E function | rw | 16 | 0 (0x0000) |
+| 40965 | 5 | Digital input F function | rw | 16 | 0 (0x0000) |
+| 40966 | 6 | Flex Sender A Digital input function | rw | 16 | 0 (0x0000) |
+| 40967 | 7 | Flex Sender B Digital input function | rw | 16 | 0 (0x0000) |
+| 40968 | 8 | Flex Sender C Digital input function | rw | 16 | 0 (0x0000) |
+| 40969 | 9 | Flex Sender D Digital input function | rw | 16 | unimplemented |
+| 40976 | 16 | 2130 Expansion module 0 digital input A | rw | 16 | 0 (0x0000) |
+| 40977 | 17 | 2130 Expansion module 0 digital input B | rw | 16 | 0 (0x0000) |
+| 40978 | 18 | 2130 Expansion module 0 digital input C | rw | 16 | 0 (0x0000) |
+| 40979 | 19 | 2130 Expansion module 0 digital input D | rw | 16 | 0 (0x0000) |
+| 40980 | 20 | 2130 Expansion module 0 digital input E | rw | 16 | 0 (0x0000) |
+| 40981 | 21 | 2130 Expansion module 0 digital input F | rw | 16 | 0 (0x0000) |
+| 40982 | 22 | 2130 Expansion module 0 digital input G | rw | 16 | 0 (0x0000) |
+| 40983 | 23 | 2130 Expansion module 0 digital input H | rw | 16 | 0 (0x0000) |
+| 40984 | 24 | 2130 Expansion module 1 digital inputs A-H | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41056 | 96 | 2130 Expansion module 0 analogue input E (low) | rw | 16 | 0 (0x0000) |
+| 41057 | 97 | 2130 Expansion module 0 analogue input E (high) | rw | 16 | 0 (0x0000) |
+| 41058 | 98 | 2130 Expansion module 0 analogue input F (low) | rw | 16 | 0 (0x0000) |
+| 41059 | 99 | 2130 Expansion module 0 analogue input F (high) | rw | 16 | 0 (0x0000) |
+| 41060 | 100 | 2130 Expansion module 0 analogue input G (low) | rw | 16 | 0 (0x0000) |
+| 41061 | 101 | 2130 Expansion module 0 analogue input G (high) | rw | 16 | 0 (0x0000) |
+| 41062 | 102 | 2130 Expansion module 0 analogue input H (low) | rw | 16 | 0 (0x0000) |
+| 41063 | 103 | 2130 Expansion module 0 analogue input H (high) | rw | 16 | 0 (0x0000) |
+| 41064 | 104 | 2130 Expansion module 1 analogue inputs E-H | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41072 | 112 | 2130 Expansion module 2 analogue inputs E-H | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41136 | 176 | Flexible sender A input (low) | rw | 16 | 0 (0x0000) |
+| 41137 | 177 | Flexible sender A input (high) | rw | 16 | 0 (0x0000) |
+| 41138 | 178 | Flexible sender B input (low) | rw | 16 | 0 (0x0000) |
+| 41139 | 179 | Flexible sender B input (high) | rw | 16 | 0 (0x0000) |
+| 41140 | 180 | Flexible sender C input (low) | rw | 16 | 0 (0x0000) |
+| 41141 | 181 | Flexible sender C input (high) | rw | 16 | 0 (0x0000) |
+| 41142 | 182 | Flexible sender D input (low) | rw | 16 | 0 (0x0000) |
+| 41143 | 183 | Flexible sender D input (high) | rw | 16 | 0 (0x0000) |
+| 41144 | 184 | Maintenance alarm 1 | rw | 16 | 0 (0x0000) |
+| 41145 | 185 | Maintenance alarm 2 | rw | 16 | 0 (0x0000) |
+| 41146 | 186 | Maintenance alarm 3 | rw | 16 | 0 (0x0000) |
+| 41147 | 187 | Low Load | rw | 16 | 0 (0x0000) |
+| 40971 | 11 | Flex Sensor D Digital input function | rw | 16 | unimplemented |
+| 40972 | 12 | Flex Sensor E Digital input function | rw | 16 | unimplemented |
+| 40973 | 13 | Flex Sensor F Digital input function | rw | 16 | unimplemented |
+| 40992 | 32 | 2130 Expansion module 2 digital inputs A-H | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41000 | 40 | 2130 Expansion module 3 digital inputs A-H | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41148 | 188 | PLC function 8 | rw | 16 | 0 (0x0000) |
+| 41149 | 189 | PLC function 9 | rw | 16 | 0 (0x0000) |
+| 41150 | 190 | PLC function 10 | rw | 16 | 0 (0x0000) |
+| 41151 | 191 | PLC function 11 | rw | 16 | 0 (0x0000) |
+| 41152 | 192 | PLC function 12 | rw | 16 | 0 (0x0000) |
+| 41153 | 193 | PLC function 13 | rw | 16 | 0 (0x0000) |
+| 41154 | 194 | PLC function 14 | rw | 16 | 0 (0x0000) |
+| 41156 | 196 | PLC function 16 | rw | 16 | 0 (0x0000) |
+| 41158 | 198 | PLC function 18 | rw | 16 | 0 (0x0000) |
+| 41159 | 199 | PLC function 19 | rw | 16 | 0 (0x0000) |
+| 41160 | 200 | PLC function 20 | rw | 16 | — |
+| 41161 | 201 | Internal flexible sender A input Open circuit | rw | 16 | — |
+| 41162 | 202 | Internal flexible sender B input (low) | rw | 16 | — |
+| 41163 | 203 | Internal flexible sender B input (high) | rw | 16 | — |
+| 41164 | 204 | Internal flexible sender B input Open circuit | rw | 16 | — |
+| 41165 | 205 | Internal flexible sender C input (low) | rw | 16 | — |
+| 41166 | 206 | Internal flexible sender C input (high) | rw | 16 | — |
+| 41167 | 207 | Internal flexible sender C input Open circuit | rw | 16 | — |
+| 41168 | 208 | Internal flexible sender D input (low) | rw | 16 | — |
+| 41169 | 209 | Internal flexible sender D input (high) | rw | 16 | — |
+| 41170 | 210 | Internal flexible sender D input Open circuit | rw | 16 | — |
+| 41171 | 211 | Internal flexible sender E input (low) | rw | 16 | — |
+| 41172 | 212 | Internal flexible sender E input (high) | rw | 16 | — |
+| 41173 | 213 | Internal flexible sender E input Open circuit | rw | 16 | — |
+| 41174 | 214 | Internal flexible sender F input (low) | rw | 16 | — |
+| 41175 | 215 | Internal flexible sender F input (high) | rw | 16 | — |
+| 41176 | 216 | Internal flexible sender F input Open circuit | rw | 16 | — |
+| 41180 | 220 | 2133 Expansion module 0 analogue input A | rw | 16 | — |
+| 41181 | 221 | 2133 Expansion module 0 analogue input A | rw | 16 | — |
+| 41182 | 222 | 2133 Expansion module 0 analogue input B | rw | 16 | — |
+| 41183 | 223 | 2133 Expansion module 0 analogue input B | rw | 16 | — |
+| 41184 | 224 | 2133 Expansion module 0 analogue input C | rw | 16 | — |
+| 41185 | 225 | 2133 Expansion module 0 analogue input C | rw | 16 | — |
+| 41186 | 226 | 2133 Expansion module 0 analogue input D | rw | 16 | — |
+| 41187 | 227 | 2133 Expansion module 0 analogue input D | rw | 16 | — |
+| 41188 | 228 | 2133 Expansion module 0 analogue input E (low) | rw | 16 | — |
+| 41189 | 229 | 2133 Expansion module 0 analogue input E (high) | rw | 16 | — |
+| 41190 | 230 | 2133 Expansion module 0 analogue input F (low) | rw | 16 | — |
+| 41191 | 231 | 2133 Expansion module 0 analogue input F (high) | rw | 16 | — |
+| 41192 | 232 | 2133 Expansion module 0 analogue input G (low) | rw | 16 | — |
+| 41193 | 233 | 2133 Expansion module 0 analogue input G (high) | rw | 16 | — |
+| 41194 | 234 | 2133 Expansion module 0 analogue input H | rw | 16 | — |
+| 41195 | 235 | 2133 Expansion module 0 analogue input H | rw | 16 | — |
+| 41196 | 236 | 2133 Expansion module 1 analogue input A-H | rw | 16 | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 41212 | 252 | 2133 Expansion module 2 analogue input A-B | rw | 16 | —<br>—<br>—<br>— |
+| 40975 | 15 | Digital input P function | rw | 16 | unimplemented |
+| 40985 | 25 | Digital input Z function | rw | 16 | 0 (0x0000) |
+| 40986 | 26 | Digital input AA function | rw | 16 | 0 (0x0000) |
+| 40987 | 27 | Digital input AB function | rw | 16 | 0 (0x0000) |
+| 40988 | 28 | Digital input AC function | rw | 16 | 0 (0x0000) |
+| 40989 | 29 | Digital input AD function | rw | 16 | 0 (0x0000) |
+| 40990 | 30 | Digital input AE function | rw | 16 | 0 (0x0000) |
+| 40991 | 31 | Digital input AF function | rw | 16 | 0 (0x0000) |
+| 40993 | 33 | 2130 Expansion module 0 digital input B function | rw | 16 | 0 (0x0000) |
+| 40994 | 34 | 2130 Expansion module 0 digital input C function | rw | 16 | 0 (0x0000) |
+| 40995 | 35 | 2130 Expansion module 0 digital input D function | rw | 16 | 0 (0x0000) |
+| 40996 | 36 | 2130 Expansion module 0 digital input E function | rw | 16 | 0 (0x0000) |
+| 40997 | 37 | 2130 Expansion module 0 digital input F function | rw | 16 | 0 (0x0000) |
+| 40998 | 38 | 2130 Expansion module 0 digital input G function | rw | 16 | 0 (0x0000) |
+| 40999 | 39 | 2130 Expansion module 0 digital input H function | rw | 16 | 0 (0x0000) |
+| 41008 | 48 | 2130 Expansion module 2 digital inputs A-H functions | rw |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41016 | 56 | 2130 Expansion module 3 digital inputs A-H functions | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>— |
+| 41024 | 64 | 2131 Expansion module 0 digital input A function | rw | 16 | — |
+| 41025 | 65 | 2131 Expansion module 0 digital input B function | rw | 16 | — |
+| 41026 | 66 | 2131 Expansion module 0 digital input C function | rw | 16 | — |
+| 41027 | 67 | 2131 Expansion module 0 digital input D function | rw | 16 | — |
+| 41028 | 68 | 2131 Expansion module 0 digital input E function | rw | 16 | — |
+| 41029 | 69 | 2131 Expansion module 0 digital input F function | rw | 16 | — |
+| 41030 | 70 | 2131 Expansion module 0 digital input G function | rw | 16 | — |
+| 41031 | 71 | 2131 Expansion module 0 digital input H function | rw | 16 | 0 (0x0000) |
+| 41032 | 72 | 2131 Expansion module 0 digital input I function | rw | 16 | 0 (0x0000) |
+| 41033 | 73 | 2131 Expansion module 0 digital input J function | rw | 16 | 0 (0x0000) |
+| 41034 | 74 | 2131 Expansion module 1 digital inputs A-J functions | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41044 | 84 | 2131 Expansion module 2 digital inputs A-J functions | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41054 | 94 | 2131 Expansion module 3 digital inputs A-J functions | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41073 | 113 | 2130 Expansion module 0 analogue input E (high) | rw | 16 | 0 (0x0000) |
+| 41074 | 114 | 2130 Expansion module 0 analogue input F (low) | rw | 16 | 0 (0x0000) |
+| 41075 | 115 | 2130 Expansion module 0 analogue input F (high) | rw | 16 | 0 (0x0000) |
+| 41076 | 116 | 2130 Expansion module 0 analogue input G (low) | rw | 16 | 0 (0x0000) |
+| 41077 | 117 | 2130 Expansion module 0 analogue input G (high) | rw | 16 | 0 (0x0000) |
+| 41078 | 118 | 2130 Expansion module 0 analogue input H (low) | rw | 16 | 0 (0x0000) |
+| 41079 | 119 | 2130 Expansion module 0 analogue input H (high) | rw | 16 | 0 (0x0000) |
+| 41088 | 128 | 2130 Expansion module 2 analogue inputs E-H | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 41096 | 136 | 2130 Expansion module 3 analogue inputs E-H | rw |  | 0 (0x0000)<br>0 (0x0000)<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41104 | 144 | Reserved for 2130 Expansion module 4-9 analogue inputs E-H | rw |  | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41155 | 195 | Internal flexible sender 2 input (high) | rw | 16 | 0 (0x0000) |
+| 41157 | 197 | Internal flexible sender 3 input (high) | rw | 16 | 0 (0x0000) |
+| 41178 | 218 | PLC function 14 | rw | 16 | — |
+| 41179 | 219 | PLC function 15 | rw | 16 | — |
+| 41213 | 253 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41214 | 254 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41215 | 255 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41112 | 152 | Internal flexible Sensor A input (low) | rw | 16 | unimplemented |
+| 41113 | 153 | Internal flexible Sensor A input (high) | rw | 16 | unimplemented |
+| 41114 | 154 | Internal flexible Sensor B input (low) | rw | 16 | unimplemented |
+| 41115 | 155 | Internal flexible Sensor B input (high) | rw | 16 | unimplemented |
+| 41116 | 156 | Internal flexible Sensor C input (low) | rw | 16 | unimplemented |
+| 41117 | 157 | Internal flexible Sensor C input (high) | rw | 16 | unimplemented |
+| 41118 | 158 | Internal flexible Sensor D input (low) | rw | 16 | unimplemented |
+| 41119 | 159 | Internal flexible Sensor D input (high) | rw | 16 | unimplemented |
+| 41120 | 160 | Internal flexible Sensor E input (low) | rw | 16 | unimplemented |
+| 41121 | 161 | Internal flexible Sensor E input (high) | rw | 16 | unimplemented |
+| 41122 | 162 | Internal flexible Sensor F input (low) | rw | 16 | unimplemented |
+| 41123 | 163 | Internal flexible Sensor F input (high) | rw | 16 | unimplemented |
+| 41124 | 164 | Internal flexible Sensor G input (low) | rw | 16 | unimplemented |
+| 41125 | 165 | Internal flexible Sensor G input (high) | rw | 16 | unimplemented |
+| 41126 | 166 | Internal flexible Sensor H input (low) | rw | 16 | unimplemented |
+| 41127 | 167 | Internal flexible Sensor H input (high) | rw | 16 | unimplemented |
+| 41128 | 168 | Internal flexible Sensor I input (low) | rw | 16 | unimplemented |
+| 41129 | 169 | Internal flexible Sensor I input (high) | rw | 16 | unimplemented |
+| 41130 | 170 | Internal flexible Sensor J input (low) | rw | 16 | unimplemented |
+| 41131 | 171 | Internal flexible Sensor J input (high) | rw | 16 | unimplemented |
+| 41132 | 172 | Internal flexible Sensor K input (low) | rw | 16 | unimplemented |
+| 41133 | 173 | Internal flexible Sensor K input (high) | rw | 16 | unimplemented |
+| 41134 | 174 | Internal flexible Sensor L input (low) | rw | 16 | unimplemented |
+| 41135 | 175 | Internal flexible Sensor L input (high) | rw | 16 | unimplemented |
+
+## Page 161 — 2133 Expansion module 2 analogue input C-H
+
+- Base address: `41216` (`page * 256 + offset`)
+- Registers: 45
+- Read runs: 12 ok / 2 fail
+- First error: `@41216 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 41216 | 0 | 2133 Expansion module 2 analogue input C-H | rw | 16 | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41228 | 12 | 2133 Expansion module 3 analogue input A-H | rw | 16 | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41324 | 108 | 2131 Expansion module 0 digital input A | rw | 16 | unimplemented |
+| 41325 | 109 | 2131 Expansion module 0 digital input B | rw | 16 | unimplemented |
+| 41326 | 110 | 2131 Expansion module 0 digital input C | rw | 16 | unimplemented |
+| 41327 | 111 | 2131 Expansion module 0 digital input D | rw | 16 | unimplemented |
+| 41328 | 112 | 2131 Expansion module 0 digital input E | rw | 16 | unimplemented |
+| 41329 | 113 | 2131 Expansion module 0 digital input F | rw | 16 | unimplemented |
+| 41330 | 114 | 2131 Expansion module 0 digital input G | rw | 16 | unimplemented |
+| 41331 | 115 | 2131 Expansion module 0 digital input H | rw | 16 | unimplemented |
+| 41332 | 116 | 2131 Expansion module 0 digital input I | rw | 16 | unimplemented |
+| 41333 | 117 | 2131 Expansion module 0 digital input J | rw | 16 | unimplemented |
+| 41334 | 118 | 2131 Expansion module 1 digital inputs A-J | rw | 16 | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41344 | 128 | 2131 Expansion module 2 digital inputs A-J | rw | 16 | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41354 | 138 | 2131 Expansion module 3 digital inputs A-J | rw | 16 | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41364 | 148 | DSENet Charger 0 Common Shutdown Alarm | rw | 16 | unimplemented |
+| 41365 | 149 | DSENet Charger 0 Common Warning Alarm | rw | 16 | unimplemented |
+| 41366 | 150 | DSENet Charger 1 Common Shutdown Alarm | rw | 16 | unimplemented |
+| 41367 | 151 | DSENet Charger 1 Common Warning Alarm | rw | 16 | unimplemented |
+| 41368 | 152 | DSENet Charger 2 Common Shutdown Alarm | rw | 16 | unimplemented |
+| 41369 | 153 | DSENet Charger 2 Common Warning Alarm | rw | 16 | unimplemented |
+| 41370 | 154 | DSENet Charger 3 Common Shutdown Alarm | rw | 16 | unimplemented |
+| 41371 | 155 | DSENet Charger 3 Common Warning Alarm | rw | 16 | unimplemented |
+| 41356 | 140 | Plant Battery Maintenance alarm 1 function | rw | 16 | unimplemented |
+| 41357 | 141 | Plant Battery Maintenance alarm 2 function | rw | 16 | unimplemented |
+| 41358 | 142 | Plant Battery Maintenance alarm 3 function | rw | 16 | unimplemented |
+| 41217 | 1 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41218 | 2 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41219 | 3 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41220 | 4 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41221 | 5 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41222 | 6 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41223 | 7 | 2131 Expansion module 0 analogue | rw | 16 | — |
+| 41224 | 8 | 2131 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41225 | 9 | 2131 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41226 | 10 | 2131 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41227 | 11 | 2131 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41229 | 13 | 2131 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41230 | 14 | 2131 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41231 | 15 | 2131 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41292 | 76 | 2133 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41293 | 77 | 2133 Expansion module 0 analogue | rw | 16 | unimplemented |
+| 41294 | 78 | 2133 Expansion module 0 analogue | rw | 16 | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41308 | 92 | 2133 Expansion module 1 analogue | rw | 16 | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 41340 | 124 | 2133 Expansion module 3 analogue | rw | 16 | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+
+## Page 170 — Digital input A raw status
+
+- Base address: `43520` (`page * 256 + offset`)
+- Registers: 131
+- Read runs: 22 ok / 3 fail
+- First error: `@43581 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 43520 | 0 | Digital input A raw status | r | 16 | 0 (0x0000) |
+| 43521 | 1 | Digital input A processed status | rw | 16 | 0 (0x0000) |
+| 43522 | 2 | Digital input B raw status | r | 16 | 0 (0x0000) |
+| 43523 | 3 | Digital input B processed status | rw | 16 | 0 (0x0000) |
+| 43524 | 4 | Digital input C raw status | r | 16 | 0 (0x0000) |
+| 43525 | 5 | Digital input C processed status | rw | 16 | 0 (0x0000) |
+| 43526 | 6 | Digital input D raw status | r | 16 | 0 (0x0000) |
+| 43527 | 7 | Digital input D processed status | rw | 16 | 0 (0x0000) |
+| 43528 | 8 | Digital input E raw status | r | 16 | 0 (0x0000) |
+| 43529 | 9 | Digital input E processed status | rw | 16 | 0 (0x0000) |
+| 43530 | 10 | Digital input F raw status | r | 16 | 0 (0x0000) |
+| 43531 | 11 | Digital input F processed status | rw | 16 | 0 (0x0000) |
+| 43532 | 12 | Digital input G raw status | r | 16 | 0 (0x0000) |
+| 43533 | 13 | Digital input G processed status | rw | 16 | 0 (0x0000) |
+| 43534 | 14 | Digital input H raw status | r | 16 | 0 (0x0000) |
+| 43535 | 15 | Digital input H processed status | rw | 16 | 0 (0x0000) |
+| 43536 | 16 | Digital input I raw status | r | 16 | 0 (0x0000) |
+| 43537 | 17 | Digital input I processed status | rw | 16 | 0 (0x0000) |
+| 43552 | 32 | 2130 Expansion module 0 digital input A raw status | r | 16 | 0 (0x0000) |
+| 43553 | 33 | 2130 Expansion module 0 digital input A processed status | rw | 16 | 0 (0x0000) |
+| 43554 | 34 | 2130 Expansion module 0 digital input B raw status | r | 16 | 0 (0x0000) |
+| 43555 | 35 | 2130 Expansion module 0 digital input B processed status | rw | 16 | 0 (0x0000) |
+| 43556 | 36 | 2130 Expansion module 0 digital input C raw status | r | 16 | 0 (0x0000) |
+| 43557 | 37 | 2130 Expansion module 0 digital input C processed status | rw | 16 | 0 (0x0000) |
+| 43558 | 38 | 2130 Expansion module 0 digital input D raw status | r | 16 | 0 (0x0000) |
+| 43559 | 39 | 2130 Expansion module 0 digital input D processed status | rw | 16 | 0 (0x0000) |
+| 43560 | 40 | 2130 Expansion module 0 digital input E raw status | r | 16 | 0 (0x0000) |
+| 43561 | 41 | 2130 Expansion module 0 digital input E processed status | rw | 16 | 0 (0x0000) |
+| 43562 | 42 | 2130 Expansion module 0 digital input F raw status | r | 16 | 0 (0x0000) |
+| 43563 | 43 | 2130 Expansion module 0 digital input F processed status | rw | 16 | 0 (0x0000) |
+| 43564 | 44 | 2130 Expansion module 0 digital input G raw status | r | 16 | 0 (0x0000) |
+| 43565 | 45 | 2130 Expansion module 0 digital input G processed status | rw | 16 | 0 (0x0000) |
+| 43566 | 46 | 2130 Expansion module 0 digital input H raw status | r | 16 | 0 (0x0000) |
+| 43567 | 47 | 2130 Expansion module 0 digital input H processed status | rw | 16 | 0 (0x0000) |
+| 43568 | 48 | 2130 Expansion module 1 digital inputs A-H raw & processed status | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>—<br>—<br>— |
+| 43712 | 192 | 2130 Expansion module 0 analogue input E sender category | rw | 16 | 0 (0x0000) |
+| 43713 | 193 | 2130 Expansion module 0 analogue input E input reading | rw | 16S | unimplemented |
+| 43714 | 194 | 2130 Expansion module 0 analogue input E sender category | rw | 16 | 0 (0x0000) |
+| 43715 | 195 | 2130 Expansion module 0 analogue input E input reading | rw | 16S | unimplemented |
+| 43716 | 196 | 2130 Expansion module 0 analogue input F sender category | rw | 16 | 0 (0x0000) |
+| 43717 | 197 | 2130 Expansion module 0 analogue input F input reading | rw | 16S | unimplemented |
+| 43718 | 198 | 2130 Expansion module 0 analogue input F sender category | rw | 16 | 0 (0x0000) |
+| 43719 | 199 | 2130 Expansion module 0 analogue input F input reading | rw | 16S | unimplemented |
+| 43720 | 200 | 2130 Expansion module 0 analogue input G sender category | rw | 16 | 0 (0x0000) |
+| 43721 | 201 | 2130 Expansion module 0 analogue input G input reading | rw | 16S | unimplemented |
+| 43722 | 202 | 2130 Expansion module 0 analogue input G sender category | rw | 16 | 0 (0x0000) |
+| 43723 | 203 | 2130 Expansion module 0 analogue input G input reading | rw | 16S | unimplemented |
+| 43724 | 204 | 2130 Expansion module 0 analogue input H sender category | rw | 16 | 0 (0x0000) |
+| 43725 | 205 | 2130 Expansion module 0 analogue input H input reading | rw | 16S | unimplemented |
+| 43726 | 206 | 2130 Expansion module 0 analogue input H sender category | rw | 16 | 0 (0x0000) |
+| 43727 | 207 | 2130 Expansion module 0 analogue input H input reading | rw | 16S | unimplemented |
+| 43728 | 208 | 2130 Expansion module 1 inputs E-H | rw |  | 0 (0x0000)<br>32767 (0x7FFF)<br>0 (0x0000)<br>32767 (0x7FFF)<br>0 (0x0000)<br>32767 (0x7FFF)<br>0 (0x0000)<br>32767 (0x7FFF)<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 43541 | 21 | Flex Sender A Digital input processed status | rw | 16 | unimplemented |
+| 43542 | 22 | Flex Sender A Digital input raw status | r | 16 | unimplemented |
+| 43543 | 23 | Flex Sender A Digital input processed status | rw | 16 | unimplemented |
+| 43544 | 24 | Flex Sender A Digital input raw status | r | 16 | unimplemented |
+| 43545 | 25 | Flex Sender A Digital input processed status | rw | 16 | unimplemented |
+| 43546 | 26 | Flex Sender A Digital input raw status | r | 16 | unimplemented |
+| 43547 | 27 | Flex Sender A Digital input processed status | rw | 16 | unimplemented |
+| 43584 | 64 | 2130 Expansion module 2 digital inputs A-H raw & processed status | rw |  | —<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 43600 | 80 | 2130 Expansion module 3 digital inputs A-H raw & processed status | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 43549 | 29 | Digital input O processed status | rw | 16 | unimplemented |
+| 43550 | 30 | Digital input P raw status | r | 16 | unimplemented |
+| 43551 | 31 | Digital input P processed status | rw | 16 | unimplemented |
+| 43569 | 49 | Digital input Y processed status | rw | 16 | 0 (0x0000) |
+| 43570 | 50 | Digital input Z raw status | r | 16 | 0 (0x0000) |
+| 43571 | 51 | Digital input Z processed status | rw | 16 | 0 (0x0000) |
+| 43572 | 52 | Digital input AA raw status | r | 16 | 0 (0x0000) |
+| 43573 | 53 | Digital input AA processed status | rw | 16 | 0 (0x0000) |
+| 43574 | 54 | Digital input AB raw status | r | 16 | 0 (0x0000) |
+| 43575 | 55 | Digital input AB processed status | rw | 16 | 0 (0x0000) |
+| 43576 | 56 | Digital input AC raw status | r | 16 | 0 (0x0000) |
+| 43577 | 57 | Digital input AC processed status | rw | 16 | 0 (0x0000) |
+| 43578 | 58 | Digital input AD raw status | r | 16 | 0 (0x0000) |
+| 43579 | 59 | Digital input AD processed status | rw | 16 | 0 (0x0000) |
+| 43580 | 60 | Digital input AE raw status | r | 16 | 0 (0x0000) |
+| 43581 | 61 | Digital input AE processed status | rw | 16 | — |
+| 43582 | 62 | Digital input AF raw status | r | 16 | — |
+| 43583 | 63 | Digital input AF processed status | rw | 16 | — |
+| 43585 | 65 | 2130 Expansion module 0 digital input A processed status | rw | 16 | — |
+| 43586 | 66 | 2130 Expansion module 0 digital input B raw status | r | 16 | — |
+| 43587 | 67 | 2130 Expansion module 0 digital input B processed status | rw | 16 | — |
+| 43588 | 68 | 2130 Expansion module 0 digital input C raw status | r | 16 | — |
+| 43589 | 69 | 2130 Expansion module 0 digital input C processed status | rw | 16 | — |
+| 43590 | 70 | 2130 Expansion module 0 digital input D raw status | r | 16 | — |
+| 43591 | 71 | 2130 Expansion module 0 digital input D processed status | rw | 16 | — |
+| 43592 | 72 | 2130 Expansion module 0 digital input E raw status | r | 16 | — |
+| 43593 | 73 | 2130 Expansion module 0 digital input E processed status | rw | 16 | — |
+| 43594 | 74 | 2130 Expansion module 0 digital input F raw status | r | 16 | — |
+| 43595 | 75 | 2130 Expansion module 0 digital input F processed status | rw | 16 | — |
+| 43596 | 76 | 2130 Expansion module 0 digital input G raw status | r | 16 | — |
+| 43597 | 77 | 2130 Expansion module 0 digital input G processed status | rw | 16 | 0 (0x0000) |
+| 43598 | 78 | 2130 Expansion module 0 digital input H raw status | r | 16 | 0 (0x0000) |
+| 43599 | 79 | 2130 Expansion module 0 digital input H processed status | rw | 16 | 0 (0x0000) |
+| 43616 | 96 | 2130 Expansion module 2 digital inputs A-H status | rw |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 43632 | 112 | 2130 Expansion module 3 digital inputs A-H status | rw |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 43648 | 128 | 2131Expansion module 0 digital input A raw status | r | 16 | unimplemented |
+| 43649 | 129 | 2131Expansion module 0 digital input A processed status | rw | 16 | unimplemented |
+| 43650 | 130 | 2131Expansion module 0 digital input B raw status | r | 16 | unimplemented |
+| 43651 | 131 | 2131Expansion module 0 digital input B processed status | rw | 16 | unimplemented |
+| 43652 | 132 | 2131Expansion module 0 digital input C raw status | r | 16 | unimplemented |
+| 43653 | 133 | 2131Expansion module 0 digital input C processed status | rw | 16 | unimplemented |
+| 43654 | 134 | 2131Expansion module 0 digital input D raw status | r | 16 | unimplemented |
+| 43655 | 135 | 2131Expansion module 0 digital input D processed status | rw | 16 | unimplemented |
+| 43656 | 136 | 2131Expansion module 0 digital input E raw status | r | 16 | unimplemented |
+| 43657 | 137 | 2131Expansion module 0 digital input E processed status | rw | 16 | unimplemented |
+| 43658 | 138 | 2131Expansion module 0 digital input F raw status | r | 16 | unimplemented |
+| 43659 | 139 | 2131Expansion module 0 digital input F processed status | rw | 16 | unimplemented |
+| 43660 | 140 | 2131Expansion module 0 digital input G raw status | r | 16 | unimplemented |
+| 43661 | 141 | 2131Expansion module 0 digital input G processed status | rw | 16 | unimplemented |
+| 43662 | 142 | 2131Expansion module 0 digital input H raw status | r | 16 | unimplemented |
+| 43663 | 143 | 2131Expansion module 0 digital input H processed status | rw | 16 | unimplemented |
+| 43664 | 144 | 2131Expansion module 0 digital input I raw status | r | 16 | unimplemented |
+| 43665 | 145 | 2131Expansion module 0 digital input I processed status | rw | 16 | unimplemented |
+| 43666 | 146 | 2131Expansion module 0 digital input J raw status | r | 16 | unimplemented |
+| 43667 | 147 | 2131Expansion module 0 digital input J processed status | rw | 16 | unimplemented |
+| 43745 | 225 | 2130 Expansion module 0 analogue input E input reading | rw | 16S | unimplemented |
+| 43746 | 226 | 2130 Expansion module 0 analogue input E sender category | rw | 16 | 0 (0x0000) |
+| 43747 | 227 | 2130 Expansion module 0 analogue input E input reading | rw | 16S | unimplemented |
+| 43748 | 228 | 2130 Expansion module 0 analogue input F sender category | rw | 16 | 0 (0x0000) |
+| 43749 | 229 | 2130 Expansion module 0 analogue input F input reading | rw | 16S | unimplemented |
+| 43750 | 230 | 2130 Expansion module 0 analogue input F sender category | rw | 16 | 0 (0x0000) |
+| 43751 | 231 | 2130 Expansion module 0 analogue input F input reading | rw | 16S | unimplemented |
+| 43752 | 232 | 2130 Expansion module 0 analogue input G sender category | rw | 16 | 0 (0x0000) |
+| 43753 | 233 | 2130 Expansion module 0 analogue input G input reading | rw | 16S | unimplemented |
+| 43754 | 234 | 2130 Expansion module 0 analogue input G sender category | rw | 16 | 0 (0x0000) |
+| 43755 | 235 | 2130 Expansion module 0 analogue input G input reading | rw | 16S | unimplemented |
+| 43756 | 236 | 2130 Expansion module 0 analogue input H sender category | rw | 16 | 0 (0x0000) |
+| 43757 | 237 | 2130 Expansion module 0 analogue input H input reading | rw | 16S | unimplemented |
+| 43758 | 238 | 2130 Expansion module 0 analogue input H sender category | rw | 16 | 0 (0x0000) |
+| 43759 | 239 | 2130 Expansion module 0 analogue input H input reading | rw | 16S | unimplemented |
+
+## Page 171 — Oil pressure transducer category
+
+- Base address: `43776` (`page * 256 + offset`)
+- Registers: 171
+- Read runs: 5 ok / 21 fail
+- First error: `@43787 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 43792 | 16 | Oil pressure transducer category | rw | 16 | — |
+| 43793 | 17 | Engine Temperature transducer category | rw | 16 | — |
+| 43794 | 18 | Flexible Sensor transducer category | rw | 16 | — |
+| 43795 | 19 | Flexible Sensor transducer value | rw | 16 | 32767 (0x7FFF) |
+| 43796 | 20 | Flexible sensor level units | rw | 16 | unimplemented |
+| 43797 | 21 | Flexible sensor level value scaling | rw | 32 | 32767 (0x7FFF)<br>unimplemented |
+| 43799 | 23 | Flexible sensor scaled level value | rw | 32 | 32767 (0x7FFF)<br>unimplemented |
+| 43798 | 22 | Flexible sender D category | rw | 16 | unimplemented |
+| 43872 | 96 | Flexible sender A analogue input sender category | rw | 16 | — |
+| 43873 | 97 | Flexible sender A analogue input reading | rw | 16 | — |
+| 43874 | 98 | Flexible sender B analogue input sender category | rw | 16 | — |
+| 43875 | 99 | Flexible sender B analogue input reading | rw | 16 | — |
+| 43876 | 100 | Flexible sender C analogue input sender category | rw | 16 | — |
+| 43877 | 101 | Flexible sender C analogue input reading | rw | 16 | — |
+| 43878 | 102 | Flexible sender D analogue input sender category | rw | 16 | — |
+| 43879 | 103 | Flexible sender D analogue input reading | rw | 16 | — |
+| 43922 | 146 | Internal flexible sender A Fault raw | rw | 16 | — |
+| 43923 | 147 | Internal flexible sender A Fault processed | rw | 16 | — |
+| 43924 | 148 | Internal flexible sender B analogue input sender category | rw | 16 | — |
+| 43925 | 149 | Internal flexible sender B analogue input reading | rw | 16 | — |
+| 43926 | 150 | Internal flexible sender B analogue input sender category | rw | 16 | — |
+| 43927 | 151 | Internal flexible sender B analogue input reading | rw | 16 | — |
+| 43928 | 152 | Internal flexible sender B Fault raw | rw | 16 | — |
+| 43929 | 153 | Internal flexible sender B Fault processed | rw | 16 | — |
+| 43930 | 154 | Internal flexible sender C analogue input sender category | rw | 16 | — |
+| 43931 | 155 | Internal flexible sender C analogue input reading | rw | 16 | — |
+| 43932 | 156 | Internal flexible sender C analogue input sender category | rw | 16 | — |
+| 43933 | 157 | Internal flexible sender C analogue input reading | rw | 16 | — |
+| 43934 | 158 | Internal flexible sender C Fault raw | rw | 16 | — |
+| 43935 | 159 | Internal flexible sender C Fault processed | rw | 16 | — |
+| 43936 | 160 | Internal flexible sender D analogue input sender category | rw | 16 | — |
+| 43937 | 161 | Internal flexible sender D analogue input reading | rw | 16 | — |
+| 43938 | 162 | Internal flexible sender D analogue input sender category | rw | 16 | — |
+| 43939 | 163 | Internal flexible sender D analogue input reading | rw | 16 | — |
+| 43940 | 164 | Internal flexible sender D Fault raw | rw | 16 | — |
+| 43941 | 165 | Internal flexible sender D Fault processed | rw | 16 | — |
+| 43942 | 166 | Internal flexible sender E analogue input sender category | rw | 16 | — |
+| 43943 | 167 | Internal flexible sender E analogue input reading | rw | 16 | — |
+| 43944 | 168 | Internal flexible sender E analogue input sender category | rw | 16 | — |
+| 43945 | 169 | Internal flexible sender E analogue input reading | rw | 16 | — |
+| 43946 | 170 | Internal flexible sender E Fault raw | rw | 16 | — |
+| 43947 | 171 | Internal flexible sender E Fault processed | rw | 16 | — |
+| 43948 | 172 | Internal flexible sender F analogue input sender category | rw | 16 | — |
+| 43949 | 173 | Internal flexible sender F analogue input reading | rw | 16 | — |
+| 43950 | 174 | Internal flexible sender F analogue input sender category | rw | 16 | — |
+| 43951 | 175 | Internal flexible sender F analogue input reading | rw | 16 | — |
+| 43952 | 176 | Internal flexible sender F Fault raw | rw | 16 | — |
+| 43953 | 177 | Internal flexible sender F Fault processed | rw | 16 | — |
+| 43808 | 32 | 2131 Expansion module 0 analogue input A sender category | rw | 16 | unimplemented |
+| 43809 | 33 | 2131 Expansion module 0 analogue input A input reading | rw | 16S | unimplemented |
+| 43810 | 34 | 2131 Expansion module 0 analogue input B sender category | rw | 16 | unimplemented |
+| 43811 | 35 | 2131 Expansion module 0 analogue input B input reading | rw | 16S | unimplemented |
+| 43812 | 36 | 2131 Expansion module 0 analogue input C sender category | rw | 16 | unimplemented |
+| 43813 | 37 | 2131 Expansion module 0 analogue input C input reading | rw | 16S | unimplemented |
+| 43814 | 38 | 2131 Expansion module 0 analogue input D sender category | rw | 16 | unimplemented |
+| 43815 | 39 | 2131 Expansion module 0 analogue input D input reading | rw | 16S | unimplemented |
+| 43816 | 40 | 2131 Expansion module 0 analogue input E sender category | rw | 16 | unimplemented |
+| 43817 | 41 | 2131 Expansion module 0 analogue input E input reading | rw | 16S | unimplemented |
+| 43818 | 42 | 2131 Expansion module 0 analogue input F sender category | rw | 16 | unimplemented |
+| 43819 | 43 | 2131 Expansion module 0 analogue input F input reading | rw | 16S | unimplemented |
+| 43820 | 44 | 2131 Expansion module 0 analogue input G sender category | rw | 16 | unimplemented |
+| 43821 | 45 | 2131 Expansion module 0 analogue input G input reading | rw | 16S | unimplemented |
+| 43822 | 46 | 2131 Expansion module 0 analogue input H sender category | rw | 16 | unimplemented |
+| 43823 | 47 | 2131 Expansion module 0 analogue input H input reading | rw | 16S | unimplemented |
+| 43824 | 48 | 2131 Expansion module 0 analogue input I sender category | rw | 16 | unimplemented |
+| 43825 | 49 | 2131 Expansion module 0 analogue input I input reading | rw | 16S | unimplemented |
+| 43826 | 50 | 2131 Expansion module 0 analogue input J sender category | rw | 16 | unimplemented |
+| 43827 | 51 | 2131 Expansion module 0 analogue input J input reading | rw | 16S | unimplemented |
+| 43904 | 128 | Internal flexible sender 1 analogue input sender category | rw | 16 | — |
+| 43905 | 129 | Internal flexible sender 1 analogue input reading | rw | 16 | — |
+| 43906 | 130 | Internal flexible sender 1 analogue input sender category | rw | 16 | — |
+| 43907 | 131 | Internal flexible sender 1 analogue input reading | rw | 16 | — |
+| 43908 | 132 | Internal flexible sender 2 analogue input sender category | rw | 16 | — |
+| 43909 | 133 | Internal flexible sender 2 analogue input reading | rw | 16 | — |
+| 43910 | 134 | Internal flexible sender 2 analogue input sender category | rw | 16 | — |
+| 43911 | 135 | Internal flexible sender 2 analogue input reading | rw | 16 | — |
+| 43912 | 136 | Internal flexible sender 3 analogue input sender category | rw | 16 | — |
+| 43913 | 137 | Internal flexible sender 3 analogue input reading | rw | 16 | — |
+| 43914 | 138 | Internal flexible sender 3 analogue input sender category | rw | 16 | — |
+| 43915 | 139 | Internal flexible sender 3 analogue input reading | rw | 16 | — |
+| 43916 | 140 | Internal flexible sender 4 analogue input sender category | rw | 16 | — |
+| 43917 | 141 | Internal flexible sender 4 analogue input reading | rw | 16 | — |
+| 43918 | 142 | Internal flexible sender 4 analogue input sender category | rw | 16 | — |
+| 43919 | 143 | Internal flexible sender 4 analogue input reading | rw | 16 | — |
+| 43920 | 144 | Internal flexible sender 5 analogue input sender category | rw | 16 | — |
+| 43921 | 145 | Internal flexible sender 5 analogue input reading | rw | 16 | — |
+| 43954 | 178 | PLC alarm 13 trigger | rw | 16 | — |
+| 43955 | 179 | PLC alarm 13 condition | rw | 16 | — |
+| 43956 | 180 | PLC alarm 14 trigger | rw | 16 | — |
+| 43957 | 181 | PLC alarm 14 condition | rw | 16 | — |
+| 43958 | 182 | PLC alarm 15 trigger | rw | 16 | — |
+| 43959 | 183 | PLC alarm 15 condition | rw | 16 | — |
+| 43960 | 184 | PLC alarm 16 trigger | rw | 16 | — |
+| 43961 | 185 | PLC alarm 16 condition | rw | 16 | — |
+| 43962 | 186 | PLC alarm 17 trigger | rw | 16 | — |
+| 43963 | 187 | PLC alarm 17 condition | rw | 16 | — |
+| 43964 | 188 | PLC alarm 18 trigger | rw | 16 | — |
+| 43965 | 189 | PLC alarm 18 condition | rw | 16 | — |
+| 43966 | 190 | PLC alarm 19 trigger | rw | 16 | — |
+| 43967 | 191 | PLC alarm 19 condition | rw | 16 | — |
+| 43968 | 192 | PLC alarm 20 trigger | rw | 16 | — |
+| 43969 | 193 | PLC alarm 20 condition | rw | 16 | — |
+| 43970 | 194 | 2133 Expansion module 0 analogue input A input reading | rw | 16S | — |
+| 43971 | 195 | 2133 Expansion module 0 analogue input B input reading | rw | 16S | — |
+| 43972 | 196 | 2133 Expansion module 0 analogue input C input reading | rw | 16S | — |
+| 43973 | 197 | 2133 Expansion module 0 analogue input D input reading | rw | 16S | — |
+| 43974 | 198 | 2133 Expansion module 0 analogue input E input reading | rw | 16S | — |
+| 43975 | 199 | 2133 Expansion module 0 analogue input F input reading | rw | 16S | — |
+| 43976 | 200 | 2133 Expansion module 0 analogue input G input reading | rw | 16S | — |
+| 43977 | 201 | 2133 Expansion module 0 analogue input H input reading | rw | 16S | — |
+| 43978 | 202 | 2133 Expansion module 1 analogue inputs A-H input readings | rw | 16S | —<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 43986 | 210 | 2133 Expansion module 2 analogue inputs A-H input readings | rw | 16S | —<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 43994 | 218 | 2133 Expansion module 3 analogue inputs A-H input readings | rw | 16S | —<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 43886 | 110 | PLC alarm 8 trigger | rw | 16 | — |
+| 43887 | 111 | PLC alarm 8 condition | rw | 16 | — |
+| 43889 | 113 | PLC alarm 9 condition | rw | 16 | — |
+| 43890 | 114 | PLC alarm 10 trigger | rw | 16 | — |
+| 43891 | 115 | PLC alarm 10 condition | rw | 16 | — |
+| 43892 | 116 | PLC alarm 11 trigger | rw | 16 | — |
+| 43893 | 117 | PLC alarm 11 condition | rw | 16 | — |
+| 43894 | 118 | PLC alarm 12 trigger | rw | 16 | — |
+| 43895 | 119 | PLC alarm 12 condition | rw | 16 | — |
+| 43896 | 120 | PLC alarm 13 trigger | rw | 16 | — |
+| 43897 | 121 | PLC alarm 13 condition | rw | 16 | — |
+| 43898 | 122 | PLC alarm 14 trigger | rw | 16 | — |
+| 43899 | 123 | PLC alarm 14 condition | rw | 16 | — |
+| 43900 | 124 | PLC alarm 15 trigger | rw | 16 | — |
+| 43901 | 125 | PLC alarm 15 condition | rw | 16 | — |
+| 43902 | 126 | PLC alarm 16 trigger | rw | 16 | — |
+| 43903 | 127 | PLC alarm 16 condition | rw | 16 | — |
+| 43779 | 3 | 2130 Expansion module 2 analogue input E input reading | rw |  | 32767 (0x7FFF) |
+| 43780 | 4 | 2130 Expansion module 2 analogue input F sender category | rw |  | unimplemented |
+| 43781 | 5 | 2130 Expansion module 2 analogue input F input reading | rw |  | 32767 (0x7FFF) |
+| 43782 | 6 | 2130 Expansion module 2 analogue input F sender category | rw |  | unimplemented |
+| 43783 | 7 | 2130 Expansion module 2 analogue input F input reading | rw |  | 32767 (0x7FFF) |
+| 43784 | 8 | 2130 Expansion module 2 analogue input G sender category | rw |  | unimplemented |
+| 43785 | 9 | 2130 Expansion module 2 analogue input G input reading | rw |  | 32767 (0x7FFF) |
+| 43786 | 10 | 2130 Expansion module 2 analogue input G sender category | rw |  | unimplemented |
+| 43787 | 11 | 2130 Expansion module 2 analogue input G input reading | rw |  | — |
+| 43788 | 12 | 2130 Expansion module 2 analogue input H sender category | rw |  | — |
+| 43789 | 13 | 2130 Expansion module 2 analogue input H input reading | rw |  | — |
+| 43790 | 14 | 2130 Expansion module 2 analogue input H sender category | rw |  | — |
+| 43791 | 15 | 2130 Expansion module 2 analogue input H input reading | rw |  | — |
+| 43979 | 203 | PLC alarm 11 condition | rw | 16 | — |
+| 43980 | 204 | PLC alarm 12 trigger | rw | 16 | — |
+| 43981 | 205 | PLC alarm 12 condition | rw | 16 | — |
+| 43982 | 206 | PLC alarm 13 trigger | rw | 16 | — |
+| 43983 | 207 | PLC alarm 13 condition | rw | 16 | — |
+| 43984 | 208 | PLC alarm 14 trigger | rw | 16 | — |
+| 43985 | 209 | PLC alarm 14 condition | rw | 16 | — |
+| 43987 | 211 | PLC alarm 15 condition | rw | 16 | — |
+| 43988 | 212 | PLC alarm 16 trigger | rw | 16 | — |
+| 43989 | 213 | PLC alarm 16 condition | rw | 16 | — |
+| 43990 | 214 | PLC alarm 17 trigger | rw | 16 | — |
+| 43991 | 215 | PLC alarm 17 condition | rw | 16 | — |
+| 43992 | 216 | PLC alarm 18 trigger | rw | 16 | — |
+| 43993 | 217 | PLC alarm 18 condition | rw | 16 | — |
+| 43995 | 219 | PLC alarm 19 condition | rw | 16 | — |
+| 43996 | 220 | PLC alarm 20 trigger | rw | 16 | — |
+| 43997 | 221 | PLC alarm 20 condition | rw | 16 | — |
+| 43998 | 222 | 2133 Expansion module 0 analogue input A input reading | rw | 16S | — |
+| 43999 | 223 | 2133 Expansion module 0 analogue input B input reading | rw | 16S | — |
+| 44000 | 224 | 2133 Expansion module 0 analogue input C input reading | rw | 16S | — |
+| 44001 | 225 | 2133 Expansion module 0 analogue input D input reading | rw | 16S | — |
+| 44002 | 226 | 2133 Expansion module 0 analogue input E input reading | rw | 16S | — |
+| 44003 | 227 | 2133 Expansion module 0 analogue input F input reading | rw | 16S | — |
+| 44004 | 228 | 2133 Expansion module 0 analogue input G input reading | rw | 16S | — |
+| 44005 | 229 | 2133 Expansion module 0 analogue input H input reading | rw | 16S | — |
+| 44006 | 230 | 2133 Expansion module 1 analogue inputs A-H input readings | rw | 16S | —<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 44014 | 238 | 2133 Expansion module 2 analogue inputs A-H input readings | rw | 16S | —<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 44022 | 246 | 2133 Expansion module 3 analogue inputs A-H input readings | rw | 16S | —<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+
+## Page 172 — Internal flexible sensor A sensor fault raw
+
+- Base address: `44032` (`page * 256 + offset`)
+- Registers: 81
+- Read runs: 10 ok / 2 fail
+- First error: `@44048 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 44032 | 0 | Internal flexible sensor A sensor fault raw | rw | 16 | unimplemented |
+| 44033 | 1 | Internal flexible sensor A sensor fault processed | rw | 16 | unimplemented |
+| 44034 | 2 | Internal flexible sensor B sensor fault raw | rw | 16 | unimplemented |
+| 44035 | 3 | Internal flexible sensor B sensor fault processed | rw | 16 | unimplemented |
+| 44036 | 4 | Internal flexible sensor C sensor fault raw | rw | 16 | unimplemented |
+| 44037 | 5 | Internal flexible sensor C sensor fault processed | rw | 16 | unimplemented |
+| 44038 | 6 | Internal flexible sensor D sensor fault raw | rw | 16 | unimplemented |
+| 44039 | 7 | Internal flexible sensor D sensor fault processed | rw | 16 | unimplemented |
+| 44040 | 8 | Internal flexible sensor E sensor fault raw | rw | 16 | unimplemented |
+| 44041 | 9 | Internal flexible sensor E sensor fault processed | rw | 16 | unimplemented |
+| 44042 | 10 | Internal flexible sensor F sensor fault raw | rw | 16 | unimplemented |
+| 44043 | 11 | Internal flexible sensor F sensor fault processed | rw | 16 | unimplemented |
+| 44044 | 12 | Internal flexible sensor G sensor fault raw | rw | 16 | unimplemented |
+| 44045 | 13 | Internal flexible sensor G sensor fault processed | rw | 16 | unimplemented |
+| 44046 | 14 | Internal flexible sensor H sensor fault raw | rw | 16 | unimplemented |
+| 44047 | 15 | Internal flexible sensor H sensor fault processed | rw | 16 | unimplemented |
+| 44048 | 16 | Internal flexible sensor I sensor fault raw | rw | 16 | — |
+| 44049 | 17 | Internal flexible sensor I sensor fault processed | rw | 16 | — |
+| 44050 | 18 | Internal flexible sensor J sensor fault raw | rw | 16 | — |
+| 44051 | 19 | Internal flexible sensor J sensor fault processed | rw | 16 | — |
+| 44052 | 20 | Internal flexible sensor K sensor fault raw | rw | 16 | — |
+| 44053 | 21 | Internal flexible sensor K sensor fault processed | rw | 16 | — |
+| 44054 | 22 | Internal flexible sensor L sensor fault raw | rw | 16 | — |
+| 44055 | 23 | Internal flexible sensor L sensor fault processed | rw | 16 | — |
+| 44144 | 112 | 2131 Expansion module 0 digital input A raw status | r | 16 | unimplemented |
+| 44145 | 113 | 2131 Expansion module 0 digital input A processed status | rw | 16 | unimplemented |
+| 44146 | 114 | 2131 Expansion module 0 digital input B raw status | r | 16 | unimplemented |
+| 44147 | 115 | 2131 Expansion module 0 digital input B processed status | rw | 16 | unimplemented |
+| 44148 | 116 | 2131 Expansion module 0 digital input C raw status | r | 16 | unimplemented |
+| 44149 | 117 | 2131 Expansion module 0 digital input C processed status | rw | 16 | unimplemented |
+| 44150 | 118 | 2131 Expansion module 0 digital input D raw status | r | 16 | unimplemented |
+| 44151 | 119 | 2131 Expansion module 0 digital input D processed status | rw | 16 | unimplemented |
+| 44152 | 120 | 2131 Expansion module 0 digital input E raw status | r | 16 | — |
+| 44153 | 121 | 2131 Expansion module 0 digital input E processed status | rw | 16 | — |
+| 44154 | 122 | 2131 Expansion module 0 digital input F raw status | r | 16 | — |
+| 44155 | 123 | 2131 Expansion module 0 digital input F processed status | rw | 16 | — |
+| 44156 | 124 | 2131 Expansion module 0 digital input G raw status | r | 16 | — |
+| 44157 | 125 | 2131 Expansion module 0 digital input G processed status | rw | 16 | — |
+| 44158 | 126 | 2131 Expansion module 0 digital input H raw status | r | 16 | — |
+| 44159 | 127 | 2131 Expansion module 0 digital input H processed status | rw | 16 | — |
+| 44160 | 128 | 2131 Expansion module 0 digital input I | rw | 16 | unimplemented |
+| 44161 | 129 | 2131 Expansion module 0 digital input I | rw | 16 | unimplemented |
+| 44162 | 130 | 2131 Expansion module 0 digital input J | rw | 16 | unimplemented |
+| 44163 | 131 | 2131 Expansion module 0 digital input J | rw | 16 | unimplemented |
+| 44224 | 192 | DSENet charger 0 Common shutdown raw status | r | 16 | unimplemented |
+| 44225 | 193 | DSENet charger 0 Common shutdown processed status | rw | 16 | unimplemented |
+| 44226 | 194 | DSENet charger 0 Common warning raw status | r | 16 | unimplemented |
+| 44227 | 195 | DSENet charger 0 Common warning processed status | rw | 16 | unimplemented |
+| 44228 | 196 | DSENet charger 1 Common shutdown raw status | r | 16 | unimplemented |
+| 44229 | 197 | DSENet charger 1 Common shutdown processed status | rw | 16 | unimplemented |
+| 44230 | 198 | DSENet charger 1 Common warning raw status | r | 16 | unimplemented |
+| 44231 | 199 | DSENet charger 1 Common warning processed status | rw | 16 | unimplemented |
+| 44232 | 200 | DSENet charger 2 Common shutdown raw status | r | 16 | unimplemented |
+| 44233 | 201 | DSENet charger 2 Common shutdown processed status | rw | 16 | unimplemented |
+| 44234 | 202 | DSENet charger 2 Common warning raw status | r | 16 | unimplemented |
+| 44235 | 203 | DSENet charger 2 Common warning processed status | rw | 16 | unimplemented |
+| 44236 | 204 | DSENet charger 3 Common shutdown raw status | r | 16 | unimplemented |
+| 44237 | 205 | DSENet charger 3 Common shutdown processed status | rw | 16 | unimplemented |
+| 44238 | 206 | DSENet charger 3 Common warning raw status | r | 16 | unimplemented |
+| 44239 | 207 | DSENet charger 3 Common warning processed status | rw | 16 | unimplemented |
+| 44056 | 24 | 2133 Expansion module 3 digital inputs A-H input reading | rw |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 44064 | 32 | 2131 Expansion module 0 analogue input A sensor category | rw | 16 | unimplemented |
+| 44065 | 33 | 2131 Expansion module 0 analogue input A input reading | rw | 16S | 65535 (0xFFFF) |
+| 44066 | 34 | 2131 Expansion module 0 analogue input B | rw | 16 | unimplemented |
+| 44067 | 35 | 2131 Expansion module 0 analogue input B | rw | 16S | 65535 (0xFFFF) |
+| 44068 | 36 | 2131 Expansion module 0 analogue input C | rw | 16 | unimplemented |
+| 44069 | 37 | 2131 Expansion module 0 analogue input C | rw | 16S | 65535 (0xFFFF) |
+| 44070 | 38 | 2131 Expansion module 0 analogue input D | rw | 16 | unimplemented |
+| 44071 | 39 | 2131 Expansion module 0 analogue input D | rw | 16S | 65535 (0xFFFF) |
+| 44072 | 40 | 2131 Expansion module 0 analogue input E | rw | 16 | unimplemented |
+| 44073 | 41 | 2131 Expansion module 0 analogue input E | rw | 16S | 65535 (0xFFFF) |
+| 44074 | 42 | 2131 Expansion module 0 analogue input F | rw | 16 | unimplemented |
+| 44075 | 43 | 2131 Expansion module 0 analogue input F | rw | 16S | 65535 (0xFFFF) |
+| 44076 | 44 | 2131 Expansion module 0 analogue input G | rw | 16 | unimplemented |
+| 44077 | 45 | 2131 Expansion module 0 analogue input G | rw | 16S | 65535 (0xFFFF) |
+| 44078 | 46 | 2131 Expansion module 0 analogue input H | rw | 16 | unimplemented |
+| 44079 | 47 | 2131 Expansion module 0 analogue input H | rw | 16S | 65535 (0xFFFF) |
+| 44080 | 48 | 2131 Expansion module 0 analogue input I | rw | 16 | unimplemented |
+| 44081 | 49 | 2131 Expansion module 0 analogue input I | rw | 16S | 65535 (0xFFFF) |
+| 44082 | 50 | 2131 Expansion module 0 analogue input J | rw | 16 | unimplemented |
+| 44083 | 51 | 2131 Expansion module 0 analogue input J | rw | 16S | 65535 (0xFFFF) |
+
+## Page 175 — CAN Instrument 1 Title String
+
+- Base address: `44800` (`page * 256 + offset`)
+- Registers: 8
+- Read runs: 8 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 44800 | 0 | CAN Instrument 1 Title String | r |  | unimplemented |
+| 44832 | 32 | CAN Instrument 2 Title String | r |  | unimplemented |
+| 44864 | 64 | CAN Instrument 3 Title String | r |  | unimplemented |
+| 44896 | 96 | CAN Instrument 4 Title String | r |  | unimplemented |
+| 44928 | 128 | CAN Instrument 5 Title String | r |  | unimplemented |
+| 44960 | 160 | CAN Instrument 6 Title String | r |  | unimplemented |
+| 44992 | 192 | CAN Instrument 7 Title String | r |  | unimplemented |
+| 45024 | 224 | CAN Instrument 8 Title String | r |  | unimplemented |
+
+## Page 177 — Value for CAN Instrument 1
+
+- Base address: `45312` (`page * 256 + offset`)
+- Registers: 67
+- Read runs: 19 ok / 4 fail
+- First error: `@45345 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 45312 | 0 | Value for CAN Instrument 1 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45314 | 2 | Value for CAN Instrument 2 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45316 | 4 | Value for CAN Instrument 3 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45318 | 6 | Value for CAN Instrument 4 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45320 | 8 | Value for CAN Instrument 5 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45370 | 58 | Value for CAN Instrument 30 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45322 | 10 | Value for CAN Instrument 6 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45324 | 12 | Value for CAN Instrument 7 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45326 | 14 | Value for CAN Instrument 8 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45328 | 16 | Value for CAN Instrument 9 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45330 | 18 | Value for CAN Instrument 10 | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45345 | 33 | CAN Instrument 1– Multiplier | r | 16S | — |
+| 45346 | 34 | CAN Instrument 1– Precision | r |  | — |
+| 45347 | 35 | CAN Instrument 1– Range Min | r | 32S | —<br>— |
+| 45349 | 37 | CAN Instrument 1– Range Max | r | 32S | —<br>— |
+| 45351 | 39 | CAN Instrument 1– Unit suffix string | r |  | —<br>—<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45361 | 49 | CAN Instrument 2– Category | r |  | — |
+| 45362 | 50 | CAN Instrument 2– Multiplier | r | 16S | — |
+| 45363 | 51 | CAN Instrument 2– Precision | r |  | — |
+| 45364 | 52 | CAN Instrument 2– Range Min | r | 32S | —<br>— |
+| 45366 | 54 | CAN Instrument 2– Range Max | r | 32S | —<br>— |
+| 45368 | 56 | CAN Instrument 2– Unit suffix string | r |  | —<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>— |
+| 45378 | 66 | CAN Instrument 3– Category | r |  | — |
+| 45379 | 67 | CAN Instrument 3– Multiplier | r | 16S | — |
+| 45380 | 68 | CAN Instrument 3– Precision | r |  | — |
+| 45381 | 69 | CAN Instrument 3– Range Min | r | 32S | —<br>— |
+| 45383 | 71 | CAN Instrument 3– Range Max | r | 32S | —<br>— |
+| 45385 | 73 | CAN Instrument 3– Unit suffix string | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45395 | 83 | CAN Instrument 4– Category | r |  | unimplemented |
+| 45396 | 84 | CAN Instrument 4– Multiplier | r | 16S | 65535 (0xFFFF) |
+| 45397 | 85 | CAN Instrument 4– Precision | r |  | unimplemented |
+| 45398 | 86 | CAN Instrument 4– Range Min | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45400 | 88 | CAN Instrument 4– Range Max | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45413 | 101 | CAN Instrument 5– Multiplier | r | 16S | — |
+| 45414 | 102 | CAN Instrument 5– Precision | r |  | — |
+| 45415 | 103 | CAN Instrument 5– Range Min | r | 32S | —<br>— |
+| 45417 | 105 | CAN Instrument 5– Range Max | r | 32S | —<br>— |
+| 45419 | 107 | CAN Instrument 5– Unit suffix string | r |  | —<br>—<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45429 | 117 | CAN Instrument 6– Category | r |  | unimplemented |
+| 45430 | 118 | CAN Instrument 6– Multiplier | r | 16S | 65535 (0xFFFF) |
+| 45431 | 119 | CAN Instrument 6– Precision | r |  | unimplemented |
+| 45432 | 120 | CAN Instrument 6– Range Min | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45434 | 122 | CAN Instrument 6– Range Max | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45436 | 124 | CAN Instrument 6– Unit suffix string | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45446 | 134 | CAN Instrument 7– Category | r |  | unimplemented |
+| 45447 | 135 | CAN Instrument 7– Multiplier | r | 16S | 65535 (0xFFFF) |
+| 45448 | 136 | CAN Instrument 7– Precision | r |  | unimplemented |
+| 45449 | 137 | CAN Instrument 7– Range Min | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45451 | 139 | CAN Instrument 7– Range Max | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45453 | 141 | CAN Instrument 7– Unit suffix string | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45463 | 151 | CAN Instrument 8– Category | r |  | unimplemented |
+| 45464 | 152 | CAN Instrument 8– Multiplier | r | 16S | 65535 (0xFFFF) |
+| 45465 | 153 | CAN Instrument 8– Precision | r |  | unimplemented |
+| 45466 | 154 | CAN Instrument 8– Range Min | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45468 | 156 | CAN Instrument 8– Range Max | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45470 | 158 | CAN Instrument 8– Unit suffix string | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45480 | 168 | CAN Instrument 9– Category | r |  | unimplemented |
+| 45481 | 169 | CAN Instrument 9– Multiplier | r | 16S | 65535 (0xFFFF) |
+| 45482 | 170 | CAN Instrument 9– Precision | r |  | unimplemented |
+| 45483 | 171 | CAN Instrument 9– Range Min | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45485 | 173 | CAN Instrument 9– Range Max | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45487 | 175 | CAN Instrument 9– Unit suffix string | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45497 | 185 | CAN Instrument 10– Category | r |  | unimplemented |
+| 45498 | 186 | CAN Instrument 10– Multiplier | r | 16S | 65535 (0xFFFF) |
+| 45499 | 187 | CAN Instrument 10– Precision | r |  | unimplemented |
+| 45500 | 188 | CAN Instrument 10– Range Min | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+| 45502 | 190 | CAN Instrument 10– Range Max | r | 32S | 65535 (0xFFFF)<br>65535 (0xFFFF) |
+
+## Page 178 — Internal Analogue Input A – Reading
+
+- Base address: `45568` (`page * 256 + offset`)
+- Registers: 77
+- Read runs: 19 ok / 1 fail
+- First error: `@45689 qty=5 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 45568 | 0 | Internal Analogue Input A – Reading | r |  | unimplemented |
+| 45569 | 1 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45570 | 2 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45571 | 3 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45572 | 4 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45573 | 5 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45574 | 6 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45575 | 7 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45576 | 8 | Internal Analogue Input | r |  | unimplemented |
+| 45577 | 9 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45578 | 10 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45579 | 11 | Internal Analogue Input Reading | r |  | unimplemented |
+| 45585 | 17 | Internal Analogue Input A - | r |  | unimplemented |
+| 45586 | 18 | Internal Analogue Input A - | r | 16 | unimplemented |
+| 45587 | 19 | Internal Analogue Input A – | r |  | unimplemented |
+| 45588 | 20 | Internal Analogue Input A – | r |  | unimplemented |
+| 45589 | 21 | Internal Analogue Input A – | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45599 | 31 | Internal Analogue Input B - | r | 16 | unimplemented |
+| 45600 | 32 | Internal Analogue Input B | r |  | unimplemented |
+| 45601 | 33 | Internal Analogue Input B - | r | 16 | unimplemented |
+| 45602 | 34 | Internal Analogue Input B – | r |  | unimplemented |
+| 45603 | 35 | Internal Analogue Input B – | r |  | unimplemented |
+| 45604 | 36 | Internal Analogue Input B – | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45614 | 46 | Internal Analogue Input C - | r | 16 | unimplemented |
+| 45615 | 47 | Internal Analogue Input C | r |  | unimplemented |
+| 45616 | 48 | Internal Analogue Input C - | r | 16 | unimplemented |
+| 45617 | 49 | Internal Analogue Input C – | r |  | unimplemented |
+| 45618 | 50 | Internal Analogue Input C – | r |  | unimplemented |
+| 45619 | 51 | Internal Analogue Input C – | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45629 | 61 | Internal Analogue Input D - | r | 16 | unimplemented |
+| 45630 | 62 | Internal Analogue Input D | r |  | unimplemented |
+| 45631 | 63 | Internal Analogue Input D - | r | 16 | unimplemented |
+| 45633 | 65 | Internal Analogue Input D – | r |  | unimplemented |
+| 45634 | 66 | Internal Analogue Input D – | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45644 | 76 | Internal Analogue Input E – | r | 16 | unimplemented |
+| 45645 | 77 | Internal Analogue Input E | r |  | unimplemented |
+| 45646 | 78 | Internal Analogue Input E - | r | 16 | unimplemented |
+| 45647 | 79 | Internal Analogue Input E – | r |  | unimplemented |
+| 45648 | 80 | Internal Analogue Input E – | r |  | unimplemented |
+| 45649 | 81 | Internal Analogue Input E – | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45659 | 91 | Internal Analogue Input F – | r | 16 | unimplemented |
+| 45660 | 92 | Internal Analogue Input F | r |  | unimplemented |
+| 45661 | 93 | Internal Analogue Input F - | r | 16 | unimplemented |
+| 45662 | 94 | Internal Analogue Input F – | r |  | unimplemented |
+| 45663 | 95 | Internal Analogue Input F – | r |  | unimplemented |
+| 45664 | 96 | Internal Analogue Input F – | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45674 | 106 | Internal Analogue Input G – | r | 16 | unimplemented |
+| 45675 | 107 | Internal Analogue Input G | r |  | unimplemented |
+| 45676 | 108 | Internal Analogue Input G - | r | 16 | unimplemented |
+| 45677 | 109 | Internal Analogue Input G – | r |  | unimplemented |
+| 45678 | 110 | Internal Analogue Input G – | r |  | unimplemented |
+| 45689 | 121 | Internal Analogue Input H – | r | 16 | — |
+| 45690 | 122 | Internal Analogue Input H | r |  | — |
+| 45691 | 123 | Internal Analogue Input H - | r | 16 | — |
+| 45692 | 124 | Internal Analogue Input H – | r |  | — |
+| 45693 | 125 | Internal Analogue Input H – | r |  | — |
+| 45704 | 136 | Internal Analogue Input I – | r | 16 | unimplemented |
+| 45705 | 137 | Internal Analogue Input I | r |  | unimplemented |
+| 45706 | 138 | Internal Analogue Input I - | r | 16 | unimplemented |
+| 45707 | 139 | Internal Analogue Input I – | r |  | unimplemented |
+| 45708 | 140 | Internal Analogue Input I – | r |  | unimplemented |
+| 45719 | 151 | Internal Analogue Input J – | r | 16 | unimplemented |
+| 45720 | 152 | Internal Analogue Input J | r |  | unimplemented |
+| 45721 | 153 | Internal Analogue Input J - | r | 16 | unimplemented |
+| 45722 | 154 | Internal Analogue Input J – | r |  | unimplemented |
+| 45723 | 155 | Internal Analogue Input J – | r |  | unimplemented |
+| 45734 | 166 | Internal Analogue Input K – | r | 16 | unimplemented |
+| 45735 | 167 | Internal Analogue Input K | r |  | unimplemented |
+| 45736 | 168 | Internal Analogue Input K - | r | 16 | unimplemented |
+| 45737 | 169 | Internal Analogue Input K – | r |  | unimplemented |
+| 45738 | 170 | Internal Analogue Input K – | r |  | unimplemented |
+| 45749 | 181 | Internal Analogue Input L – | r | 16 | unimplemented |
+| 45750 | 182 | Internal Analogue Input L | r |  | unimplemented |
+| 45751 | 183 | Internal Analogue Input L - | r | 16 | unimplemented |
+| 45753 | 185 | Internal Analogue Input L – | r |  | unimplemented |
+| 45584 | 16 | Flex Sensor A Category | rw | 16 | unimplemented |
+| 45632 | 64 | Flex Sensor D (category/multiplier/precision/min/max/suffix) | rw |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+
+## Page 179 — 2130 Expansion Module 0 – E Range Min
+
+- Base address: `45824` (`page * 256 + offset`)
+- Registers: 50
+- Read runs: 14 ok / 1 fail
+- First error: `@45864 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 45824 | 0 | 2130 Expansion Module 0 – E Range Min | r |  | unimplemented |
+| 45825 | 1 | 2130 Expansion Module 0 – E Range Max | r |  | unimplemented |
+| 45826 | 2 | 2130 Expansion Module 0 – F Range Min | r |  | unimplemented |
+| 45827 | 3 | 2130 Expansion Module 0 – F Range Max | r |  | unimplemented |
+| 45828 | 4 | 2130 Expansion Module 0 – G Range Min | r |  | unimplemented |
+| 45829 | 5 | 2130 Expansion Module 0 – G Range Max | r |  | unimplemented |
+| 45830 | 6 | 2130 Expansion Module 0 – H Range Min | r |  | unimplemented |
+| 45831 | 7 | 2130 Expansion Module 0 – H Range Max | r |  | unimplemented |
+| 45832 | 8 | 2130 Expansion Module 1 – E- H (Range Min + Max) | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45840 | 16 | 2130 Expansion Module 2 – E- H (Range Min + Max) | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45952 | 128 | 2133 Expansion Module 1 – A- H (Range Min + Max) | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45968 | 144 | 2133 Expansion Module 2 – A- H (Range Min + Max) | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45984 | 160 | 2133 Expansion Module 3 – A- H (Range Min + Max) | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45848 | 24 | 2130 Expansion module 3 analogue inputs A-H sensor | rw |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 45856 | 32 | 2131 Expansion module 0 analogue input A sensor | rw | 16 | unimplemented |
+| 45857 | 33 | 2131 Expansion module 0 analogue input A | rw | 16 | unimplemented |
+| 45858 | 34 | 2131 Expansion module 0 analogue input B sensor | rw | 16 | unimplemented |
+| 45859 | 35 | 2131 Expansion module 0 analogue input B | rw | 16 | unimplemented |
+| 45860 | 36 | 2131 Expansion module 0 analogue input C sensor | rw | 16 | unimplemented |
+| 45861 | 37 | 2131 Expansion module 0 analogue input C | rw | 16 | unimplemented |
+| 45862 | 38 | 2131 Expansion module 0 analogue input D sensor | rw | 16 | unimplemented |
+| 45863 | 39 | 2131 Expansion module 0 analogue input D | rw | 16 | unimplemented |
+| 45864 | 40 | 2131 Expansion module 0 analogue input E sensor | rw | 16 | — |
+| 45865 | 41 | 2131 Expansion module 0 analogue input E | rw | 16 | — |
+| 45866 | 42 | 2131 Expansion module 0 analogue input F sensor | rw | 16 | — |
+| 45867 | 43 | 2131 Expansion module 0 analogue input F | rw | 16 | — |
+| 45868 | 44 | 2131 Expansion module 0 analogue input G sensor | rw | 16 | — |
+| 45869 | 45 | 2131 Expansion module 0 analogue input G | rw | 16 | — |
+| 45870 | 46 | 2131 Expansion module 0 analogue input H sensor | rw | 16 | — |
+| 45871 | 47 | 2131 Expansion module 0 analogue input H | rw | 16 | — |
+| 45872 | 48 | 2131 Expansion module 0 analogue input I sensor | rw | 16 | unimplemented |
+| 45873 | 49 | 2131 Expansion module 0 analogue input I | rw | 16 | unimplemented |
+| 45874 | 50 | 2131 Expansion module 0 analogue input J sensor | rw | 16 | unimplemented |
+| 45875 | 51 | 2131 Expansion module 0 analogue input J | rw | 16 | unimplemented |
+| 45936 | 112 | 2133 Expansion module 0 analogue input A sensor | rw | 16 | unimplemented |
+| 45937 | 113 | 2133 Expansion module 0 analogue input A | rw | 16 | unimplemented |
+| 45938 | 114 | 2133 Expansion module 0 analogue input B sensor | rw | 16 | unimplemented |
+| 45939 | 115 | 2133 Expansion module 0 analogue input B | rw | 16 | unimplemented |
+| 45940 | 116 | 2133 Expansion module 0 analogue input C sensor | rw | 16 | unimplemented |
+| 45941 | 117 | 2133 Expansion module 0 analogue input C | rw | 16 | unimplemented |
+| 45942 | 118 | 2133 Expansion module 0 analogue input D sensor | rw | 16 | unimplemented |
+| 45943 | 119 | 2133 Expansion module 0 analogue input D | rw | 16 | unimplemented |
+| 45944 | 120 | 2133 Expansion module 0 analogue input E sensor | rw | 16 | unimplemented |
+| 45945 | 121 | 2133 Expansion module 0 analogue input E | rw | 16 | unimplemented |
+| 45946 | 122 | 2133 Expansion module 0 analogue input F sensor | rw | 16 | unimplemented |
+| 45947 | 123 | 2133 Expansion module 0 analogue input F | rw | 16 | unimplemented |
+| 45948 | 124 | 2133 Expansion module 0 analogue input G sensor | rw | 16 | unimplemented |
+| 45949 | 125 | 2133 Expansion module 0 analogue input G | rw | 16 | unimplemented |
+| 45950 | 126 | 2133 Expansion module 0 analogue input H sensor | rw | 16 | unimplemented |
+| 45951 | 127 | 2133 Expansion module 0 analogue input H | rw | 16 | unimplemented |
+
+## Page 180 — Digital output A source
+
+- Base address: `46080` (`page * 256 + offset`)
+- Registers: 90
+- Read runs: 12 ok / 7 fail
+- First error: `@46080 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 46080 | 0 | Digital output A source | r | 16 | — |
+| 46081 | 1 | Digital output A polarity | r | 16 | — |
+| 46082 | 2 | Digital output B source | r | 16 | — |
+| 46083 | 3 | Digital output B polarity | r | 16 | — |
+| 46084 | 4 | Digital output C source | r | 16 | — |
+| 46085 | 5 | Digital output C polarity | r | 16 | — |
+| 46086 | 6 | Digital output D source | r | 16 | — |
+| 46087 | 7 | Digital output D polarity | r | 16 | — |
+| 46088 | 8 | Digital output E source | r | 16 | 0 (0x0000) |
+| 46089 | 9 | Digital output E polarity | r | 16 | 0 (0x0000) |
+| 46090 | 10 | Common Trip LED | r | 16 | 0 (0x0000) |
+| 46091 | 11 | Common Trip LED | r | 16 | 0 (0x0000) |
+| 46092 | 12 | Voltage alarms green LED | r | 16 | 22 (0x0016) |
+| 46093 | 13 | Voltage alarms green LED | r | 16 | 0 (0x0000) |
+| 46094 | 14 | Voltage alarms red LED | r | 16 | 21 (0x0015) |
+| 46095 | 15 | Voltage alarms red LED | r | 16 | 1 (0x0001) |
+| 46096 | 16 | Frequency alarms green LED | r | 16 | — |
+| 46097 | 17 | Frequency alarms green LED | r | 16 | — |
+| 46098 | 18 | Frequency alarms red LED | r | 16 | — |
+| 46099 | 19 | Frequency alarms red LED | r | 16 | — |
+| 46100 | 20 | ROCOF alarm LED | r | 16 | — |
+| 46101 | 21 | ROCOF alarm LED | r | 16 | — |
+| 46102 | 22 | Vector Shift LED | r | 16 | — |
+| 46103 | 23 | Vector Shift LED | r | 16 | — |
+| 46104 | 24 | Alternate configuration LED | r | 16 | 89 (0x0059) |
+| 46105 | 25 | Alternate configuration LED | r | 16 | 1 (0x0001) |
+| 46106 | 26 | Supervision enabled LED | r | 16 | 30 (0x001E) |
+| 46107 | 27 | Supervision enabled LED | r | 16 | 0 (0x0000) |
+| 46108 | 28 | GEN BREAKER LED source (GEN BREAKER) | r | 16 | 29 (0x001D) |
+| 46109 | 29 | GEN BREAKER LED polarity (GEN BREAKER) | r | 16 | 0 (0x0000) |
+| 46110 | 30 | GEN LED source (GEN) | r | 16 | 13 (0x000D) |
+| 46111 | 31 | GEN LED polarity (GEN) | r | 16 | 0 (0x0000) |
+| 46112 | 32 | Warning LED Source | r | 16 | — |
+| 46113 | 33 | Warning LED polarity | r | 16 | — |
+| 46114 | 34 | USER LCD 1 source (USER LCD 1) | r | 16 | — |
+| 46115 | 35 | USER LCD 1 polarity (USER LCD 1) | r | 16 | — |
+| 46116 | 36 | USER LCD 2 source (USER LCD 2) | r | 16 | — |
+| 46117 | 37 | USER LCD 2 polarity (USER LCD 2) | r | 16 | — |
+| 46118 | 38 | USER LCD 3 source (USER LCD 3) | r | 16 | — |
+| 46119 | 39 | USER LCD 3 polarity (USER LCD 3) | r | 16 | — |
+| 46120 | 40 | Digital output I source | r | 16 | — |
+| 46121 | 41 | Digital output I polarity | r | 16 | — |
+| 46122 | 42 | Digital output J source | r | 16 | — |
+| 46123 | 43 | Digital output J polarity | r | 16 | — |
+| 46124 | 44 | USER LED 1 source (USER LED 1) | r | 16 | — |
+| 46125 | 45 | USER LED 1 polarity (USER LED 1) | r | 16 | — |
+| 46126 | 46 | USER LED 2 source (USER LED 2) | r | 16 | — |
+| 46127 | 47 | USER LED 2 polarity (USER LED 2) | r | 16 | — |
+| 46128 | 48 | USER LED 3 source (USER LED 3) | r | 16 | — |
+| 46129 | 49 | USER LED 3 polarity (USER LED 3) | r | 16 | — |
+| 46130 | 50 | USER LED 4 source (USER LED 4) | r | 16 | — |
+| 46131 | 51 | USER LED 4 polarity (USER LED 4) | r | 16 | — |
+| 46144 | 64 | 2157 expansion module 0 output A source | rw | 16 | 0 (0x0000) |
+| 46145 | 65 | 2157 expansion module 0 output A polarity | rw | 16 | 0 (0x0000) |
+| 46146 | 66 | 2157 expansion module 0 output B source | rw | 16 | 0 (0x0000) |
+| 46147 | 67 | 2157 expansion module 0 output B polarity | rw | 16 | 0 (0x0000) |
+| 46148 | 68 | 2157 expansion module 0 output C source | rw | 16 | 0 (0x0000) |
+| 46149 | 69 | 2157 expansion module 0 output C polarity | rw | 16 | 0 (0x0000) |
+| 46150 | 70 | 2157 expansion module 0 output D source | rw | 16 | 0 (0x0000) |
+| 46151 | 71 | 2157 expansion module 0 output D polarity | rw | 16 | 0 (0x0000) |
+| 46152 | 72 | 2157 expansion module 0 output E source | rw | 16 | 0 (0x0000) |
+| 46153 | 73 | 2157 expansion module 0 output E polarity | rw | 16 | 0 (0x0000) |
+| 46154 | 74 | 2157 expansion module 0 output F source | rw | 16 | 0 (0x0000) |
+| 46155 | 75 | 2157 expansion module 0 output F polarity | rw | 16 | 0 (0x0000) |
+| 46156 | 76 | 2157 expansion module 0 output G source | rw | 16 | 0 (0x0000) |
+| 46157 | 77 | 2157 expansion module 0 output G polarity | rw | 16 | 0 (0x0000) |
+| 46158 | 78 | 2157 expansion module 0 output H source | rw | 16 | 0 (0x0000) |
+| 46159 | 79 | 2157 expansion module 0 output H polarity | rw | 16 | 0 (0x0000) |
+| 46160 | 80 | 2157 expansion module 1 outputs A-H | rw | 16 | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>—<br>—<br>—<br>—<br>—<br>—<br>—<br>— |
+| 46176 | 96 | 2157 expansion module 2 outputs A-H | rw | 16 | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 46192 | 112 | 2157 expansion module 3 outputs A-H | rw | 16 | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+| 46304 | 224 | 2548 expansion module 0 output A source | rw | 16 | — |
+| 46305 | 225 | 2548 expansion module 0 output A polarity | rw | 16 | — |
+| 46306 | 226 | 2548 expansion module 0 output B source | rw | 16 | — |
+| 46307 | 227 | 2548 expansion module 0 output B polarity | rw | 16 | — |
+| 46308 | 228 | 2548 expansion module 0 output C source | rw | 16 | — |
+| 46309 | 229 | 2548 expansion module 0 output C polarity | rw | 16 | — |
+| 46310 | 230 | 2548 expansion module 0 output D source | rw | 16 | — |
+| 46311 | 231 | 2548 expansion module 0 output D polarity | rw | 16 | — |
+| 46312 | 232 | 2548 expansion module 0 output E source | rw | 16 | 0 (0x0000) |
+| 46313 | 233 | 2548 expansion module 0 output E polarity | rw | 16 | 0 (0x0000) |
+| 46314 | 234 | 2548 expansion module 0 output F source | rw | 16 | 0 (0x0000) |
+| 46315 | 235 | 2548 expansion module 0 output F polarity | rw | 16 | 0 (0x0000) |
+| 46316 | 236 | 2548 expansion module 0 output G source | rw | 16 | 0 (0x0000) |
+| 46317 | 237 | 2548 expansion module 0 output G polarity | rw | 16 | 0 (0x0000) |
+| 46318 | 238 | 2548 expansion module 0 output H source | rw | 16 | 0 (0x0000) |
+| 46319 | 239 | 2548 expansion module 0 output H polarity | rw | 16 | 0 (0x0000) |
+| 46320 | 240 | 2548 expansion module 0 sounder output | rw |  | 0 (0x0000) |
+| 46321 | 241 | 2548 expansion module 0 sounder output | rw |  | 0 (0x0000) |
+| 46322 | 242 | 2548 expansion module 1 outputs A-G | rw |  | 0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000)<br>0 (0x0000) |
+
+## Page 181 — 2548 expansion module 1 output H source
+
+- Base address: `46336` (`page * 256 + offset`)
+- Registers: 4
+- Read runs: 1 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 46336 | 0 | 2548 expansion module 1 output H source | rw | 16 | 0 (0x0000) |
+| 46337 | 1 | 2548 expansion module 1 output H polarity | rw | 16 | 0 (0x0000) |
+| 46338 | 2 | 2548 expansion module 1 sounder output Source | rw | 16 | 0 (0x0000) |
+| 46339 | 3 | 2548 expansion module 1 sounder output polarity | rw | 16 | 0 (0x0000) |
+
+## Page 182 — Virtual output 1 source
+
+- Base address: `46592` (`page * 256 + offset`)
+- Registers: 40
+- Read runs: 3 ok / 2 fail
+- First error: `@46600 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 46592 | 0 | Virtual output 1 source | r | 16 | 0 (0x0000) |
+| 46593 | 1 | Virtual output 1 polarity | r | 16 | 0 (0x0000) |
+| 46594 | 2 | Virtual output 2 source | r | 16 | 0 (0x0000) |
+| 46595 | 3 | Virtual output 2 polarity | r | 16 | 0 (0x0000) |
+| 46596 | 4 | Virtual output 3 source | r | 16 | 0 (0x0000) |
+| 46597 | 5 | Virtual output 3 polarity | r | 16 | 0 (0x0000) |
+| 46598 | 6 | Virtual output 4 source | r | 16 | 0 (0x0000) |
+| 46599 | 7 | Virtual output 4 polarity | r | 16 | 0 (0x0000) |
+| 46600 | 8 | Virtual output 5 source | r | 16 | — |
+| 46601 | 9 | Virtual output 5 polarity | r | 16 | — |
+| 46602 | 10 | Virtual output 6 source | r | 16 | — |
+| 46603 | 11 | Virtual output 6 polarity | r | 16 | — |
+| 46604 | 12 | Virtual output 7 source | r | 16 | — |
+| 46605 | 13 | Virtual output 7 polarity | r | 16 | — |
+| 46606 | 14 | Virtual output 8 source | r | 16 | — |
+| 46607 | 15 | Virtual output 8 polarity | r | 16 | — |
+| 46608 | 16 | Virtual output 9 source | r | 16 | — |
+| 46609 | 17 | Virtual output 9 polarity | r | 16 | — |
+| 46610 | 18 | Virtual output 10 source | r | 16 | — |
+| 46611 | 19 | Virtual output 10 polarity | r | 16 | — |
+| 46612 | 20 | Virtual output 11 source | r | 16 | — |
+| 46613 | 21 | Virtual output 11 polarity | r | 16 | — |
+| 46614 | 22 | Virtual output 12 source | r | 16 | — |
+| 46615 | 23 | Virtual output 12 polarity | r | 16 | — |
+| 46616 | 24 | Virtual output 13 source | r | 16 | 0 (0x0000) |
+| 46617 | 25 | Virtual output 13 polarity | r | 16 | 0 (0x0000) |
+| 46618 | 26 | Virtual output 14 source | r | 16 | 0 (0x0000) |
+| 46619 | 27 | Virtual output 14 polarity | r | 16 | 0 (0x0000) |
+| 46620 | 28 | Virtual output 15 source | r | 16 | 0 (0x0000) |
+| 46621 | 29 | Virtual output 15 polarity | r | 16 | 0 (0x0000) |
+| 46622 | 30 | Virtual output 16 source | r | 16 | 0 (0x0000) |
+| 46623 | 31 | Virtual output 16 polarity | r | 16 | 0 (0x0000) |
+| 46624 | 32 | Virtual output 17 source | r | 16 | 0 (0x0000) |
+| 46625 | 33 | Virtual output 17 polarity | r | 16 | 0 (0x0000) |
+| 46626 | 34 | Virtual output 18 source | r | 16 | 0 (0x0000) |
+| 46627 | 35 | Virtual output 18 polarity | r | 16 | 0 (0x0000) |
+| 46628 | 36 | Virtual output 19 source | r | 16 | 0 (0x0000) |
+| 46629 | 37 | Virtual output 19 polarity | r | 16 | 0 (0x0000) |
+| 46630 | 38 | Virtual output 20 source | r | 16 | 0 (0x0000) |
+| 46631 | 39 | Virtual output 20 polarity | r | 16 | 0 (0x0000) |
+
+## Page 183 — configurable output 1 item A source
+
+- Base address: `46848` (`page * 256 + offset`)
+- Registers: 18
+- Read runs: 2 ok / 1 fail
+- First error: `@46848 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 46848 | 0 | configurable output 1 item A source | r | 16 | — |
+| 46849 | 1 | configurable output 1 item A polarity | r | 16 | — |
+| 46850 | 2 | configurable output 1 item B source | r | 16 | — |
+| 46851 | 3 | configurable output 1 item B polarity | r | 16 | — |
+| 46852 | 4 | configurable output 1 item C source | r | 16 | — |
+| 46853 | 5 | configurable output 1 item C polarity | r | 16 | — |
+| 46854 | 6 | configurable output 2 item A source | r | 16 | — |
+| 46855 | 7 | configurable output 2 item A polarity | r | 16 | — |
+| 46856 | 8 | configurable output 2 item B source | r | 16 | unimplemented |
+| 46857 | 9 | configurable output 2 item B polarity | r | 16 | unimplemented |
+| 46858 | 10 | configurable output 2 item C source | r | 16 | unimplemented |
+| 46859 | 11 | configurable output 2 item C polarity | r | 16 | unimplemented |
+| 46860 | 12 | configurable output 3 item A source | r | 16 | unimplemented |
+| 46861 | 13 | configurable output 3 item A polarity | r | 16 | unimplemented |
+| 46862 | 14 | configurable output 3 item B source | r | 16 | unimplemented |
+| 46863 | 15 | configurable output 3 item B polarity | r | 16 | unimplemented |
+| 46864 | 16 | configurable output 3 item C source | r | 16 | unimplemented |
+| 46865 | 17 | configurable output 3 item C polarity | r | 16 | unimplemented |
+
+## Page 184 — 2152 expansion module 0 analogue output A source
+
+- Base address: `47104` (`page * 256 + offset`)
+- Registers: 24
+- Read runs: 6 ok / 3 fail
+- First error: `@47112 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 47104 | 0 | 2152 expansion module 0 analogue output A source | r | 16 | unimplemented |
+| 47105 | 1 | 2152 expansion module 0 analogue output A type | r | 16 | unimplemented |
+| 47106 | 2 | 2152 expansion module 0 analogue output B source | r | 16 | unimplemented |
+| 47107 | 3 | 2152 expansion module 0 analogue output B type | r | 16 | unimplemented |
+| 47108 | 4 | 2152 expansion module 0 analogue output C source | r | 16 | unimplemented |
+| 47109 | 5 | 2152 expansion module 0 analogue output C type | r | 16 | unimplemented |
+| 47110 | 6 | 2152 expansion module 0 analogue output D source | r | 16 | unimplemented |
+| 47111 | 7 | 2152 expansion module 0 analogue output D type | r | 16 | unimplemented |
+| 47112 | 8 | 2152 expansion module 0 analogue output E source | r | 16 | — |
+| 47113 | 9 | 2152 expansion module 0 analogue output E type | r | 16 | — |
+| 47114 | 10 | 2152 expansion module 0 analogue output F source | r | 16 | — |
+| 47115 | 11 | 2152 expansion module 0 analogue output F type | r | 16 | — |
+| 47116 | 12 | 2152 expansion module 1 analogue outputs A-F | r |  | —<br>—<br>—<br>—<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 47128 | 24 | 2152 expansion module 2 analogue outputs A-F | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 47140 | 36 | 2152 expansion module 3 analogue outputs A-F | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+| 47152 | 48 | 2152 expansion module 0 analogue output A value | r | 16S | — |
+| 47153 | 49 | 2152 expansion module 0 analogue output B value | r | 16S | — |
+| 47154 | 50 | 2152 expansion module 0 analogue output C value | r | 16S | — |
+| 47155 | 51 | 2152 expansion module 0 analogue output D value | r | 16S | — |
+| 47156 | 52 | 2152 expansion module 0 analogue output E value | r | 16S | — |
+| 47157 | 53 | 2152 expansion module 0 analogue output F value | r | 16S | — |
+| 47158 | 54 | 2152 expansion module 1 analogue outputs A-F value | r |  | —<br>—<br>—<br>—<br>—<br>— |
+| 47164 | 60 | 2152 expansion module 2 analogue outputs A-F value | r |  | —<br>—<br>—<br>—<br>unimplemented<br>unimplemented |
+| 47170 | 66 | 2152 expansion module 3 analogue outputs A-F value | r |  | unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented<br>unimplemented |
+
+## Page 185 — PWM 1 output control type
+
+- Base address: `47360` (`page * 256 + offset`)
+- Registers: 23
+- Read runs: 5 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 47360 | 0 | PWM 1 output control type | r | 16 | unimplemented |
+| 47361 | 1 | PWM 1 analogue output frequency | r | 16 | unimplemented |
+| 47362 | 2 | PWM 1 analogue output source | r | 16 | unimplemented |
+| 47363 | 3 | PWM 1 analogue output range type | r | 16 | unimplemented |
+| 47364 | 4 | PWM 2 output control type | r | 16 | unimplemented |
+| 47365 | 5 | PWM 2 analogue output frequency | r | 16 | unimplemented |
+| 47366 | 6 | PWM 2 analogue output source | r | 16 | unimplemented |
+| 47367 | 7 | PWM 2 analogue output range type | r | 16 | unimplemented |
+| 47368 | 8 | PWM 3 output control type | r | 16 | unimplemented |
+| 47369 | 9 | PWM 3 analogue output frequency | r | 16 | unimplemented |
+| 47370 | 10 | PWM 3 analogue output source | r | 16 | unimplemented |
+| 47371 | 11 | PWM 3 analogue output range type | r | 16 | unimplemented |
+| 47372 | 12 | PWM 4 output control type | r | 16 | unimplemented |
+| 47373 | 13 | PWM 4 analogue output source | r | 16 | unimplemented |
+| 47375 | 15 | PWM 4 analogue output range type | r | 16 | unimplemented |
+| 47392 | 32 | PWM 1 analogue output value | r | 16 | unimplemented |
+| 47393 | 33 | PWM 2 analogue output value | r | 16 | unimplemented |
+| 47394 | 34 | PWM 3 analogue output value | r | 16 | unimplemented |
+| 47395 | 35 | PWM 4 analogue output value | r | 16 | unimplemented |
+| 47401 | 41 | Analogue Output 1 control type | r | 16 | unimplemented |
+| 47402 | 42 | Analogue Output 1 Output Type/Range | r | 16 | unimplemented |
+| 47403 | 43 | Analogue Output 1 Source | r | 16 | unimplemented |
+| 47404 | 44 | Analogue Output 1 Value | r | 16S | 65535 (0xFFFF) |
+
+## Page 190 — Digital output A status
+
+- Base address: `48640` (`page * 256 + offset`)
+- Registers: 28
+- Read runs: 2 ok / 2 fail
+- First error: `@48656 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 48640 | 0 | Digital output A status | rw | 16 | 0 (0x0000) |
+| 48641 | 1 | Digital output B status | rw | 16 | 0 (0x0000) |
+| 48642 | 2 | Digital output C status | rw | 16 | 0 (0x0000) |
+| 48643 | 3 | Digital output D status | rw | 16 | 0 (0x0000) |
+| 48644 | 4 | Digital output E status | rw | 16 | 0 (0x0000) |
+| 48645 | 5 | Common trip LED status | rw | 16 | 0 (0x0000) |
+| 48646 | 6 | Common voltage alarm green LED status | rw | 16 | 0 (0x0000) |
+| 48647 | 7 | Common voltage alarm red LED status | rw | 16 | 1 (0x0001) |
+| 48648 | 8 | Common frequency alarm green LED status | rw | 16 | 0 (0x0000) |
+| 48649 | 9 | Common frequency alarm red LED status | rw | 16 | 0 (0x0000) |
+| 48650 | 10 | ROCOF alarm LED status | rw | 16 | 0 (0x0000) |
+| 48651 | 11 | Vector shift alarm LED status | rw | 16 | 1 (0x0001) |
+| 48652 | 12 | Alternate config selected LED status | rw | 16 | 1 (0x0001) |
+| 48653 | 13 | Supervision enabled LED status | rw | 16 | 1 (0x0001) |
+| 48654 | 14 | GEN BREAKER LED status (GEN BREAKER) | rw | 16 | 0 (0x0000) |
+| 48655 | 15 | GEN LED status (GEN) | rw | 16 | 0 (0x0000) |
+| 48656 | 16 | USER LED 1 status (USER LED 1) | rw | 16 | — |
+| 48657 | 17 | USER LED 2 status (USER LED 2) | rw | 16 | — |
+| 48658 | 18 | USER LED 3 status (USER LED 3) | rw | 16 | — |
+| 48659 | 19 | USER LED 4 status (USER LED 4) | rw | 16 | — |
+| 48660 | 20 | Digital output I status | rw | 16 | — |
+| 48661 | 21 | Digital output J status | rw | 16 | — |
+| 48662 | 22 | Generator available LED | rw | 16 | — |
+| 48663 | 23 | Mains available LED | rw | 16 | — |
+| 48664 | 24 | Warning LED | rw | 16 | — |
+| 48665 | 25 | LCD Indicator 1 (USER LED 1) | rw | 16 | — |
+| 48666 | 26 | LCD Indicator 2 (USER LED 2) | rw | 16 | — |
+| 48667 | 27 | LCD Indicator 3 (USER LED 3) | rw | 16 | — |
+
+## Page 191 — Virtual output 1 status
+
+- Base address: `48896` (`page * 256 + offset`)
+- Registers: 20
+- Read runs: 2 ok / 1 fail
+- First error: `@48904 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 48896 | 0 | Virtual output 1 status | r | 16 | 0 (0x0000) |
+| 48897 | 1 | Virtual output 2 status | r | 16 | 0 (0x0000) |
+| 48898 | 2 | Virtual output 3 status | r | 16 | 0 (0x0000) |
+| 48899 | 3 | Virtual output 4 status | r | 16 | 0 (0x0000) |
+| 48900 | 4 | Virtual output 5 status | r | 16 | 0 (0x0000) |
+| 48901 | 5 | Virtual output 6 status | r | 16 | 0 (0x0000) |
+| 48902 | 6 | Virtual output 7 status | r | 16 | 0 (0x0000) |
+| 48903 | 7 | Virtual output 8 status | r | 16 | 0 (0x0000) |
+| 48904 | 8 | Virtual output 9 status | r | 16 | — |
+| 48905 | 9 | Virtual output 10 status | r | 16 | — |
+| 48906 | 10 | Virtual output 11 status | r | 16 | — |
+| 48907 | 11 | Virtual output 12 status | r | 16 | — |
+| 48908 | 12 | Virtual output 13 status | r | 16 | — |
+| 48909 | 13 | Virtual output 14 status | r | 16 | — |
+| 48910 | 14 | Virtual output 15 status | r | 16 | — |
+| 48911 | 15 | Virtual output 16 status | r | 16 | — |
+| 48912 | 16 | Virtual output 17 status | r | 16 | 0 (0x0000) |
+| 48913 | 17 | Virtual output 18 status | r | 16 | 0 (0x0000) |
+| 48914 | 18 | Virtual output 19 status | r | 16 | 0 (0x0000) |
+| 48915 | 19 | Virtual output 20 status | r | 16 | 0 (0x0000) |
+
+## Page 192 — configurable output 1 item A status
+
+- Base address: `49152` (`page * 256 + offset`)
+- Registers: 77
+- Read runs: 18 ok / 1 fail
+- First error: `@49176 qty=8 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 49152 | 0 | configurable output 1 item A status | r | 16 | unimplemented |
+| 49153 | 1 | configurable output 1 item B status | r | 16 | unimplemented |
+| 49154 | 2 | configurable output 1 item C status | r | 16 | unimplemented |
+| 49155 | 3 | configurable output 2 item A status | r | 16 | unimplemented |
+| 49156 | 4 | configurable output 2 item B status | r | 16 | unimplemented |
+| 49157 | 5 | configurable output 2 item C status | r | 16 | unimplemented |
+| 49158 | 6 | configurable output 3 item A status | r | 16 | unimplemented |
+| 49159 | 7 | configurable output 3 item B status | r | 16 | unimplemented |
+| 49160 | 8 | configurable output 3 item C status | r | 16 | unimplemented |
+| 49168 | 16 | PLC Data store 1 | rw |  | unimplemented<br>unimplemented |
+| 49170 | 18 | PLC Data store 2 | rw |  | unimplemented<br>unimplemented |
+| 49172 | 20 | PLC Data store 3 | rw |  | unimplemented<br>unimplemented |
+| 49174 | 22 | PLC Data store 4 | rw |  | unimplemented<br>unimplemented |
+| 49176 | 24 | PLC Data store 5 | rw |  | —<br>— |
+| 49178 | 26 | PLC Data store 6 | rw |  | —<br>— |
+| 49180 | 28 | PLC Data store 7 | rw |  | —<br>— |
+| 49182 | 30 | PLC Data store 8 | rw |  | —<br>— |
+| 49216 | 64 | PLC Data Register 1 | r |  | unimplemented<br>unimplemented |
+| 49218 | 66 | PLC Data Register 2 | r |  | unimplemented<br>unimplemented |
+| 49220 | 68 | PLC Data Register 3 | r |  | unimplemented<br>unimplemented |
+| 49222 | 70 | PLC Data Register 4 | r |  | unimplemented<br>unimplemented |
+| 49224 | 72 | PLC Data Register 5 | r |  | unimplemented<br>unimplemented |
+| 49226 | 74 | PLC Data Register 6 | r |  | unimplemented<br>unimplemented |
+| 49228 | 76 | PLC Data Register 7 | r |  | unimplemented<br>unimplemented |
+| 49230 | 78 | PLC Data Register 8 | r |  | unimplemented<br>unimplemented |
+| 49232 | 80 | PLC Data Register 9 | r |  | unimplemented<br>unimplemented |
+| 49234 | 82 | PLC Data Register 10 | r |  | unimplemented<br>unimplemented |
+| 49236 | 84 | PLC Data Register 11 | r |  | unimplemented<br>unimplemented |
+| 49238 | 86 | PLC Data Register 12 | r |  | unimplemented<br>unimplemented |
+| 49240 | 88 | PLC Data Register 13 | r |  | unimplemented<br>unimplemented |
+| 49242 | 90 | PLC Data Register 14 | r |  | unimplemented<br>unimplemented |
+| 49244 | 92 | PLC Data Register 15 | r |  | unimplemented<br>unimplemented |
+| 49246 | 94 | PLC Data Register 16 | r |  | unimplemented<br>unimplemented |
+| 49248 | 96 | PLC Data Register 17 | r |  | unimplemented<br>unimplemented |
+| 49250 | 98 | PLC Data Register 18 | r |  | unimplemented<br>unimplemented |
+| 49252 | 100 | PLC Data Register 19 | r |  | unimplemented<br>unimplemented |
+| 49254 | 102 | PLC Data Register 20 | r |  | unimplemented<br>unimplemented |
+| 49280 | 128 | PLC Timer value 1 | r |  | unimplemented<br>unimplemented |
+| 49282 | 130 | PLC Timer value 2 | r |  | unimplemented<br>unimplemented |
+| 49284 | 132 | PLC Timer value 3 | r |  | unimplemented<br>unimplemented |
+| 49286 | 134 | PLC Timer value 4 | r |  | unimplemented<br>unimplemented |
+| 49288 | 136 | PLC Timer value 5 | r |  | unimplemented<br>unimplemented |
+| 49290 | 138 | PLC Timer value 6 | r |  | unimplemented<br>unimplemented |
+| 49292 | 140 | PLC Timer value 7 | r |  | unimplemented<br>unimplemented |
+| 49294 | 142 | PLC Timer value 8 | r |  | unimplemented<br>unimplemented |
+| 49296 | 144 | PLC Timer value 9 | r |  | unimplemented<br>unimplemented |
+| 49298 | 146 | PLC Timer value 10 | r |  | unimplemented<br>unimplemented |
+| 49300 | 148 | PLC Timer value 11 | r |  | unimplemented<br>unimplemented |
+| 49302 | 150 | PLC Timer value 12 | r |  | unimplemented<br>unimplemented |
+| 49304 | 152 | PLC Timer value 13 | r |  | unimplemented<br>unimplemented |
+| 49306 | 154 | PLC Timer value 14 | r |  | unimplemented<br>unimplemented |
+| 49308 | 156 | PLC Timer value 15 | r |  | unimplemented<br>unimplemented |
+| 49310 | 158 | PLC Timer value 16 | r |  | unimplemented<br>unimplemented |
+| 49312 | 160 | PLC Timer value 17 | r |  | unimplemented<br>unimplemented |
+| 49314 | 162 | PLC Timer value 18 | r |  | unimplemented<br>unimplemented |
+| 49316 | 164 | PLC Timer value 19 | r |  | unimplemented<br>unimplemented |
+| 49318 | 166 | PLC Timer value 20 | r |  | unimplemented<br>unimplemented |
+| 49344 | 192 | PLC Counter value 1 | r |  | unimplemented<br>unimplemented |
+| 49346 | 194 | PLC Counter value 2 | r |  | unimplemented<br>unimplemented |
+| 49348 | 196 | PLC Counter value 3 | r |  | unimplemented<br>unimplemented |
+| 49350 | 198 | PLC Counter value 4 | r |  | unimplemented<br>unimplemented |
+| 49352 | 200 | PLC Counter value 5 | r |  | unimplemented<br>unimplemented |
+| 49354 | 202 | PLC Counter value 6 | r |  | unimplemented<br>unimplemented |
+| 49356 | 204 | PLC Counter value 7 | r |  | unimplemented<br>unimplemented |
+| 49358 | 206 | PLC Counter value 8 | r |  | unimplemented<br>unimplemented |
+| 49360 | 208 | PLC Counter value 9 | r |  | unimplemented<br>unimplemented |
+| 49362 | 210 | PLC Counter value 10 | r |  | unimplemented<br>unimplemented |
+| 49364 | 212 | PLC Counter value 11 | r |  | unimplemented<br>unimplemented |
+| 49366 | 214 | PLC Counter value 12 | r |  | unimplemented<br>unimplemented |
+| 49368 | 216 | PLC Counter value 13 | r |  | unimplemented<br>unimplemented |
+| 49370 | 218 | PLC Counter value 14 | r |  | unimplemented<br>unimplemented |
+| 49372 | 220 | PLC Counter value 15 | r |  | unimplemented<br>unimplemented |
+| 49374 | 222 | PLC Counter value 16 | r |  | unimplemented<br>unimplemented |
+| 49376 | 224 | PLC Counter value 17 | r |  | unimplemented<br>unimplemented |
+| 49378 | 226 | PLC Counter value 18 | r |  | unimplemented<br>unimplemented |
+| 49380 | 228 | PLC Counter value 19 | r |  | unimplemented<br>unimplemented |
+| 49382 | 230 | PLC Counter value 20 | r |  | unimplemented<br>unimplemented |
+
+## Page 194 — CAN Instrument 17 Title String
+
+- Base address: `49664` (`page * 256 + offset`)
+- Registers: 8
+- Read runs: 8 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 49664 | 0 | CAN Instrument 17 Title String | r |  | unimplemented |
+| 49696 | 32 | CAN Instrument 18 Title String | r |  | unimplemented |
+| 49728 | 64 | CAN Instrument 19 Title String | r |  | unimplemented |
+| 49760 | 96 | CAN Instrument 20 Title String | r |  | unimplemented |
+| 49792 | 128 | CAN Instrument 21 Title String | r |  | unimplemented |
+| 49824 | 160 | CAN Instrument 22 Title String | r |  | unimplemented |
+| 49856 | 192 | CAN Instrument 23 Title String | r |  | unimplemented |
+| 49888 | 224 | CAN Instrument 24 Title String | r |  | unimplemented |
+
+## Page 200 — 0
+
+- Base address: `51200` (`page * 256 + offset`)
+- Registers: 29
+- Read runs: 12 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 51400 | 200 | 0 | rw |  | 73 (0x0049) |
+| 51401 | 201 | 0 | rw |  | 110 (0x006E) |
+| 51402 | 202 | 0 | rw |  | 112 (0x0070) |
+| 51403 | 203 | 0-255 | rw |  | 117 (0x0075) |
+| 51404 | 204 | 0-255 | rw |  | 116 (0x0074)<br>32 (0x0020)<br>71 (0x0047)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020) |
+| 51412 | 212 | 0 | rw |  | 32 (0x0020) |
+| 51232 | 32 | Flexible sender input A (high) string | rw |  | 32 (0x0020) |
+| 51264 | 64 | Flexible sender input B (low) string | rw |  | 32 (0x0020) |
+| 51296 | 96 | Flexible sender input B (high) string | rw |  | 83 (0x0053) |
+| 51328 | 128 | Flexible sender input C (low) string | rw |  | 68 (0x0044) |
+| 51360 | 160 | Flexible sender input C (high) string | rw |  | 68 (0x0044) |
+| 51392 | 192 | Flexible sender input D (low) string | rw |  | 68 (0x0044) |
+| 51424 | 224 | Flexible sender input D (high) string | rw |  | 68 (0x0044) |
+| 51405 | 205 | 0-255 | rw |  | 32 (0x0020) |
+| 51406 | 206 | 0-255 | rw |  | 71 (0x0047)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020) |
+| 51407 | 207 | 0-255 | rw |  | 32 (0x0020) |
+| 51408 | 208 | 0-255 | rw |  | 32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020) |
+| 51414 | 214 | 0 | rw |  | 32 (0x0020) |
+| 51415 | 215 | 2130 Expansion module 1 inputs E-H strings | rw |  | 32 (0x0020) |
+| 51416 | 216 | 2130 Expansion module 2 inputs E-H strings | rw |  | 32 (0x0020) |
+| 51417 | 217 | 2130 Expansion module 3 inputs E-H strings | rw |  | 32 (0x0020) |
+| 51418 | 218 | Reserved for 2130 Expansion modules 4-9 inputs E H strings | rw |  | 32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020)<br>32 (0x0020) |
+| 51422 | 222 | 0 | rw |  | 32 (0x0020) |
+| 51423 | 223 | 0 | rw |  | 32 (0x0020) |
+| 51425 | 225 | 0 | rw |  | 105 (0x0069) |
+| 51427 | 227 | 0 | rw |  | 105 (0x0069) |
+| 51428 | 228 | 0 | rw |  | 116 (0x0074) |
+| 51430 | 230 | 0 | rw |  | 108 (0x006C) |
+| 51431 | 231 | 0 | rw |  | 32 (0x0020) |
+
+## Page 240 — 0
+
+- Base address: `61440` (`page * 256 + offset`)
+- Registers: 4
+- Read runs: 2 ok / 0 fail
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 61680 | 240 | 0 | rw |  | 101 (0x0065) |
+| 61685 | 245 | 0 | rw |  | 115 (0x0073) |
+| 61686 | 246 | 0 | rw |  | 111 (0x006F) |
+| 61681 | 241 | 0 | rw |  | 32 (0x0020) |
+
+## Page 250 — 0
+
+- Base address: `64000` (`page * 256 + offset`)
+- Registers: 9
+- Read runs: 4 ok / 1 fail
+- First error: `@64000 qty=2 -> crc:0`
+
+| Addr | Off | Name | Access | Type | Value |
+| ---: | ---: | --- | --- | --- | --- |
+| 64250 | 250 | 0 | rw |  | 32 (0x0020) |
+| 64000 | 0 | 1 | rw |  | — |
+| 64001 | 1 | 0 | rw |  | — |
+| 64010 | 10 | 2 | rw |  | 32 (0x0020) |
+| 64011 | 11 | 3 | rw |  | 32 (0x0020) |
+| 64100 | 100 | 4 | rw |  | 121 (0x0079) |
+| 64101 | 101 | 5 | rw |  | 32 (0x0020) |
+| 64110 | 110 | 6 | rw |  | 116 (0x0074) |
+| 64111 | 111 | 7 | rw |  | 114 (0x0072) |
+

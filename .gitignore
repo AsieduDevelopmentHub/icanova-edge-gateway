@@ -9,5 +9,5 @@ tools/.env
 .DS_Store
 gpt.md
 _crops/
-/logs
-*.log
+# /logs
+# *.log

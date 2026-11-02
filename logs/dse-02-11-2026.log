@@ -1,0 +1,981 @@
+Please build project in debug configuration to get more details about an exception.
+See https://docs.platformio.org/page/projectconf/build_configurations.html
+
+
+--- Terminal on COM8 | 115200 8-N-1
+--- Available filters and text transformations: debug, default, direct, esp32_exception_decoder, hexlify, log2file, nocontrol, printable, send_on_enter, time
+--- More details at https://bit.ly/pio-monitor-filters
+--- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+
+[USB CDC connected]
+
+=====================================
+             iCanOva
+       iCanOva Edge Gateway
+=====================================
+Imagine. Connect. Innovate.
+Family: iCanOva Edge
+
+Board: ESP32-C3 SuperMini
+Device ID: aca704bc5cb0
+Communication: RS485 / Modbus RTU
+Selected: DSE 7320 / 7320 MKII
+Slave ID: 1
+Baud: 9600
+USB console. Log in to continue.
+radio STA | AP off | STA connected 10.73.214.31 -72 dBm
+login: admin
+Password:
+
+=====================================
+             iCanOva
+       iCanOva Edge Gateway
+=====================================
+Imagine. Connect. Innovate.
+Family: iCanOva Edge
+
+Board: ESP32-C3 SuperMini
+Device ID: aca704bc5cb0
+Communication: RS485 / Modbus RTU
+Logged in as admin
+Hostname: icanova-edge
+Wi-Fi: AP off | STA connected 10.73.214.31
+
+
+Type help for commands.
+Config file: /etc/gateway.conf
+Change the factory password with: passwd
+
+Type help for commands.
+View: cat motd     cat conf
+Edit: edit motd    edit conf     then wq to save
+Reboot: reboot
+admin@icanova-edge:/etc$ scf start
+ERROR: unknown SCF command (try 'scf list')
+admin@icanova-edge:/etc$ scf list
+## SCF commands (FC16 write key+~key @4104/4105)
+  auto  key=35701  ~29834  Select Auto mode
+  manual  key=35702  ~29833  Select Manual mode
+  test_on_load  key=35703  ~29832  Select Test on Load mode (DG on load)
+  auto_restore  key=35704  ~29831  Select Auto with Manual Restore mode
+  start_engine  key=35705  ~29830  Start engine (Manual or Test modes)
+  mute_alarm  key=35706  ~29829  Mute alarm
+  reset_alarms  key=35707  ~29828  Reset alarms
+  transfer_gen  key=35708  ~29827  Transfer to generator
+  transfer_mains  key=35709  ~29826  Transfer to mains
+  telemetry_start  key=35732  ~29803  Telemetry start (if in Auto)
+  telemetry_stop  key=35733  ~29802  Cancel telemetry start (if in Auto)
+  reset_alarms2  key=35734  ~29801  Reset alarms (alt key)
+  clear_telem_alarm  key=35735  ~29800  Clear telemetry alarm flag
+  lock_controls  key=35736  ~29799  Lock user controls
+  unlock_controls  key=35737  ~29798  Unlock user controls
+  reset_maint  key=35738  ~29797  Reset maintenance alarm 1 due times
+Usage: scf <name> | scf list | scf flags | scf raw <key>
+admin@icanova-edge:/etc$ scf start_engine
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE start_engine key=35705 complement=29830
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1632
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 79 74 86 63 56
+[1] Clear RX buffer
+RX stale bytes: 3
+STALE:
+10 90 00
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 374819837
+TX complete us: 374833432
+DE->RX us: 374833433
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+02 00 00 00 08 10 00 00 00 10 18 00 10 00 00 00 10 00 00 00 00 08 10 08 08 08 00 00 10 00 00 00 00 10 00 00 00 08 00 10 20 10 00 00 00 01 08 00 08 08 00 08 10 00 00 00 10 20 00 00 08 08 00 10 00 08 00 08 10 00 08 08 00 00 08 00 00 00 00 10 30 10 00 00 00 00 10 00 00 00 00 10 00 00 00 08
+RX length: 96
+RX char us: 1146
+RX gaps us: 1000 2189 1029 982 2750 982 1134 4084 1029 2599 1102 982 3489 1017 981 2146 1020 987 3830 991 1014 2715 987 1130 3095 1028 992 1962 1018 1062 4587 1375 2124 1008 987 1093 2738 1053 953 2585 781 1098 3902 989 2782 1028 1027 1215 2704 1025 982 1939 1027 1098 4132 1009 2942 1530 545 1015 2706 1003 2779 986
+RX timing: 40 on 9600 grid, 22 late
+UART err: FRAMING
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 02 00 00 00 08 10 00 00 00 10 18 00 10 00 00 00 10 00 00 00 00 08 10 08 08 08 00 00 10 00 00 00 00 10 00 00 00 08 00 10 20 10 00 00 00 01 08 00 08 08 00 08 10 00 00 00 10 20 00 00 08 08 00 10 00 08 00 08 10 00 08 08 00 00 08 00 00 00 00 10 30 10 00 00 00 00 10 00 00 00 00 10 00 00 00 08
+PAYLOAD: 02 00 00 00 08 10 00 00 00 10 18 00 10 00 00 00 10 00 00 00 00 08 10 08 08 08 00 00 10 00 00 00 00 10 00 00 00 08 00 10 20 10 00 00 00 01 08 00 08 08 00 08 10 00 00 00 10 20 00 00 08 08 00 10 00 08 00 08 10 00 08 08 00 00 08 00 00 00 00 10 30 10 00 00 00 00 10 00 00 00 00 10 00 00
+RECEIVED CRC LOW:  0x00
+RECEIVED CRC HIGH: 0x08
+RECEIVED CRC COMBINED: 0x800
+CALCULATED CRC: 0x6C7D
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 2
+Function byte: 0x0
+Expected exception FC: 0x90
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1633
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 79 74 86 63 56
+[1] Clear RX buffer
+RX stale bytes: 39
+STALE:
+08 00 08 10 00 08 10 20 00 00 00 08 00 00 10 00
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 375061621
+TX complete us: 375075216
+DE->RX us: 375075217
+TX settle us (config): 0
+TX-echo bytes dropped: 1
+[4] Waiting for response...
+[5] RX
+04 10 00 10 00 08 00 00 30 00 00 08 08 00 00 00 00 00 00 00 00 00 08 00 00 08 00 00 10 00 00 00 00 10 20 00 00 08 08 00 00 08 00 00 00 00 10 00 00 00 00 00 00 00 00 08 00 00 10 10 08 08 00 08 10 00 00 00 00 00 10 10 00 10 00 00 08 10 00 00 00 10 30 10 00 08 10 00 00 00 00 00 00 08 10 00
+RX length: 96
+RX char us: 1146
+RX gaps us: 1000 995 2561 983 1067 4705 1215 2161 1034 1058 991 2521 1021 981 2198 984 1057 1019 3107 1008 2769 1034 1052 1210 2732 978 1029 2106 1001 1132 993 2930 993 3169 990 1063 1019 2513 1019 992 1969 1096 1020 4293 1017 2718 1008 981 3252 1032 997 2349 1008 1096 1525 2938 1019 2556 1019 1106 3281 1019 975 2914
+RX timing: 42 on 9600 grid, 21 late
+UART err: FRAMING
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 04 10 00 10 00 08 00 00
+PAYLOAD: 04 10 00 10 00 08
+RECEIVED CRC LOW:  0x00
+RECEIVED CRC HIGH: 0x00
+RECEIVED CRC COMBINED: 0x0
+CALCULATED CRC: 0x5FC0
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 4
+Function byte: 0x10
+Expected exception FC: 0x90
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1634
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 79 74 86 63 56
+[1] Clear RX buffer
+RX stale bytes: 34
+STALE:
+00 10 10 00 00 00 10 00 08 08 00 08 00 00 00 08
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 375289429
+TX complete us: 375303016
+DE->RX us: 375303017
+TX settle us (config): 0
+TX-echo bytes dropped: 1
+[4] Waiting for response...
+[5] RX
+00 10 00 00 10 00 00 00 08 00 00 20 00 00 00 00 00 08 00 10 10 10 08 10 00 10 00 00 10 00 00 10 10 00 00 08 00 00 08 00 40 10 00 08 08 00 10 20 00 00 00 00 10 10 00 00 10 00 00 10 00 00 00 30 10 10 00 08 08 00 08 10 00 08 10 10 00 08 08 10 00 00 00 00 00 08 10 08 00 00 00 08 10 00 00 00
+RX length: 96
+RX char us: 1146
+RX gaps us: 1000 1140 1374 2176 985 1096 1017 2891 1034 970 2172 985 1136 3704 987 2979 1020 1071 982 2338 996 1008 2535 1008 1066 4367 981 2753 981 1096 985 2366 982 1032 2149 1104 1408 1118 2750 1023 2743 1027 1105 3268 996 1017 2403 988 1096 4499 987 2203 1107 1019 1134 2551 995 1020 2522 987 1666 3148 1028 2975
+RX timing: 41 on 9600 grid, 22 late
+UART err: FRAMING
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 00 10 00 00 10 00 00 00
+PAYLOAD: 00 10 00 00 10 00
+RECEIVED CRC LOW:  0x00
+RECEIVED CRC HIGH: 0x00
+RECEIVED CRC COMBINED: 0x0
+CALCULATED CRC: 0x18CC
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 0
+Function byte: 0x10
+Expected exception FC: 0x90
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+SCF write FAILED result=2
+admin@icanova-edge:/etc$ scf start_engine
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE start_engine key=35705 complement=29830
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1712
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 79 74 86 63 56
+[1] Clear RX buffer
+RX stale bytes: 1
+STALE:
+3A
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 389249274
+TX complete us: 389262868
+DE->RX us: 389262869
+TX settle us (config): 0
+TX-echo bytes dropped: 1
+[4] Waiting for response...
+[5] RX
+97 B7 FF EF 3A 9E BE B6 A6 BE BB 96 7B 3E 8F BE 3A D3 B6 96 7B 1B 3A 9F 9E FE F6 9B 9B FB 78 9F 3E 97 BE B6 BF BB FF AE 36 4C 96 BE E7 DB 9B B3 CB A3 9E 3E FB F7 D3 B3 F3 A6 3C 97 BF FE 9E 9B 9B DB 3A 9B BE 3A FB F7 33 F3 FF D3 9F 3A A7 BF B6 96 96 D6 2F 32 4C 9B DE D6 B7 D3 F3 1E 9B 9A
+RX length: 96
+RX char us: 1146
+RX gaps us: 0 997 1020 1028 978 1064 1020 983 1741 982 990 1020 985 1008 1059 1027 981 2443 1070 1028 1093 1025 986 1060 1020 988 1179 970 989 1027 1298 1024 988 1096 1016 1721 996 1008 987 1443 982 988 1058 995 1324 987 1008 981 1309 1020 985 1028 1028 1782 990 1020 982 1483 987 1014 1033 995 1514 982
+RX timing: 59 on 9600 grid, 4 late
+UART err: FRAMING GLITCH
+Time to first RX byte: 0 ms
+[6] Frame validation / CRC audit
+RAW RX: 97 B7 FF EF 3A
+PAYLOAD: 97 B7 FF
+RECEIVED CRC LOW:  0xEF
+RECEIVED CRC HIGH: 0x3A
+RECEIVED CRC COMBINED: 0x3AEF
+CALCULATED CRC: 0x9CF7
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 151
+Function byte: 0xB7
+Expected exception FC: 0x90
+UNEXPECTED FUNCTION (and CRC FAIL)
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1713
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 79 74 86 63 56
+[1] Clear RX buffer
+RX stale bytes: 51
+STALE:
+BA FE EF D3 33 F3 FE 3A 9F BE 3E A6 B6 B7 FF 2F
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 389426599
+TX complete us: 389440190
+DE->RX us: 389440191
+TX settle us (config): 0
+TX-echo bytes dropped: 1
+[4] Waiting for response...
+[5] RX
+F6 9B BB FB AF 3A 97 9F BE DB 9A 9B F7 5B 3E 9E BA FA F7 96 B7 FF 4F BF 3A A7 FB D3 CB 96 DA 1E 8B 9A BE FE AF 93 97 F7 1A DF 9E BE FF F3 93 B3 F3 7E 1A 34 9F B6 B6 A7 B7 F7 9F 3A 5C 9E BE AE BF 96 FF CB 7A A7 9F FE F7 93 F3 FB 5E 1F 4C 97 DE EF 96 96 B6 DF 3C 9B BE D3 BE 9A 9A FF DF AF
+RX length: 96
+RX char us: 1146
+RX gaps us: 2000 993 996 1014 1381 1008 1058 983 1020 1480 1058 985 995 1009 1025 1058 984 1026 1677 994 1020 981 1480 1061 989 1084 988 1518 992 1066 1019 992 1059 1014 985 1019 1475 986 995 1020 1606 1062 1019 982 1171 1096 1008 982 1027 1324 1058 989 1061 1020 1753 983 989 1008 1380 1008 1057 988 1034 1558
+RX timing: 61 on 9600 grid, 2 late
+UART err: FRAMING GLITCH
+Time to first RX byte: 2 ms
+[6] Frame validation / CRC audit
+RAW RX: F6 9B BB FB AF
+PAYLOAD: F6 9B BB
+RECEIVED CRC LOW:  0xFB
+RECEIVED CRC HIGH: 0xAF
+RECEIVED CRC COMBINED: 0xAFFB
+CALCULATED CRC: 0xB1BA
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 246
+Function byte: 0x9B
+Expected exception FC: 0x90
+UNEXPECTED FUNCTION (and CRC FAIL)
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1714
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 79 74 86 63 56
+[1] Clear RX buffer
+RX stale bytes: 51
+STALE:
+3E B7 FF 96 9A 9A DA 3E 32 9D 9B FE DB B3 D3 FB
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 389604585
+TX complete us: 389618171
+DE->RX us: 389618172
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+F7 A6 BF 97 BF DF 9E 3C 97 FF D6 9A 9B 7B 2E 32 9E 3E FF B7 93 FB FB 3E 32 9E BE BE B7 9B 9A B7 DB 1F 3A 9F FB 9E 96 96 FE 6F 3A 9F 3E FF 96 B7 D3 D3 8B 1A 9F BA FA 96 D3 D3 FF 9F 3E 3A 9F FB B7 97 9B DB EF 9B BE 3E E7 FF D7 B6 B6 FF 1B 3A 9F 9A FE 6E 9A B6 BB 2D 87 BE 9F FA F7 B3 F3 F3
+RX length: 96
+RX char us: 1146
+RX gaps us: 1000 2151 996 1008 988 1338 1019 982 1096 986 1414 951 1033 976 1255 981 1058 987 1096 1782 981 1027 996 1210 995 1054 1018 986 1513 987 989 1019 1141 1008 1027 1028 1029 1785 981 1027 982 1377 994 1058 996 1090 1411 983 996 1018 1180 982 1103 1019 980 1886 996 1019 1014 1178 982 987 1060 996
+RX timing: 59 on 9600 grid, 4 late
+UART err: FRAMING GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: F7 A6 BF 97 BF
+PAYLOAD: F7 A6 BF
+RECEIVED CRC LOW:  0x97
+RECEIVED CRC HIGH: 0xBF
+RECEIVED CRC COMBINED: 0xBF97
+CALCULATED CRC: 0x22FA
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 247
+Function byte: 0xA6
+Expected exception FC: 0x90
+UNEXPECTED FUNCTION (and CRC FAIL)
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+SCF write FAILED result=2
+admin@icanova-edge:/etc$ scf manual
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE manual key=35702 complement=29833
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1831
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 76 74 89 13 51
+[1] Clear RX buffer
+RX stale bytes: 104
+STALE:
+96 B7 BF D7 9A 3C 9F BE FF F7 D3 B3 FB 4F 9F 3A
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 406162287
+TX complete us: 406175884
+DE->RX us: 406175886
+TX settle us (config): 0
+TX-echo bytes dropped: 1
+[4] Waiting for response...
+[5] RX
+D3 93 F3 FB 9F 3A 9F 9A FE 6F 9A 9B BB FF 3A 9F BE BE EE 96 B6 FF A6 3E DF 9B FB B7 A3 93 B3 5B BE 3A 9F BB 2E BE B6 FF DF A7 BE 97 FF D6 9B 9B DB 4F 3A 9E BE BE 9F BF 9B F7 9F BE 87 BE BF E6 9A 9A 7E 79 3A 9F BE FA D6 DB D3 DB 2F 3A 97 9F BE DB 97 D3 B7 D3 18 1A 9F FB F7 B3 B6 FF 9E 3A
+RX length: 96
+RX char us: 1146
+RX gaps us: 1000 1026 995 1028 1180 995 1090 982 988 1170 988 988 1028 976 1019 1059 982 996 2335 1008 990 990 1399 987 1019 990 1008 1342 978 1020 981 995 1025 978 1062 996 2180 1028 996 976 1285 1019 982 1095 983 1407 982 981 1008 1209 987 1060 1029 988 1894 990 1027 982 1178 990 1090 1026 982 1557
+RX timing: 60 on 9600 grid, 3 late
+UART err: FRAMING GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: D3 93 F3 FB 9F
+PAYLOAD: D3 93 F3
+RECEIVED CRC LOW:  0xFB
+RECEIVED CRC HIGH: 0x9F
+RECEIVED CRC COMBINED: 0x9FFB
+CALCULATED CRC: 0x8CAC
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 211
+Function byte: 0x93
+Expected exception FC: 0x90
+UNEXPECTED FUNCTION (and CRC FAIL)
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1832
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 76 74 89 13 51
+[1] Clear RX buffer
+RX stale bytes: 52
+STALE:
+9F BE FA B7 B7 B7 B3 9B 96 3C 9F BF D7 B6 D3 DF
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 406340722
+TX complete us: 406354320
+DE->RX us: 406354321
+TX settle us (config): 0
+TX-echo bytes dropped: 1
+[4] Waiting for response...
+[5] RX
+B7 F3 F3 BF 9F 3E 3A BF FF B6 96 97 D7 E3 9B 9A 36 DF DB 93 D3 F7 9F BA 9F 9E FE EE B6 B6 7E CB E7 9A 36 DB F7 B7 B7 F3 9E 1B 3A DB FB B6 B6 96 F7 7B 2C 9E BE FE 6E B6 B6 FF 4F 9E 3A 9F DB F7 DB DB DB FB CD 9F 3A 3A BE BE BE BE 97 B6 3C 97 FF F7 DB 93 F3 7B 1A 34 9F 9E F6 DB D3 FB 2F 3A
+RX length: 96
+RX char us: 1146
+RX gaps us: 2000 986 995 1046 1172 988 990 1063 1027 1325 995 1007 988 1323 992 995 1018 1064 1779 996 996 1033 1361 984 1095 990 1025 1362 987 1019 987 1210 1053 989 1020 1026 1590 1023 982 993 1555 1020 982 1067 1021 1601 990 1014 981 1020 989 1064 1008 1140 1572 1028 973 990 1478 1020 1027 1027 1020 1139
+RX timing: 62 on 9600 grid, 1 late
+UART err: FRAMING GLITCH
+Time to first RX byte: 2 ms
+[6] Frame validation / CRC audit
+RAW RX: B7 F3 F3 BF 9F
+PAYLOAD: B7 F3 F3
+RECEIVED CRC LOW:  0xBF
+RECEIVED CRC HIGH: 0x9F
+RECEIVED CRC COMBINED: 0x9FBF
+CALCULATED CRC: 0x53C5
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 183
+Function byte: 0xF3
+Expected exception FC: 0x90
+UNEXPECTED FUNCTION (and CRC FAIL)
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #1833
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 76 74 89 13 51
+[1] Clear RX buffer
+RX stale bytes: 52
+STALE:
+9F BE BE 96 DB DB B7 D3 9F 9A 3A FB BE 9A B6 7F
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 406518609
+TX complete us: 406532293
+DE->RX us: 406532294
+TX settle us (config): 0
+TX-echo bytes dropped: 1
+[4] Waiting for response...
+[5] RX
+B7 F3 93 F3 FB 2F E7 9E F7 DB 9E 9F 9B DB F2 9F 9E BE FA F7 DB DB 7F 97 AF 3A A7 FF F7 DB B3 D3 5E F3 9D 9A BE 96 93 DB FB 9F 3A E7 9F FF 9E 9A 92 FE 6F 36 CB 9B FA F6 93 F7 FB 4E 8F 9A BA FF 97 B7 D3 F7 5A 36 9E 9E FE EE 97 B7 FF 4F 9F 3A F3 FF B7 B3 F3 B3 7B 3C 8F BE 3A EF BF 9B F7 9E
+RX length: 96
+RX char us: 1146
+RX gaps us: 1000 1925 1008 988 989 1484 1064 989 1100 982 1399 1028 972 990 1101 990 1034 982 984 1878 981 991 1104 1286 1014 982 1063 1027 1333 957 1019 978 1306 1008 988 989 1019 1900 990 995 996 1209 995 1065 1008 988 1792 977 1028 982 987 985 1025 1015 982 1906 986 1021 1028 1261 1026 1026 981 1104
+RX timing: 58 on 9600 grid, 5 late
+UART err: FRAMING GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: B7 F3 93 F3 FB
+PAYLOAD: B7 F3 93
+RECEIVED CRC LOW:  0xF3
+RECEIVED CRC HIGH: 0xFB
+RECEIVED CRC COMBINED: 0xFBF3
+CALCULATED CRC: 0x7BC5
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 183
+Function byte: 0xF3
+Expected exception FC: 0x90
+UNEXPECTED FUNCTION (and CRC FAIL)
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+SCF write FAILED result=2
+admin@icanova-edge:/etc$ scf manual
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE manual key=35702 complement=29833
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #2068
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 76 74 89 13 51
+[1] Clear RX buffer
+RX stale bytes: 13
+STALE:
+BF FF FF FF FF FF FF FF FF FF FF BF FF
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 441090279
+TX complete us: 441103874
+DE->RX us: 441103875
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 10 10 08 00 02 C4 CA BF
+RX length: 9
+RX char us: 1146
+RX gaps us: 1000 1031 1062 1024 1057 1046 1026 1058 4184
+RX timing: 7 on 9600 grid, 1 late
+UART err: GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 10 10 08 00 02 C4 CA
+PAYLOAD: 01 10 10 08 00 02
+RECEIVED CRC LOW:  0xC4
+RECEIVED CRC HIGH: 0xCA
+RECEIVED CRC COMBINED: 0xCAC4
+CALCULATED CRC: 0xCAC4
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+WRITE ACK addr=4104 qty=2
+RESULT: VALID MODBUS WRITE RESPONSE
+========================================
+SCF write ACK OK
+admin@icanova-edge:/etc$ scf engine_start
+ERROR: unknown SCF command (try 'scf list')
+admin@icanova-edge:/etc$ scf list
+## SCF commands (FC16 write key+~key @4104/4105)
+  auto  key=35701  ~29834  Select Auto mode
+  manual  key=35702  ~29833  Select Manual mode
+  test_on_load  key=35703  ~29832  Select Test on Load mode (DG on load)
+  auto_restore  key=35704  ~29831  Select Auto with Manual Restore mode
+  start_engine  key=35705  ~29830  Start engine (Manual or Test modes)
+  mute_alarm  key=35706  ~29829  Mute alarm
+  reset_alarms  key=35707  ~29828  Reset alarms
+  transfer_gen  key=35708  ~29827  Transfer to generator
+  transfer_mains  key=35709  ~29826  Transfer to mains
+  telemetry_start  key=35732  ~29803  Telemetry start (if in Auto)
+  telemetry_stop  key=35733  ~29802  Cancel telemetry start (if in Auto)
+  reset_alarms2  key=35734  ~29801  Reset alarms (alt key)
+  clear_telem_alarm  key=35735  ~29800  Clear telemetry alarm flag
+  lock_controls  key=35736  ~29799  Lock user controls
+  unlock_controls  key=35737  ~29798  Unlock user controls
+  reset_maint  key=35738  ~29797  Reset maintenance alarm 1 due times
+Usage: scf <name> | scf list | scf flags | scf raw <key>
+admin@icanova-edge:/etc$
+admin@icanova-edge:/etc$ scf start_engine
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE start_engine key=35705 complement=29830
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #2350
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 79 74 86 63 56
+[1] Clear RX buffer
+RX stale bytes: 7
+STALE:
+FF FF FF FF FF FF BF
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 495294012
+TX complete us: 495307607
+DE->RX us: 495307608
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 10 10 08 00 02 C4 CA FF FF FF FF FF
+RX length: 13
+RX char us: 1146
+RX gaps us: 1000 1035 1058 1028 1056 1046 1027 1059 5431 6432 2986 1792 8531
+RX timing: 7 on 9600 grid, 5 late
+UART err: GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 10 10 08 00 02 C4 CA
+PAYLOAD: 01 10 10 08 00 02
+RECEIVED CRC LOW:  0xC4
+RECEIVED CRC HIGH: 0xCA
+RECEIVED CRC COMBINED: 0xCAC4
+CALCULATED CRC: 0xCAC4
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+WRITE ACK addr=4104 qty=2
+RESULT: VALID MODBUS WRITE RESPONSE
+========================================
+SCF write ACK OK
+admin@icanova-edge:/etc$ scf auto_restore
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE auto_restore key=35704 complement=29831
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #2512
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 78 74 87 F3 56
+[1] Clear RX buffer
+RX stale bytes: 14
+STALE:
+FF FF FF BF FF FF DF FF FF FF BF BF FF BF
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 516788346
+TX complete us: 516801949
+DE->RX us: 516801958
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 90 02 CD C1 FF FF
+RX length: 7
+RX char us: 1146
+RX gaps us: 1000 1061 1060 1027 1045 2475 2906
+RX timing: 4 on 9600 grid, 2 late
+UART err: GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 90 02 CD C1
+PAYLOAD: 01 90 02
+RECEIVED CRC LOW:  0xCD
+RECEIVED CRC HIGH: 0xC1
+RECEIVED CRC COMBINED: 0xC1CD
+CALCULATED CRC: 0xC1CD
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Exception 0x2 Illegal Data Address
+RESULT: VALID MODBUS EXCEPTION
+========================================
+SCF write FAILED result=3 exception=2
+admin@icanova-edge:/etc$ scf auto
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE auto key=35701 complement=29834
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #2558
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 75 74 8A A3 50
+[1] Clear RX buffer
+RX stale bytes: 18
+STALE:
+FF FF FF FF BF BF FF FF FF FF BF FF FF FF BF FF
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 522831956
+TX complete us: 522845550
+DE->RX us: 522845552
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 10 10 08 00 02 C4 CA
+RX length: 8
+RX char us: 1146
+RX gaps us: 1000 1018 1019 1058 1023 1045 1071 1019
+RX timing: 7 on 9600 grid, 0 late
+UART err: GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 10 10 08 00 02 C4 CA
+PAYLOAD: 01 10 10 08 00 02
+RECEIVED CRC LOW:  0xC4
+RECEIVED CRC HIGH: 0xCA
+RECEIVED CRC COMBINED: 0xCAC4
+CALCULATED CRC: 0xCAC4
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+WRITE ACK addr=4104 qty=2
+RESULT: VALID MODBUS WRITE RESPONSE
+========================================
+SCF write ACK OK
+admin@icanova-edge:/etc$ scf si
+ERROR: unknown SCF command (try 'scf list')
+admin@icanova-edge:/etc$ scf stop
+ERROR: unknown SCF command (try 'scf list')
+admin@icanova-edge:/etc$ scf manual
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE manual key=35702 complement=29833
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #2927
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 76 74 89 13 51
+[1] Clear RX buffer
+RX stale bytes: 10
+STALE:
+BF FF FF DF BF FE FF FF FF FF
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 573488165
+TX complete us: 573501762
+DE->RX us: 573501763
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+02 10 10 08 00 02 C4 CA BF
+RX length: 9
+RX char us: 1146
+RX gaps us: 0 1190 1359 743 1046 1035 1055 1031 6655
+RX timing: 6 on 9600 grid, 1 late
+UART err: FRAMING GLITCH
+Time to first RX byte: 0 ms
+[6] Frame validation / CRC audit
+RAW RX: 02 10 10 08 00 02 C4 CA
+PAYLOAD: 02 10 10 08 00 02
+RECEIVED CRC LOW:  0xC4
+RECEIVED CRC HIGH: 0xCA
+RECEIVED CRC COMBINED: 0xCAC4
+CALCULATED CRC: 0xF9C4
+CRC RESULT: FAIL
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Slave byte: 2
+Function byte: 0x10
+Expected exception FC: 0x90
+RESULT: INVALID MODBUS FRAME (CRC)
+NOTE: Do NOT treat this as a valid exception.
+========================================
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #2928
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 76 74 89 13 51
+[1] Clear RX buffer
+RX stale bytes: 6
+STALE:
+FF DF FF FF DF BF
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 573578530
+TX complete us: 573592125
+DE->RX us: 573592126
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 10 10 08 00 02 C4 CA
+RX length: 8
+RX char us: 1146
+RX gaps us: 1000 1036 1058 1027 1059 1046 1028 1062
+RX timing: 7 on 9600 grid, 0 late
+UART err: GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 10 10 08 00 02 C4 CA
+PAYLOAD: 01 10 10 08 00 02
+RECEIVED CRC LOW:  0xC4
+RECEIVED CRC HIGH: 0xCA
+RECEIVED CRC COMBINED: 0xCAC4
+CALCULATED CRC: 0xCAC4
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+WRITE ACK addr=4104 qty=2
+RESULT: VALID MODBUS WRITE RESPONSE
+========================================
+SCF write ACK OK
+admin@icanova-edge:/etc$ scf auto
+WARNING: SCF write can change controller mode / start DG.
+SCF WRITE auto key=35701 complement=29834
+========================================
+MODBUS RTU WRITE (FC16)
+TXN #2979
+Device: DSE 7320 / 7320 MKII
+REQUEST: slave=1 addr=4104 qty=2
+FINAL TX BYTE ARRAY: 01 10 10 08 00 02 04 8B 75 74 8A A3 50
+[1] Clear RX buffer
+RX stale bytes: 14
+STALE:
+BF FF FF FF FF FF FF FF FF FF FF BF BF FF
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 13 expected: 13
+DE/RE after switch to RX: 0
+TX start us: 580921353
+TX complete us: 580934948
+DE->RX us: 580934949
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 10 10 08 00 02 C4 CA BF
+RX length: 9
+RX char us: 1146
+RX gaps us: 1000 1027 1057 1027 1059 1046 1027 1064 2913
+RX timing: 7 on 9600 grid, 1 late
+UART err: GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 10 10 08 00 02 C4 CA
+PAYLOAD: 01 10 10 08 00 02
+RECEIVED CRC LOW:  0xC4
+RECEIVED CRC HIGH: 0xCA
+RECEIVED CRC COMBINED: 0xCAC4
+CALCULATED CRC: 0xCAC4
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+WRITE ACK addr=4104 qty=2
+RESULT: VALID MODBUS WRITE RESPONSE
+========================================
+SCF write ACK OK
+admin@icanova-edge:/etc$ get battery_v
+GET battery_v  @1029  qty=1  Battery / Starter Voltage [V]
+========================================
+MODBUS RTU DIAGNOSTIC
+TXN #3989
+Device: DSE 7320 / 7320 MKII
+REQUEST fields: slave=1 fc=0x3 addr=0x405 qty=1
+Runtime UART: 9600 8N1
+FINAL TX BYTE ARRAY: 01 03 04 05 00 01 95 3B
+[1] Clear RX buffer
+RX stale bytes: 7
+STALE:
+BF FF FD DB FF BF 9D
+[2] DE/RE before TX: 0
+[3] TX + hardware TX-done wait
+write() returned: 8 expected: 8
+DE/RE after switch to RX: 0
+TX start us: 783218611
+TX complete us: 783227010
+DE->RX us: 783227011
+TX settle us (config): 0
+[4] Waiting for response...
+[5] RX
+01 03 02 00 88 B8 22 BF FF
+RX length: 9
+RX char us: 1146
+RX gaps us: 1000 1027 1060 1026 1062 1025 1046 2031 989
+RX timing: 7 on 9600 grid, 1 late
+UART err: GLITCH
+Time to first RX byte: 1 ms
+[6] Frame validation / CRC audit
+RAW RX: 01 03 02 00 88 B8 22
+PAYLOAD: 01 03 02 00 88
+RECEIVED CRC LOW:  0xB8
+RECEIVED CRC HIGH: 0x22
+RECEIVED CRC COMBINED: 0x22B8
+CALCULATED CRC: 0x22B8
+CRC RESULT: PASS
+(combine rule: low | (high << 8); CRC bytes excluded from calc)
+Register[0]=0x88
+RESULT: VALID MODBUS RESPONSE
+========================================
+VALUE: Battery / Starter Voltage = 13.6 V  (raw=136 @1029 key=battery_v)
+admin@icanova-edge:/etc$ iterate engine
+## DSE iterate (engine)  slave=1  baud=9600
+Manufacturer Code: 1
+Model Number: 7320
+Serial Number: unimplemented
+Operating mode: Auto
+Control Unit Status: 0
+BATCH FAIL @1024 qty=32 result=2
+Line 3 power: 0 W
+Mains frequency: 50.3 Hz
+Mains L1 voltage: 232.9 V
+Mains L2 voltage: unimplemented
+Mains L3 voltage: 234.4 V
+Mains L1-L2 voltage: unimplemented
+Mains L2-L3 voltage: unimplemented
+Mains L3-L1 voltage: 402.0 V
+BATCH FAIL @1408 qty=16 result=2
+Oil level: unimplemented
+Coolant level: unimplemented
+admin@icanova-edge:/etc$ iterate basic
+## DSE iterate (basic)  slave=1  baud=9600
+Manufacturer Code: 1
+Model Number: 7320
+Serial Number: unimplemented
+Operating mode: Auto
+Control Unit Status: 0
+Oil pressure: 0 kPa
+Coolant temperature: under range
+Oil temperature: unimplemented
+Fuel level: 126 %
+Charge alternator voltage: 13.5 V
+Battery voltage: 13.6 V
+Engine RPM: 0 rpm
+Frequency: 0.0 Hz
+Line 1 voltage: 0.0 V
+Line 2 voltage: unimplemented
+Line 3 voltage: 0.0 V
+Line 1-2 voltage: unimplemented
+Line 2-3 voltage: unimplemented
+Line 3-1 voltage: 0.0 V
+Line 1 current: 0.0 A
+Line 2 current: unimplemented
+Line 3 current: 0.0 A
+Line 1 power: 0 W
+Line 2 power: unimplemented
+Line 3 power: 0 W
+Mains frequency: 50.3 Hz
+Mains L1 voltage: 232.9 V
+Mains L2 voltage: unimplemented
+Mains L3 voltage: 234.2 V
+Mains L1-L2 voltage: unimplemented
+Mains L2-L3 voltage: unimplemented
+Mains L3-L1 voltage: 401.8 V
+Engine status: unimplemented
+Engine State (alt): unimplemented
+admin@icanova-edge:/etc$ iterate all
+## DSE iterate (all)  slave=1  baud=9600
+BATCH FAIL @768 qty=8 result=2
+Oil pressure: 0 kPa
+Coolant temperature: under range
+Oil temperature: unimplemented
+Fuel level: 126 %
+Charge alternator voltage: 13.5 V
+Battery voltage: 13.6 V
+Engine RPM: 0 rpm
+Frequency: 0.0 Hz
+Line 1 voltage: 0.0 V
+Line 2 voltage: unimplemented
+Line 3 voltage: 0.0 V
+Line 1-2 voltage: unimplemented
+Line 2-3 voltage: unimplemented
+Line 3-1 voltage: 0.0 V
+Line 1 current: 0.0 A
+Line 2 current: unimplemented
+Line 3 current: 0.0 A
+Line 1 power: 0 W
+Line 2 power: unimplemented
+Line 3 power: 0 W
+Mains frequency: 50.3 Hz
+Mains L1 voltage: 232.7 V
+Mains L2 voltage: unimplemented
+Mains L3 voltage: 234.1 V
+Mains L1-L2 voltage: unimplemented
+Mains L2-L3 voltage: unimplemented
+Mains L3-L1 voltage: 401.5 V
+Engine status: unimplemented
+Engine State (alt): unimplemented
+Total real power: 0 W
+Generator Phase A Apparent Power: 0 VA
+Generator Phase B Apparent Power: unimplemented
+Generator Phase C Apparent Power: 0 VA
+Total apparent power: 0 VA
+Generator Phase A Reactive Power: 0 VAr
+Generator Phase B Reactive Power: unimplemented
+Generator Phase C Reactive Power: 0 VAr
+Total reactive power: 0 VAr
+Generator Phase A Power Factor: under range
+Generator Phase B Power Factor: unimplemented
+Generator Phase C Power Factor: under range
+Power factor: under range
+Load percent: 0.0 %
+Engine hours: 2537.63 h
+Energy export: 11710.2 kWh
+Engine starts: 2141
+BATCH FAIL @1357 qty=3 result=2
+admin@icanova-edge:/etc$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
