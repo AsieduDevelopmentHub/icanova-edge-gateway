@@ -100,6 +100,12 @@ void applyDecoded(const char *key, const DseDecodedValue &v) {
   } else if (strcmp(key, "fuel_level") == 0) {
     gSnap.hasFuel = true;
     gSnap.fuelPct = v.engineering;
+  } else if (strcmp(key, "eng_hours") == 0) {
+    gSnap.hasEngHours = true;
+    gSnap.engHours = v.engineering;
+  } else if (strcmp(key, "eng_starts") == 0) {
+    gSnap.hasEngStarts = true;
+    gSnap.engStarts = v.rawU;
   } else if (strcmp(key, "mains_freq") == 0) {
     gSnap.hasMainsHz = true;
     gSnap.mainsHz = v.engineering;
@@ -310,12 +316,13 @@ void refreshNow() {
     }
   };
 
-  // Same ranges as CLI iterate basic + power + alarms
+  // Same ranges as CLI iterate basic + power + accumulators + alarms
   batch(768, 8);
   batch(1024, 32);
   batch(1056, 16);
   batch(1408, 16);
   batch(1536, 23);
+  batch(1798, 12);  // eng_hours / energy / eng_starts
 
   collectAlarms(slaveId);
 
@@ -437,6 +444,14 @@ size_t writeStatusJson(char *buf, size_t bufSize) {
   appendFloat(p, end, "genPTotW", s.hasGenPTot, s.genPTotW, 0);
   appendFloat(p, end, "genPTotKw", s.hasGenPTot, s.genPTotW / 1000.0f, 2);
   appendFloat(p, end, "genPctKw", s.hasGenPctKw, s.genPctKw, 1);
+  appendFloat(p, end, "fuelPct", s.hasFuel, s.fuelPct, 1);
+  appendFloat(p, end, "engHours", s.hasEngHours, s.engHours, 2);
+  if (s.hasEngStarts) {
+    p += snprintf(p, static_cast<size_t>(end - p), "\"engStarts\":%lu,",
+                  static_cast<unsigned long>(s.engStarts));
+  } else {
+    p += snprintf(p, static_cast<size_t>(end - p), "\"engStarts\":null,");
+  }
 
   p += snprintf(p, static_cast<size_t>(end - p), "\"alarms\":[");
   for (uint8_t i = 0; i < s.alarmCount; i++) {

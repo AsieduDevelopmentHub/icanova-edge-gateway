@@ -50,6 +50,8 @@ struct Sample {
   int16_t oilc = 0;
   int16_t cool = 0;
   int16_t fuel = 0;
+  int32_t eh100 = 0;
+  int32_t starts = 0;
   int16_t mhz10 = 0;
   int16_t mvan10 = 0;
   int16_t mvbn10 = 0;
@@ -123,6 +125,8 @@ constexpr uint64_t kHasPfc = 1ull << 41;
 constexpr uint64_t kHasPf = 1ull << 42;
 constexpr uint64_t kHasEng2 = 1ull << 43;
 constexpr uint64_t kHasCtrl = 1ull << 44;
+constexpr uint64_t kHasEh = 1ull << 45;
+constexpr uint64_t kHasStarts = 1ull << 46;
 
 Sample gSamples[kMaxSamples];
 uint8_t gCount = 0;
@@ -264,6 +268,13 @@ void capture(const TelemetrySnapshot &snap) {
   setExtra(s, kHasOilC, snap.hasOilTemp, snap.oilTempC, 1.f, &s.oilc);
   setExtra(s, kHasCool, snap.hasCoolant, snap.coolantC, 1.f, &s.cool);
   setExtra(s, kHasFuel, snap.hasFuel, snap.fuelPct, 1.f, &s.fuel);
+  setExtra32(s, kHasEh, snap.hasEngHours, snap.engHours, 100.f, &s.eh100);
+  if (snap.hasEngStarts) {
+    if (snap.engStarts <= 2147483647ul) {
+      s.flags |= kHasStarts;
+      s.starts = static_cast<int32_t>(snap.engStarts);
+    }
+  }
   setExtra(s, kHasMhz, snap.hasMainsHz, snap.mainsHz, 10.f, &s.mhz10);
   setExtra(s, kHasMvan, snap.hasMainsVan, snap.mainsVan, 10.f, &s.mvan10);
   setExtra(s, kHasMvbn, snap.hasMainsVbn, snap.mainsVbn, 10.f, &s.mvbn10);
@@ -340,6 +351,8 @@ size_t buildPlain(char *buf, size_t cap, uint32_t seq, uint8_t count) {
     p += appendOpt(p, end, "oilc", s.flags & kHasOilC, s.oilc);
     p += appendOpt(p, end, "cool", s.flags & kHasCool, s.cool);
     p += appendOpt(p, end, "fuel", s.flags & kHasFuel, s.fuel);
+    p += appendOpt(p, end, "eh100", s.flags & kHasEh, s.eh100);
+    p += appendOpt(p, end, "starts", s.flags & kHasStarts, s.starts);
     p += appendOpt(p, end, "mhz10", s.flags & kHasMhz, s.mhz10);
     p += appendOpt(p, end, "mvan10", s.flags & kHasMvan, s.mvan10);
     p += appendOpt(p, end, "mvbn10", s.flags & kHasMvbn, s.mvbn10);
@@ -416,6 +429,8 @@ size_t buildCloud(char *buf, size_t cap, uint32_t seq, uint8_t count) {
     p += appendOpt(p, end, "oilc", s.flags & kHasOilC, s.oilc);
     p += appendOpt(p, end, "cool", s.flags & kHasCool, s.cool);
     p += appendOpt(p, end, "fuel", s.flags & kHasFuel, s.fuel);
+    p += appendOpt(p, end, "eh100", s.flags & kHasEh, s.eh100);
+    p += appendOpt(p, end, "starts", s.flags & kHasStarts, s.starts);
     p += appendOpt(p, end, "mhz10", s.flags & kHasMhz, s.mhz10);
     p += appendOpt(p, end, "mvan10", s.flags & kHasMvan, s.mvan10);
     p += appendOpt(p, end, "mvbn10", s.flags & kHasMvbn, s.mvbn10);

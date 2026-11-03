@@ -71,6 +71,10 @@ struct TelemetrySnapshot {
   float coolantC = 0;
   bool hasFuel = false;
   float fuelPct = 0;
+  bool hasEngHours = false;
+  float engHours = 0;
+  bool hasEngStarts = false;
+  uint32_t engStarts = 0;
   bool hasMainsHz = false;
   float mainsHz = 0;
   bool hasMainsVan = false;
