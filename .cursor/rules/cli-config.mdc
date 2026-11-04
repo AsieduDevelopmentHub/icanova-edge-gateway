@@ -1,13 +1,14 @@
 ---
 description: USB console CLI and persistent config filesystem
-globs: "{src/cli/**,src/console/**,src/config/**,src/fs/**,src/identity/**}"
+globs: "{src/cli/**,src/console/**,src/config/**,src/fs/**,src/identity/**,doc/guide/cli.md}"
 alwaysApply: false
 ---
 
 # CLI / config
 
-- USB Serial CLI is the commissioning surface — keep commands documented in `doc/guide/cli.md`.
-- Persist settings through the config filesystem; validate before commit to flash.
+- USB Serial CLI is commissioning — keep `doc/guide/cli.md` accurate.
+- Persist via config filesystem; validate before flash commit.
 - Login/session required for privileged config and control writes.
-- Identity strings (hostname, AP SSID prefix) must match product docs unless migrating deliberately.
-- Prefer clear operator errors over silent defaults that hide miswiring.
+- Identity strings (hostname, AP SSID prefix) match product docs unless migrating deliberately.
+- Clear operator errors over silent defaults that hide miswiring.
+- Device-local Modbus/Wi-Fi/Soft-AP config is **not** cloud-persisted unless a verified sync path exists.

@@ -1,0 +1,56 @@
+---
+description: Evidence-based verification and mandatory completion report
+alwaysApply: true
+---
+
+# Verification & completion report
+
+No substantial task is complete because code was written. Verify the actual result.
+
+## Verification levels (do not confuse)
+
+1. Source · 2. Static · 3. Unit · 4. Types/lint · 5. Integration · 6. Contract · 7. Build (`pio run`) · 8. Soft-AP/API smoke · 9. Hosted/cloud pairing · 10. Physical hardware
+
+Firmware compile ≠ RS485 works. Simulation ≠ field bus validation.
+
+## After changes
+
+- Build the relevant PlatformIO env. State NOT RUN/why if hardware checks skipped.
+- Never invent monitor logs, COM ports, or pass counts.
+
+## Substantial tasks require this exact report
+
+Firmware/Modbus/net/uplink/CLI/config/build/docs-status work. Skip only for trivial Q&A.
+
+### 1. TASK SUMMARY
+- Task / Objective / Final status: COMPLETE | PARTIALLY COMPLETE | BLOCKED / Outcome
+
+### 2. FILES CHANGED
+Created/modified/deleted with brief why (or none).
+
+### 3. IMPLEMENTATION DETAILS
+What, how, modules affected, design decisions, compatibility.
+
+### 4. VERIFICATION AND TEST RESULTS
+Table: Check | Command | Result PASS/FAIL/NOT RUN | Evidence
+
+### 5. ACTUAL BEHAVIOR VERIFICATION
+Compile / simulation / logs / physical test / HW+FW revision — or NOT VERIFIED.
+
+### 6. SECURITY AND DATA-INTEGRITY CHECK
+Credentials, uplink secrecy, config persistence, any destructive flash/erase.
+
+### 7. DEPLOYMENT AND ENVIRONMENT STATUS
+Env/board flashed or NOT DEPLOYED; FW version; rollback notes.
+
+### 8. KNOWN ISSUES AND LIMITATIONS
+Unresolved, deferred, missing evidence, hardware limits.
+
+### 9. DOCUMENTATION UPDATED
+`doc/` files touched / none.
+
+### 10. FINAL ENGINEERING VERDICT
+COMPLETE — VERIFIED | COMPLETE WITH DOCUMENTED LIMITATIONS | PARTIALLY COMPLETE | BLOCKED | FAILED
+
+### 11. NEXT ACTIONS
+Safe now · needs owner approval · needs production auth · needs hardware auth

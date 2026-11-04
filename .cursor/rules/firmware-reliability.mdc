@@ -1,0 +1,14 @@
+---
+description: Embedded reliability, memory, reconnect, and buffering
+globs: "{src/telemetry/**,src/uplink/**,src/net/**,src/modbus/**,src/rs485/**,src/ota/**,src/util/**,src/main.cpp}"
+alwaysApply: false
+---
+
+# Firmware reliability
+
+- Avoid unnecessary blocking on critical Modbus/uplink paths; consider watchdog needs.
+- Handle Wi-Fi disconnect/reconnect and Modbus timeouts/retries predictably.
+- Bound buffers/allocations; avoid leaks/fragmentation where practical.
+- Prevent malformed payloads from corrupting state.
+- Failed uplinks: deliberate retry/backoff; preserve important telemetry across temporary loss where supported.
+- Diagnostics useful without log floods. Do not silently lose data or make recovery hard.

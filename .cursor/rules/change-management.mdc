@@ -1,0 +1,22 @@
+---
+description: Safe change process for substantial firmware work
+alwaysApply: true
+---
+
+# Change management
+
+## Before
+
+1. Inspect implementation + `doc/`  
+2. Dependencies (web contracts, board profiles, pin maps)  
+3. Security/data/hardware risks  
+4. Intended behavior  
+5. Smallest safe change  
+
+## After
+
+- Inspect diff; remove accidental edits  
+- Build relevant env; update docs when behavior/wiring changed  
+- Report remaining risks  
+
+Prefer reversible changes. No unrelated refactors. No flash/erase/GPIO changes without explicit hardware authorization.

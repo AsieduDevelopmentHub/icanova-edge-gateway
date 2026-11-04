@@ -1,0 +1,18 @@
+---
+description: Soft-AP JSON and cloud uplink payload contracts
+globs: "{src/net/**,src/uplink/**,src/telemetry/**,doc/guide/uplink.md,doc/guide/web_ui.md}"
+alwaysApply: false
+---
+
+# API contracts (gateway ↔ cloud)
+
+Before changing Soft-AP JSON or uplink payloads:
+
+1. Inspect sender · 2. Receiver (web ingest) · 3. Consumers · 4. Deployed compatibility · 5. Define contract · 6. Validate · 7. Tests/captures · 8. Document breaks
+
+## Rules
+
+- No silent field rename/remove. Do not invent telemetry fields or Modbus registers.
+- Validate inputs; handle missing/malformed/stale/unexpected fields.
+- Prefer backward compatibility; preserve raw diagnostic evidence.
+- Cross-repo web changes must be identified. Coordinate shared ingest secret → per-device credential migration; do not claim the shared-secret exception resolved without verified migration.

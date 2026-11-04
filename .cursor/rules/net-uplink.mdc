@@ -1,13 +1,13 @@
 ---
 description: Soft-AP HTTP API, OTA, and encrypted uplink
-globs: "{src/net/**,src/uplink/**,src/ota/**,src/telemetry/**,doc/guide/**}"
+globs: "{src/net/**,src/uplink/**,src/ota/**,src/telemetry/**,doc/guide/uplink.md,doc/guide/web_ui.md,doc/guide/ota.md}"
 alwaysApply: false
 ---
 
 # Net / uplink / OTA
 
-- Local Soft-AP APIs (`/api/status`, `/api/catalog`, `/api/read`, `/api/write`, `/api/control`) stay honest about readiness.
-- Uplink: follow `doc/guide/uplink.md` (batched, encrypted). No plaintext credential logging.
-- OTA: follow `doc/guide/ota.md`; never brick paths without documented recovery.
-- Telemetry batches: bound size/rate; separate link errors from stale samples in status JSON.
-- Hostname / SSID identity changes require `doc/product/network-identity-implementation-notes.md` awareness.
+- Soft-AP APIs (`/api/status`, `/api/catalog`, `/api/read`, `/api/write`, `/api/control`) stay honest about readiness.
+- Uplink: `doc/guide/uplink.md` (batched, encrypted). No plaintext credential logging.
+- OTA: `doc/guide/ota.md`; no brick paths without documented recovery.
+- Bound batch size/rate; separate link errors from stale samples in status JSON.
+- Hostname/SSID identity: `doc/product/network-identity-implementation-notes.md`.

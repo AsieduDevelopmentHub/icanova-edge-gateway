@@ -1,33 +1,33 @@
 ---
-description: Firmware architecture and verification for every change
+description: Firmware architecture, boundaries, honesty, and mandatory completion reporting
 alwaysApply: true
 ---
 
 # iCaNova Edge Gateway — architecture
 
-## Product
+## Product & boundaries
 
-- Product: **iCaNova Edge Gateway** (family: iCaNova Edge). Companion: iCaNova Monitoring.
-- Identity: `doc/product/`. Brand: `doc/brand/`. Do not treat DSE as the product brand.
-- Default Soft-AP / hostname conventions stay documented — no casual renames.
+- Product: **iCaNova Edge Gateway** (family: iCaNova Edge). Companion: **iCaNova Monitoring**.
+- Identity: `doc/product/`. Brand: `doc/brand/`. DSE is equipment — not the product brand.
+- Gateway owns: ESP32-C3 firmware, Modbus RTU master, RS485 DE·RE, device config, Wi-Fi, telemetry acquire/buffer, secure uplink, local diagnostics.
+- Keep cloud multi-tenant UI/auth out of firmware. Keep presentation concerns out of embedded code.
+- Preserve explicit uplink/API contracts with the web platform. Do not claim unfinished features (cellular productization, multi-tenant cloud) as shipped.
 
-## Architecture
+## System rules
 
-- PlatformIO multi-env firmware (`platformio.ini`). Production target: **ESP32-C3 SuperMini**.
-- Modules under `src/`: `modbus/`, `rs485/`, `telemetry/`, `uplink/`, `net/`, `cli/`, `config/`, `ota/`.
-- Keep Modbus link health, cloud/uplink contact, and sample freshness conceptually separate in APIs and docs.
-- Do not claim unfinished features (cellular productization, multi-tenant cloud) as shipped.
+- PlatformIO multi-env (`platformio.ini`). Production target: **ESP32-C3 SuperMini**.
+- Modules: `src/modbus/`, `rs485/`, `telemetry/`, `uplink/`, `net/`, `cli/`, `config/`, `ota/`.
+- Keep Modbus link health, cloud/uplink contact, and sample freshness separate in APIs/docs.
+- Prefer board profiles/`#ifdef` over forks. Smallest correct change. Config via `/etc/gateway.conf` / CLI — no hardcoded site secrets.
 
-## Implementation discipline
+## Hard gates
 
-- Prefer existing board profiles and `#ifdef` boundaries over one-off forks.
-- Smallest correct change; no drive-by reformat of unrelated firmware.
-- Config via `/etc/gateway.conf` / documented CLI — do not hardcode site secrets.
-- Flash/monitor notes: RTS/DTR off for native USB CDC on C3.
+- Do **not** flash ESP32, erase firmware, access COM ports, or change GPIO/power/protection without **explicit** owner authorization.
+- Coordinate web↔gateway contract changes across both repos.
 
 ## Verify before claiming done
 
-1. Build the relevant env (`pio run -e esp32-c3-supermini` or the touched board).
-2. Prefer hardware/monitor checks for RS485, CLI, Soft-AP, or uplink changes when feasible.
-3. Update or follow `doc/guide/` when behavior or wiring assumptions change.
-4. Never report “fixed” without build or observable proof for the claimed surface.
+1. Build the touched env (`pio run -e esp32-c3-supermini` or relevant board).
+2. Compilation ≠ physical Modbus/RS485 proof.
+3. Follow/update `doc/guide/` when behavior or wiring assumptions change.
+4. After **substantial** work, end with the mandatory completion report (`verification-and-testing.mdc`).

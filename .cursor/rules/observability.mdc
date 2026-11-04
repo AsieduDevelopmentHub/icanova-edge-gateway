@@ -1,0 +1,16 @@
+---
+description: Local diagnostics and honest status reporting
+globs: "{src/net/**,src/telemetry/**,src/uplink/**,src/modbus/**,src/cli/**,src/console/**,doc/guide/**}"
+alwaysApply: false
+---
+
+# Observability
+
+Status/logs should distinguish:
+
+- Wi-Fi failure vs cloud uplink failure
+- Modbus/CRC/timeout vs stale sample vs true zero
+- Config/auth CLI failure vs bus failure
+- Alarm/operating condition vs transport errors
+
+Never log passwords, private keys, tokens, API secrets, or plaintext device credentials. Prefer actionable diagnostics over generic errors.

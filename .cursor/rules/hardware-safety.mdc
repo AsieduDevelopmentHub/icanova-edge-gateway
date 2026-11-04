@@ -1,0 +1,23 @@
+---
+description: Physical ESP32/RS485 hardware authorization gates
+globs: "{src/**,platformio.ini,include/**,partitions/**,doc/guide/getting_started.md,doc/guide/cli.md}"
+alwaysApply: false
+---
+
+# Hardware safety
+
+The ESP32-C3 gateway is real industrial hardware.
+
+## Forbidden without explicit authorization
+
+- Flash / erase / overwrite firmware
+- Access COM8 or any serial port
+- Modify connected hardware or run electrical tests
+- Change GPIO assignments or terminal-block mappings
+- Modify power circuitry, remove protection/isolation, or alter enclosure/PCB manufacturing outputs
+
+## When physical testing is authorized, report
+
+Device identity · HW revision · FW revision · setup · tools · observations · result · limitations
+
+Compilation and simulation are **not** physical hardware verification.

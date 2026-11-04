@@ -1,0 +1,13 @@
+---
+description: Firmware docs and phase-status honesty
+globs: "{doc/**,README.md}"
+alwaysApply: false
+---
+
+# Documentation & status
+
+When architecture, security, uplink, wiring, or ops behavior changes:
+
+- Update `doc/guide/` / product notes and applicable `doc/status/` records.
+- Record real build/test commands, env/board, risks, migrations.
+- Distinguish verified vs planned. Never mark exceptions or phases complete without evidence.
