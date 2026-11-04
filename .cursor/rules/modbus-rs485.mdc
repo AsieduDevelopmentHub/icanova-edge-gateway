@@ -1,0 +1,14 @@
+---
+description: Modbus RTU, RS485, and DSE/GenComm map discipline
+globs: "{src/modbus/**,src/rs485/**,src/devices/**,doc/dse_register_map/**,tools/**}"
+alwaysApply: false
+---
+
+# Modbus / RS485
+
+- Master on RS485 (THVD1450 / level-safe). Honor DE·RE timing for the active board profile.
+- DSE 73xx-class maps and GenComm pages: treat `doc/dse_register_map/` as source of truth.
+- CRC fail ≠ successful poll. Do not advance “last good poll” on invalid frames.
+- Lab profiles (Invendis, EN-Volt) stay explicit — do not merge into DSE map blindly.
+- Captures/tools under `tools/` and `doc/captures/` for page dumps; keep reproducible.
+- Fail closed on write/control paths: authenticate CLI/session before SCF / control writes.

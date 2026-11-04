@@ -13,6 +13,7 @@
 #include "config/config.h"
 #include "config/settings.h"
 #include "telemetry/snapshot.h"
+#include "uplink/uplink.h"
 #include "util/str_util.h"
 
 namespace {
@@ -33,6 +34,10 @@ uint32_t gStaAttemptStart = 0;
 uint32_t gStaRestUntil = 0;
 uint8_t gStaFails = 0;
 uint8_t gLastFailReason = 0;
+// One-shot cloud heartbeat after STA gets an IP (GeoIP trigger).
+bool gPendingConnectHeartbeat = false;
+uint32_t gConnectHeartbeatAtMs = 0;
+constexpr uint32_t kConnectHeartbeatDeferMs = 3000;
 
 void buildApSsid() {
   uint64_t mac = ESP.getEfuseMac();
@@ -441,6 +446,8 @@ void onWifiEvent(WiFiEvent_t event, WiFiEventInfo_t info) {
     return;
   }
   if (event == ARDUINO_EVENT_WIFI_STA_GOT_IP) {
+    gPendingConnectHeartbeat = true;
+    gConnectHeartbeatAtMs = millis() + kConnectHeartbeatDeferMs;
     return;
   }
   if (event != ARDUINO_EVENT_WIFI_STA_DISCONNECTED) {
@@ -646,6 +653,22 @@ void poll() {
   refreshInfo();
   holdStaDns();
   manageSta();
+  if (!gPendingConnectHeartbeat) {
+    return;
+  }
+  if (static_cast<int32_t>(millis() - gConnectHeartbeatAtMs) < 0) {
+    return;
+  }
+  gPendingConnectHeartbeat = false;
+  if (WiFi.status() != WL_CONNECTED) {
+    return;
+  }
+  const GatewayConfig &cfg = Settings::get();
+  if (!cfg.uplinkHost[0] || (!cfg.uplinkBearer[0] && !cfg.uplinkKeySet)) {
+    return;
+  }
+  Serial.println(F("[WiFi] Connect heartbeat"));
+  Uplink::heartbeat();
 }
 
 const char *mode() { return gMode; }

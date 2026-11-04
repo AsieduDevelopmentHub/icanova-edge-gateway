@@ -1,0 +1,13 @@
+---
+description: USB console CLI and persistent config filesystem
+globs: "{src/cli/**,src/console/**,src/config/**,src/fs/**,src/identity/**}"
+alwaysApply: false
+---
+
+# CLI / config
+
+- USB Serial CLI is the commissioning surface — keep commands documented in `doc/guide/cli.md`.
+- Persist settings through the config filesystem; validate before commit to flash.
+- Login/session required for privileged config and control writes.
+- Identity strings (hostname, AP SSID prefix) must match product docs unless migrating deliberately.
+- Prefer clear operator errors over silent defaults that hide miswiring.

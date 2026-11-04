@@ -263,12 +263,13 @@ async function loadLocation(){
     $('locMsg').textContent=j.staConnected?'STA online — map and cloud sync available when this browser has internet.':'STA offline — local save still works.';
   }catch(e){$('locMsg').textContent=e.message;}
 }
+let locSource='manual';
 async function saveLocation(sync){
   const lat=Number($('locLat').value),lon=Number($('locLon').value);
   if(!Number.isFinite(lat)||!Number.isFinite(lon)){$('locMsg').textContent='Enter valid lat and lon.';return;}
   $('locMsg').textContent='Saving…';
   try{
-    const r=await fetch('/api/location',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lat,lon,sync:!!sync})});
+    const r=await fetch('/api/location',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lat,lon,sync:!!sync,source:locSource||'manual'})});
     const j=await r.json();
     if(!r.ok||!j.ok){$('locMsg').textContent=j.error||'save failed';return;}
     setMapPoint(lat,lon);
@@ -305,6 +306,7 @@ $('locGeo').onclick=()=>{
   if(!navigator.geolocation){$('locMsg').textContent='Geolocation not available.';return;}
   $('locMsg').textContent='Getting location…';
   navigator.geolocation.getCurrentPosition(p=>{
+    locSource='browser';
     $('locLat').value=p.coords.latitude.toFixed(6);
     $('locLon').value=p.coords.longitude.toFixed(6);
     ensureMap();
@@ -312,6 +314,8 @@ $('locGeo').onclick=()=>{
     $('locMsg').textContent='Location from browser.';
   },e=>{$('locMsg').textContent=e.message||'geolocation failed';},{enableHighAccuracy:true,timeout:15000});
 };
+$('locLat').addEventListener('input',()=>{locSource='manual';});
+$('locLon').addEventListener('input',()=>{locSource='manual';});
 $('locSave').onclick=()=>saveLocation(false);
 $('locSync').onclick=()=>saveLocation(true);
 $('otaUpload').onclick=async()=>{

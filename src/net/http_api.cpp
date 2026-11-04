@@ -277,7 +277,8 @@ void handleLocationGet() {
   sendJson(200, jsonBuf);
 }
 
-bool syncLocationToCloud(float lat, float lon, char *err, size_t errN) {
+bool syncLocationToCloud(float lat, float lon, const char *source, char *err,
+                         size_t errN) {
   const GatewayConfig &cfg = Settings::get();
   if (!cfg.uplinkBearer[0] || !cfg.uplinkHost[0]) {
     snprintf(err, errN, "uplink not configured");
@@ -292,11 +293,16 @@ bool syncLocationToCloud(float lat, float lon, char *err, size_t errN) {
     snprintf(err, errN, "identity");
     return false;
   }
-  char body[200];
-  const int bodyN =
-      snprintf(body, sizeof(body),
-               "{\"identity\":\"%s\",\"latitude\":%.6f,\"longitude\":%.6f}", id,
-               static_cast<double>(lat), static_cast<double>(lon));
+  const char *src =
+      (source && source[0] &&
+       (strcmp(source, "browser") == 0 || strcmp(source, "manual") == 0))
+          ? source
+          : "manual";
+  char body[240];
+  const int bodyN = snprintf(
+      body, sizeof(body),
+      "{\"identity\":\"%s\",\"latitude\":%.6f,\"longitude\":%.6f,\"source\":\"%s\"}",
+      id, static_cast<double>(lat), static_cast<double>(lon), src);
   if (bodyN <= 0 || bodyN >= static_cast<int>(sizeof(body))) {
     snprintf(err, errN, "body");
     return false;
@@ -360,6 +366,11 @@ void handleLocationPost() {
     sendJson(400, "{\"ok\":false,\"error\":\"out of range\"}");
     return;
   }
+  const char *source = "manual";
+  if (body.indexOf("\"source\":\"browser\"") >= 0 ||
+      body.indexOf("\"source\": \"browser\"") >= 0) {
+    source = "browser";
+  }
   char err[64];
   char latS[24];
   char lonS[24];
@@ -377,11 +388,13 @@ void handleLocationPost() {
   bool cloudOk = false;
   char cloudErr[48] = "";
   if (cloud) {
-    cloudOk = syncLocationToCloud(lat, lon, cloudErr, sizeof(cloudErr));
+    cloudOk =
+        syncLocationToCloud(lat, lon, source, cloudErr, sizeof(cloudErr));
   }
   snprintf(jsonBuf, sizeof(jsonBuf),
-           "{\"ok\":true,\"lat\":%.6f,\"lon\":%.6f,\"cloudSynced\":%s%s%s%s}",
-           static_cast<double>(lat), static_cast<double>(lon),
+           "{\"ok\":true,\"lat\":%.6f,\"lon\":%.6f,\"source\":\"%s\","
+           "\"cloudSynced\":%s%s%s%s}",
+           static_cast<double>(lat), static_cast<double>(lon), source,
            cloud ? (cloudOk ? "true" : "false") : "false",
            cloud && !cloudOk ? ",\"cloudError\":\"" : "",
            cloud && !cloudOk ? cloudErr : "", cloud && !cloudOk ? "\"" : "");
