@@ -57,6 +57,14 @@ footer{margin-top:2rem;color:var(--muted);font-size:.75rem}
 #map{height:260px;margin-top:.7rem;border:1px solid var(--line);background:var(--bg2)}
 .bar{height:.45rem;background:var(--bg2);border:1px solid var(--line);margin:.5rem 0}
 .bar>i{display:block;height:100%;background:var(--accent);width:0}
+.confirm-overlay{position:fixed;inset:0;background:rgba(8,12,16,.72);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:40}
+.confirm-overlay[hidden]{display:none!important}
+.confirm-box{width:min(26rem,100%);background:var(--bg2);border:1px solid var(--line);padding:1rem 1.1rem;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.confirm-box p{margin:0 0 1rem;line-height:1.4}
+.confirm-actions{display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap}
+.confirm-actions button{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);padding:.4rem .75rem;cursor:pointer}
+.confirm-actions button.ok{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 28%,var(--bg))}
+.confirm-actions button.danger{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 22%,var(--bg))}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
@@ -129,8 +137,45 @@ footer{margin-top:2rem;color:var(--muted);font-size:.75rem}
   </div>
   <footer>iCaNova Edge Gateway · ASIEDU DEVELOPMENT HUB (ADH).</footer>
 </div>
+<div class="confirm-overlay" id="confirmOverlay" hidden>
+  <div class="confirm-box" role="dialog" aria-modal="true" aria-labelledby="confirmText">
+    <p id="confirmText"></p>
+    <div class="confirm-actions">
+      <button type="button" id="confirmCancel">Cancel</button>
+      <button type="button" id="confirmOk" class="ok">Confirm</button>
+    </div>
+  </div>
+</div>
 <script>
 const $=id=>document.getElementById(id);
+let confirmResolver=null;
+function closeConfirm(ok){
+  $('confirmOverlay').hidden=true;
+  const resolve=confirmResolver;
+  confirmResolver=null;
+  if(resolve)resolve(!!ok);
+}
+function askConfirm(message,opts){
+  opts=opts||{};
+  return new Promise(resolve=>{
+    if(confirmResolver)closeConfirm(false);
+    confirmResolver=resolve;
+    $('confirmText').textContent=message;
+    const okBtn=$('confirmOk');
+    okBtn.textContent=opts.okLabel||'Confirm';
+    okBtn.className=opts.danger?'danger':'ok';
+    $('confirmOverlay').hidden=false;
+    (opts.danger?$('confirmCancel'):okBtn).focus();
+  });
+}
+$('confirmCancel').onclick=()=>closeConfirm(false);
+$('confirmOk').onclick=()=>closeConfirm(true);
+$('confirmOverlay').addEventListener('mousedown',ev=>{if(ev.target===$('confirmOverlay'))closeConfirm(false);});
+window.addEventListener('keydown',ev=>{
+  if($('confirmOverlay').hidden)return;
+  if(ev.key==='Escape'){ev.preventDefault();closeConfirm(false);}
+  if(ev.key==='Enter'){ev.preventDefault();closeConfirm(true);}
+});
 function fmt(v,d){return v==null||v===undefined?'—':Number(v).toFixed(d)}
 function pill(link){
   if(link==='ok')return '<span class="pill ok">link ok</span>';
@@ -321,7 +366,7 @@ $('locSync').onclick=()=>saveLocation(true);
 $('otaUpload').onclick=async()=>{
   const f=$('otaFile').files&&$('otaFile').files[0];
   if(!f){$('otaMsg').textContent='Choose a .bin file.';return;}
-  if(!confirm('Upload '+f.name+' ('+f.size+' bytes) and reboot?'))return;
+  if(!(await askConfirm('Upload '+f.name+' ('+f.size+' bytes) and reboot?',{danger:true,okLabel:'Upload'})))return;
   $('otaMsg').textContent='Uploading…';
   try{
     const fd=new FormData();
@@ -344,7 +389,10 @@ async function cloudOta(apply){
   }catch(e){$('otaMsg').textContent=e.message;}
 }
 $('otaCheck').onclick=()=>cloudOta(false);
-$('otaApply').onclick=()=>{if(confirm('Download and apply the published firmware from cloud?'))cloudOta(true);};
+$('otaApply').onclick=async()=>{
+  if(!(await askConfirm('Download and apply the published firmware from cloud?',{danger:true,okLabel:'Apply'})))return;
+  cloudOta(true);
+};
 (function(){
   const s=document.createElement('script');
   s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
@@ -404,7 +452,7 @@ $('configure').onclick=async(ev)=>{
       words=[parts[0], (65535-parts[0])&65535];
     }else if(parts.length!==reg.w){$('cfgMsg').textContent='Enter '+reg.w+' word(s).';return;}
     const ask=reg.comp?('Write '+words[0]+' and complement '+words[1]+' to '+addr+'? A wrong password locks the module after three tries.'):('Write '+words.join(', ')+' to '+addr+' ('+reg.n+')?');
-    if(!confirm(ask))return;
+    if(!(await askConfirm(ask,{danger:true,okLabel:'Write'})))return;
     const res=await fetch('/api/write',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({addr,words})});
     const body=await res.json();
     if(!res.ok||body.result!=='ok'){$('cfgMsg').textContent=body.error||body.result||'write failed';return;}
@@ -417,7 +465,7 @@ $('configure').onclick=async(ev)=>{
     const name=t.textContent||'command';
     const risk=t.getAttribute('data-risk')==='1';
     const ask=risk?(name+' can start the engine, change mode, or move a breaker. Send it?'):('Send '+name+'?');
-    if(!confirm(ask))return;
+    if(!(await askConfirm(ask,{danger:risk,okLabel:'Send'})))return;
     const res=await fetch('/api/control',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:Number(key)})});
     const body=await res.json();
     $('cfgMsg').textContent=(!res.ok||body.result!=='ok')?(body.error||body.result||'control failed'):('Sent '+name+'.');
