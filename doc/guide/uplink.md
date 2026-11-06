@@ -8,6 +8,8 @@ One HTTP POST carries the whole batch. The body is `NCU1`: a 30-byte header, AES
 
 The POST goes to the station network only. Payload encryption is AES-GCM. Put the collector on the LAN, or on a host that can reach the station. The device does not open a TLS session per batch, because that is what exhausts the ESP32-C3 heap.
 
+The DSE 7320 sample includes `ekwh10` when register 1800/1801 (`gen_kwh_exp`) is available. It is the controller's cumulative AC energy-export counter in tenths of a kWh. Older gateway firmware omits it; the cloud treats it as unavailable rather than zero.
+
 ## Failure behaviour
 
 - The batch lives in a static array. When it is full, the oldest sample is dropped and `dropped` increments. RAM does not grow.
@@ -53,4 +55,4 @@ That process needs the `cryptography` package. A 204 response is the only ack th
 
 When `uplink.bearer` is empty, the station collector can still receive the sealed packet. `tools/.env` supplies `INGEST_URL` and `INGEST_SECRET` and is not committed. Cloud site linking uses the assigned `device.id` (product serial). Set it on the gateway (`config set device.id icn-edge-00042`) and register the same string in Convex. If `device.id` is empty, the gateway still falls back to the efuse MAC (12 lowercase hex) for compatibility. HTTPS JSON also reports `mac` as hardware inventory only. The collector does not choose an organization. If the identity is not already registered to exactly one device and one generator, the collector answers 403 and the device keeps the batch. With a bearer set, the gateway posts that JSON to Convex itself and the collector is not on the path.
 
-`t` in the plaintext is uptime in milliseconds, not a clock, so Convex stores `sourceTime` as null and uses the server receipt time. `rpm` is stored as-is. `batt10`, `hz10`, and `van10` are divided by 10. `kw100` is divided by 100. JSON null stays unavailable and is not stored as zero. A retried POST repeats the same `boot` and `seq`. The same sequence is not applied twice. A lower sequence for the same boot is ignored. `boot` is `esp_random()` at startup, so a delayed batch from an older boot cannot be recognized and can still replace current telemetry. The NCU1 frame is unchanged.
+`t` in the plaintext is uptime in milliseconds, not a clock, so Convex stores `sourceTime` as null and uses the server receipt time. `rpm` is stored as-is. `batt10`, `hz10`, and `van10` are divided by 10. `kw100` is divided by 100. `ekwh10` is divided by 10. JSON null stays unavailable and is not stored as zero. A retried POST repeats the same `boot` and `seq`. The same sequence is not applied twice. A lower sequence for the same boot is ignored. `boot` is `esp_random()` at startup, so a delayed batch from an older boot cannot be recognized and can still replace current telemetry. The NCU1 frame is unchanged.

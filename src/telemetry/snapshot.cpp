@@ -103,6 +103,9 @@ void applyDecoded(const char *key, const DseDecodedValue &v) {
   } else if (strcmp(key, "eng_hours") == 0) {
     gSnap.hasEngHours = true;
     gSnap.engHours = v.engineering;
+  } else if (strcmp(key, "gen_kwh_exp") == 0) {
+    gSnap.hasGenEnergyKwh = true;
+    gSnap.genEnergyKwh = v.engineering;
   } else if (strcmp(key, "eng_starts") == 0) {
     gSnap.hasEngStarts = true;
     gSnap.engStarts = v.rawU;
